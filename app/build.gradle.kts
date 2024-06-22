@@ -1,51 +1,67 @@
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 }
+apply("$rootDir/plugins/android-build.gradle")
+
+val keystorePropertiesFile = rootProject.file("$rootDir/secrets/keystore.properties")
+
+val apiKeyPropertiesFile = rootProject.file("$rootDir/secrets/apiKey.properties")
+val apiKeyProperties = Properties()
+if (apiKeyPropertiesFile.exists()) {
+    apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
+} else {
+    println("The apiKey.properties file not found. Creating a new one, please fill out with your own API key.")
+    // Note: Do not hard-code your API key here. This line is merely for the purpose of creating the apiKey.properties file.
+    apiKeyProperties["GEMINI_API_KEY"] = "\"YOUR_DEFAULT_API_KEY_HERE\""
+    apiKeyProperties.store(FileOutputStream(apiKeyPropertiesFile), null)
+}
 
 android {
-    namespace = "com.fappslab.myais"
-    compileSdk = 34
+    namespace = Config.NAMESPACE
 
     defaultConfig {
-        applicationId = "com.fappslab.myais"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = Config.APPLICATION_ID
+        versionCode = Config.VERSION_CODE
+        versionName = Config.VERSION_NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
+        buildConfigField(
+            type = "String",
+            name = "GEMINI_API_KEY",
+            value = apiKeyProperties["GEMINI_API_KEY"] as String
+        )
+    }
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+            create("signing") {
+                storeFile = file(keystoreProperties["STORE_FILE"] as String)
+                storePassword = keystoreProperties["STORE_PASSWORD"] as String
+                keyPassword = keystoreProperties["KEY_PASSWORD"] as String
+                keyAlias = keystoreProperties["KEY_ALIAS"] as String
+            }
         }
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        configureEach {
+            if (name == "staging" || name == "release") {
+                if (keystorePropertiesFile.exists()) {
+                    signingConfig = signingConfigs.getByName("signing")
+                } else {
+                    println("keystore.properties not found for $name variant, skipping signing config")
+                }
+            }
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        buildConfig = true
     }
 }
 
@@ -53,19 +69,6 @@ dependencies {
     // Modules
     implementation(project(Modules.home))
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    // Libs
+
 }
