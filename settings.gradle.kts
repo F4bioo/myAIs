@@ -24,6 +24,8 @@ rootProject.name = "myAIs"
 include(":app")
 
 // Features
+// keep in alphabetical order
 include(
-    ":features:home"
+    ":features:home",
+    ":libraries:design",
 )

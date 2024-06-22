@@ -68,6 +68,8 @@ android {
 dependencies {
     // Modules
     implementation(project(Modules.home))
+    implementation(project(Modules.design))
+    debugImplementation(libs.ui.tooling)
 
     // Libs
 
