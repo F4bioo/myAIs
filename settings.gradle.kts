@@ -20,5 +20,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "myAIs"
+// App
 include(":app")
- 
+
+// Features
+include(
+    ":features:home"
+)
