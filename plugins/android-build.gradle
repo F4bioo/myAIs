@@ -69,6 +69,7 @@ def setupApplicationBuildTypes(buildTypes) {
 dependencies {
     // Libs
     implementation(libs.bundles.defaultLibs)
+    implementation(libs.fragment.ktx)
     implementation platform(libs.androidx.compose.bom)
 
     // Tests

@@ -69,6 +69,7 @@ dependencies {
     // Modules
     implementation(project(Modules.home))
     implementation(project(Modules.design))
+    implementation(project(Modules.arch))
     debugImplementation(libs.ui.tooling)
 
     // Libs

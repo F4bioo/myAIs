@@ -27,5 +27,6 @@ include(":app")
 // keep in alphabetical order
 include(
     ":features:home",
+    ":libraries:arch",
     ":libraries:design",
 )
