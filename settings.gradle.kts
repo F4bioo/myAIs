@@ -20,13 +20,24 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "myAIs"
+
+// -=-= keep in alphabetical order =-=-
+
 // App
 include(":app")
 
+// Core
+include(
+    ":core:data:remote",
+    ":core:domain"
+)
+
 // Features
-// keep in alphabetical order
 include(
     ":features:home",
     ":libraries:arch",
     ":libraries:design",
 )
+
+// -=-= keep in alphabetical order =-=-
+include(":core:domain")
