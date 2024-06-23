@@ -42,12 +42,6 @@ android {
         disable 'MissingTranslation', 'ExtraTranslation'
         xmlReport true
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packagingOptions {
         exclude "/META-INF/{AL2.0,LGPL2.1}"
     }
@@ -68,12 +62,20 @@ def setupApplicationBuildTypes(buildTypes) {
 
 dependencies {
     // Libs
-    implementation(libs.bundles.defaultLibs)
+    debugImplementation(libs.ui.tooling)
     implementation(libs.fragment.ktx)
+    implementation(libs.bundles.defaultLibs)
     implementation platform(libs.androidx.compose.bom)
 
     // Tests
-    implementation(libs.bundles.defaultTestLibs)
+    testImplementation(libs.bundles.defaultTestLibs)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
 
     // AndroidTests
     androidTestImplementation(libs.bundles.defaultAndroidTestLibs)

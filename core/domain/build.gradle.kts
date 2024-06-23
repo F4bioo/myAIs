@@ -1,9 +1,11 @@
 plugins {
-    id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
+apply("$rootDir/plugins/kotlin-build.gradle")
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+dependencies {
+    // Modules
+
+    // Libs
+
 }

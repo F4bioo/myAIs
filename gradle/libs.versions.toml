@@ -1,30 +1,36 @@
 [versions]
 # Default
-agp = "8.4.2"
+agp = "8.5.0"
 generativeai = "0.8.0"
-kotlin = "1.9.0"
+kotlin = "2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.8.2"
 activityCompose = "1.9.0"
-composeBom = "2023.08.00"
+composeBom = "2024.06.00"
 appcompat = "1.7.0"
 material = "1.12.0"
+# https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
+composeCompiler ="1.5.14"
 # Added
+coroutines = "1.7.3"
+coreTesting = "2.2.0"
+turbine = "1.0.0"
+mockk = "1.13.9"
+preference = "1.2.1"
 jodaTime = "2.10.10"
 uiTextGoogleFonts = "1.6.8"
 uiTooling = "1.6.8"
-fragment = "1.7.0"
+fragment = "1.8.0"
 koin = "3.5.3"
 startup = "1.1.1"
-retrofit = "2.9.0"
-okhttp = "4.11.0"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
 timber = "5.0.1"
-composeComplilerVersion="1.5.1"
 common = "0.7.1"
-jetbrainsKotlinJvm = "1.9.0"
+jetbrainsKotlinJvm = "2.0.0"
 
 [libraries]
 # Default
@@ -45,6 +51,20 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 # Added
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-coroutines-test-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test-jvm", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTesting" }
+preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 joda-time = { group = "joda-time", name = "joda-time", version.ref = "jodaTime" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling"}
@@ -64,6 +84,7 @@ common = { group = "com.google.ai.client.generativeai", name = "common", version
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
