@@ -28,6 +28,7 @@ include(":app")
 
 // Core
 include(
+    ":core:data:local",
     ":core:data:remote",
     ":core:domain"
 )
