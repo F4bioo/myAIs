@@ -4,6 +4,7 @@ import com.fappslab.myais.domain.model.PartType
 
 class ContentBuilder {
     private val parts = mutableListOf<PartType>()
+
     fun text(textPrompt: String) = apply {
         parts.add(PartType.Text(textPrompt))
     }

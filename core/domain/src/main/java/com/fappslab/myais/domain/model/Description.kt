@@ -1,5 +1,5 @@
 package com.fappslab.myais.domain.model
 
-data class Eyesight(
+data class Description(
     val text: String
 )

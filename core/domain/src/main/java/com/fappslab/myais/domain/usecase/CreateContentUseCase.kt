@@ -1,17 +1,17 @@
 package com.fappslab.myais.domain.usecase
 
 import com.fappslab.myais.domain.builder.ContentBuilder
-import com.fappslab.myais.domain.model.Eyesight
-import com.fappslab.myais.domain.repository.GetEyesightRepository
+import com.fappslab.myais.domain.model.Description
+import com.fappslab.myais.domain.repository.MyAIsRepository
 
 class CreateContentUseCase(
-    private val repository: GetEyesightRepository
+    private val repository: MyAIsRepository
 ) {
 
-    suspend operator fun invoke(init: ContentBuilder.() -> Unit): Eyesight {
+    suspend operator fun invoke(init: ContentBuilder.() -> Unit): Description {
         val builder = ContentBuilder()
         builder.init()
         val parts = builder.build()
-        return repository.getEyesight(parts)
+        return repository.generateContent(parts)
     }
 }
