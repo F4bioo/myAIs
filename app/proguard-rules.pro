@@ -8,6 +8,10 @@
 -keep class java.lang.invoke.** { *; }
 -keep interface java.lang.invoke.** { *; }
 
+# Startup
+-keep class androidx.startup.AppInitializer
+-keep class * extends androidx.startup.Initializer
+
 # Parcelable
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -20,3 +24,63 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+
+# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Prevent R8 from leaving Data object members always null
+-keepclasseswithmembers class * {
+    <init>(...);
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
+-keep class com.fappslab.myais.local.** { *; }
+-keepnames class com.fappslab.myais.arch.koin.KoinModules { *; }
+-keep class com.fappslab.myais.arch.koin.koinload.KoinLoad { *; }
+
+-keep class com.fappslab.myais.remote.api.** { *; }
+-keep class com.fappslab.myais.remote.network.interceptor.AuthInterceptor { *; }
+
+-keep class com.fappslab.myais.arch.koin.koinshot.ModuleInitializer { *; }
+-keep class com.fappslab.myais.design.theme.PlutoThemeKt { *; }
+-keep class com.fappslab.myais.design.theme.** { *; }
+
+-if interface * { @retrofit2.http.* public *** *(...); }
+-keep,allowoptimization,allowshrinking,allowobfuscation class <3>
+-keep class kotlin.coroutines.Continuation
+
+# AndroidX Core
+-keep class androidx.core.** { *; }
+
+# AndroidX Lifecycle
+-keep class androidx.lifecycle.** { *; }
+
+# AndroidX Activity Compose
+-keep class androidx.activity.compose.** { *; }
+
+# AndroidX Compose
+-keep class androidx.compose.** { *; }
+
+-keepclassmembers class * implements org.koin.core.module.Module { *; }

@@ -8,6 +8,10 @@ plugins {
 }
 apply("$rootDir/plugins/android-build.gradle")
 
+val clientSecretPropertiesFile = rootProject.file("$rootDir/secrets/clientSecret.properties")
+val clientSecretProperties = Properties()
+clientSecretProperties.load(FileInputStream(clientSecretPropertiesFile))
+
 val apiKeyPropertiesFile = rootProject.file("$rootDir/secrets/apiKey.properties")
 val apiKeyProperties = Properties()
 if (apiKeyPropertiesFile.exists()) {
@@ -23,6 +27,26 @@ android {
     namespace = "${Config.NAMESPACE}.remote"
 
     defaultConfig {
+        buildConfigField(
+            type = "String",
+            name = "APP_VERSION",
+            value = "\"${Config.VERSION_NAME}\""
+        )
+        buildConfigField(
+            type = "String",
+            name = "CLIENT_ID_APP",
+            value = clientSecretProperties["CLIENT_ID_APP"] as String
+        )
+        buildConfigField(
+            type = "String",
+            name = "CLIENT_ID_WEB",
+            value = clientSecretProperties["CLIENT_ID_WEB"] as String
+        )
+        buildConfigField(
+            type = "String",
+            name = "DRIVE_BASE_URL",
+            value = "\"https://www.googleapis.com/\""
+        )
         buildConfigField(
             type = "String",
             name = "GEMINI_API_KEY",
@@ -47,8 +71,24 @@ dependencies {
     // Libs
     api(libs.retrofit)
     api(libs.converter.gson)
-    api(libs.generativeai)
+    api(libs.gson)
+    api(libs.timber)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
-    implementation(libs.timber)
+
+    // Google Sign-In and Drive API
+    // DriveScopes
+    api("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0"){
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+    }
+    // Identity, AuthorizationRequest
+    api("com.google.android.gms:play-services-auth:21.2.0")
+    // CredentialManager
+    api ("androidx.credentials:credentials-play-services-auth:1.2.2")
+    // GetGoogleIdOption, GoogleIdTokenCredential, GoogleIdTokenParsingException
+    api ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    // Coroutines await
+    api ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+
+    implementation("androidx.annotation:annotation:1.8.0")
 }

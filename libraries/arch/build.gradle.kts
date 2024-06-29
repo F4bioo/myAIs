@@ -16,5 +16,5 @@ dependencies {
     api(libs.koin.android)
     api(libs.koin.androidx.compose)
     api(libs.startup.runtime)
-    implementation(libs.joda.time)
+    api(libs.joda.time)
 }

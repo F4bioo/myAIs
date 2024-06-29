@@ -8,7 +8,7 @@ plugins {
 }
 apply("$rootDir/plugins/android-build.gradle")
 
-val keystorePropertiesFile = rootProject.file("$rootDir/secrets/keystore.properties")
+val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
 
 android {
     namespace = Config.NAMESPACE
@@ -17,6 +17,8 @@ android {
         applicationId = Config.APPLICATION_ID
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
+
+        multiDexEnabled = true
     }
     signingConfigs {
         if (keystorePropertiesFile.exists()) {
@@ -60,7 +62,15 @@ dependencies {
     implementation(project(Modules.arch))
     implementation(project(Modules.remote))
     implementation(project(Modules.domain))
+    implementation(project(Modules.local))
 
     // Libs
     implementation(libs.common)
+    implementation("androidx.multidex:multidex:2.0.1")
+
+    debugImplementation(libs.flipper)
+    debugImplementation(libs.soloader)
+    debugImplementation(libs.flipper.leakcanary2.plugin)
+    debugImplementation(libs.leakcanary.android)
+    debugImplementation(libs.flipper.network.plugin)
 }

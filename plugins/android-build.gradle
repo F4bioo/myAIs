@@ -25,6 +25,21 @@ android {
         setupApplicationBuildTypes(buildTypes)
     }
 
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        debug {
+            java.srcDirs = ['src/debug/java']
+        }
+        release {
+            java.srcDirs = ['src/release/java']
+        }
+        staging {
+            java.srcDirs = ['src/staging/java']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -43,7 +58,11 @@ android {
         xmlReport true
     }
     packagingOptions {
-        exclude "/META-INF/{AL2.0,LGPL2.1}"
+        resources {
+            excludes += [
+                "/META-INF/{AL2.0,LGPL2.1}",
+            ]
+        }
     }
 }
 
@@ -64,6 +83,7 @@ dependencies {
     // Libs
     debugImplementation(libs.ui.tooling)
     implementation(libs.fragment.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.bundles.defaultLibs)
     implementation platform(libs.androidx.compose.bom)
 
