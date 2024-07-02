@@ -11,6 +11,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -36,9 +37,13 @@ include(
 // Features
 include(
     ":features:home",
+)
+
+// Libraries
+include(
     ":libraries:arch",
     ":libraries:design",
+    ":libraries:testing",
 )
 
 // -=-= keep in alphabetical order =-=-
-include(":core:domain")

@@ -12,6 +12,7 @@ object Modules {
     // Libraries
     const val arch = ":libraries:arch"
     const val design = ":libraries:design"
+    const val testing = ":libraries:testing"
 
     // -=-= keep in alphabetical order =-=-
 }
