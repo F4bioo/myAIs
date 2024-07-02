@@ -9,10 +9,9 @@ import org.koin.compose.koinInject
 
 internal class AgreementNavigationImpl : AgreementNavigation {
 
-    override val route: String
-        get() = "agreement_screen"
+    override val route: String = "agreement_screen"
 
-    override fun navigateToAgreement(
+    override fun navigateToFeature(
         navGraphBuilder: NavGraphBuilder,
         navController: NavHostController
     ) {
