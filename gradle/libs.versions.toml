@@ -1,6 +1,7 @@
 [versions]
 # Default
 agp = "8.5.0"
+cameraCamera2 = "1.3.4"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -38,9 +39,9 @@ soloader = "0.10.4"
 leakcanaryAndroid = "2.8.1"
 coilCompose = "2.6.0"
 lottieCompose = "6.4.0"
-navigationRuntimeKtx = "2.7.7"
-navigationCommonKtx = "2.7.7"
-navigationCompose = "2.7.7"
+navigation = "2.7.7"
+kotlinReflect = "1.9.22"
+kotlinStdlib = "2.0.0"
 
 [libraries]
 # Default
@@ -101,9 +102,15 @@ flipper-leakcanary2-plugin = { group = "com.facebook.flipper", name = "flipper-l
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanaryAndroid" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
+navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigation" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraCamera2" }
+camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "cameraCamera2" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraCamera2" }
+camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraCamera2" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlinReflect" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -134,4 +141,11 @@ defaultAndroidTestLibs = [
     "androidx-ui-test-junit4",
     "androidx-ui-tooling",
     "androidx-ui-test-manifest",
+]
+
+cameraLibs = [
+    "camera-camera2",
+    "camera-extensions",
+    "camera-lifecycle",
+    "camera-view",
 ]

@@ -26,4 +26,8 @@ dependencies {
     api(libs.koin.androidx.compose)
     api(libs.startup.runtime)
     api(libs.joda.time)
+
+    implementation(libs.bundles.cameraLibs)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.reflect)
 }
