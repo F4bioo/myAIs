@@ -31,7 +31,8 @@ include(":app")
 include(
     ":core:data:local",
     ":core:data:remote",
-    ":core:domain"
+    ":core:domain",
+    ":core:navigation"
 )
 
 // Features

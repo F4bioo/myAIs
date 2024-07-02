@@ -63,10 +63,14 @@ dependencies {
     implementation(project(Modules.remote))
     implementation(project(Modules.domain))
     implementation(project(Modules.local))
+    implementation(project(Modules.navigation))
+    implementation(project(Modules.testing))
 
     // Libs
     implementation(libs.common)
     implementation("androidx.multidex:multidex:2.0.1")
+    implementation(libs.navigation.runtime.ktx)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     debugImplementation(libs.flipper)
     debugImplementation(libs.soloader)

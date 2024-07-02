@@ -5,6 +5,7 @@ object Modules {
     const val local = ":core:data:local"
     const val remote = ":core:data:remote"
     const val domain = ":core:domain"
+    const val navigation = ":core:navigation"
 
     // Features
     const val home = ":features:home"
