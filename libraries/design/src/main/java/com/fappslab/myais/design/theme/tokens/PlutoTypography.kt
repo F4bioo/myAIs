@@ -1,6 +1,7 @@
 package com.fappslab.myais.design.theme.tokens
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.font.FontWeight
 import com.fappslab.myais.design.theme.baseline
 import com.fappslab.myais.design.theme.robotoFontFamily
 
@@ -13,12 +14,12 @@ object PlutoTypography {
     val headlineMedium = baseline.headlineMedium.copy(fontFamily = robotoFontFamily)
     val headlineSmall = baseline.headlineSmall.copy(fontFamily = robotoFontFamily)
     val titleLarge = baseline.titleLarge.copy(fontFamily = robotoFontFamily)
-    val titleMedium = baseline.titleMedium.copy(fontFamily = robotoFontFamily)
-    val titleSmall = baseline.titleSmall.copy(fontFamily = robotoFontFamily)
+    val titleMedium = baseline.titleMedium.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Medium)
+    val titleSmall = baseline.titleSmall.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Medium)
     val bodyLarge = baseline.bodyLarge.copy(fontFamily = robotoFontFamily)
-    val bodyMedium = baseline.bodyMedium.copy(fontFamily = robotoFontFamily)
-    val bodySmall = baseline.bodySmall.copy(fontFamily = robotoFontFamily)
+    val bodyMedium = baseline.bodyMedium.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Light)
+    val bodySmall = baseline.bodySmall.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Light)
     val labelLarge = baseline.labelLarge.copy(fontFamily = robotoFontFamily)
-    val labelMedium = baseline.labelMedium.copy(fontFamily = robotoFontFamily)
-    val labelSmall = baseline.labelSmall.copy(fontFamily = robotoFontFamily)
+    val labelMedium = baseline.labelMedium.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Medium)
+    val labelSmall = baseline.labelSmall.copy(fontFamily = robotoFontFamily, fontWeight = FontWeight.Light)
 }

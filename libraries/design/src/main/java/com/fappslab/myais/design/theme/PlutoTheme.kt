@@ -26,7 +26,11 @@ import com.fappslab.myais.design.theme.defaults.LocalPlutoFontSizing
 import com.fappslab.myais.design.theme.defaults.LocalPlutoOpacity
 import com.fappslab.myais.design.theme.defaults.LocalPlutoRadius
 import com.fappslab.myais.design.theme.defaults.LocalPlutoStroke
+import com.fappslab.myais.design.theme.defaults.LocalPlutoTextDark
+import com.fappslab.myais.design.theme.defaults.LocalPlutoTextLight
 import com.fappslab.myais.design.theme.defaults.LocalPlutoTypography
+import com.fappslab.myais.design.theme.defaults.dark.DesignLanguageDark
+import com.fappslab.myais.design.theme.defaults.light.DesignLanguageLight
 import com.fappslab.myais.design.theme.tokens.PlutoDimens
 import com.fappslab.myais.design.theme.tokens.PlutoElevation
 import com.fappslab.myais.design.theme.tokens.PlutoFontSizing
@@ -34,6 +38,7 @@ import com.fappslab.myais.design.theme.tokens.PlutoFontStyle
 import com.fappslab.myais.design.theme.tokens.PlutoOpacity
 import com.fappslab.myais.design.theme.tokens.PlutoRadius
 import com.fappslab.myais.design.theme.tokens.PlutoStroke
+import com.fappslab.myais.design.theme.tokens.PlutoText
 import com.fappslab.myais.design.theme.tokens.PlutoTypography
 import com.fappslab.myais.design.theme.tokens.backgroundDark
 import com.fappslab.myais.design.theme.tokens.backgroundDarkHighContrast
@@ -428,8 +433,8 @@ fun PlutoTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            //window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
     CompositionLocalProvider(
@@ -441,6 +446,8 @@ fun PlutoTheme(
         LocalPlutoRadius provides PlutoRadius,
         LocalPlutoStroke provides PlutoStroke,
         LocalPlutoTypography provides PlutoTypography,
+        LocalPlutoTextDark provides DesignLanguageDark.text,
+        LocalPlutoTextLight provides DesignLanguageLight.text,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -501,6 +508,15 @@ object PlutoTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalPlutoStroke.current
+
+    val text: PlutoText
+        @Composable
+        @ReadOnlyComposable
+        get() = if (isSystemInDarkTheme()) {
+            LocalPlutoTextDark.current
+        } else {
+            LocalPlutoTextLight.current
+        }
 
     val typography: PlutoTypography
         @Composable
