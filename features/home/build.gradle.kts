@@ -23,6 +23,15 @@ dependencies {
     implementation(project(Modules.arch))
     implementation(project(Modules.remote))
     implementation(project(Modules.domain))
+    implementation(project(Modules.navigation))
 
     // Libs
+    implementation(libs.coil.compose)
+    implementation(libs.lottie.compose)
+    implementation(libs.navigation.common.ktx)
+    implementation(libs.navigation.runtime.ktx)
+    implementation(libs.navigation.compose)
+
+    // TestLibs
+    testImplementation(testFixtures(project(Modules.testing)))
 }

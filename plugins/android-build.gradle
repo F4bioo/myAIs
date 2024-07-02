@@ -96,6 +96,8 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)
     testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.core.testing)
 
     // AndroidTests
     androidTestImplementation(libs.bundles.defaultAndroidTestLibs)
