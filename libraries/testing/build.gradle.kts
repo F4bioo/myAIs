@@ -8,13 +8,6 @@ apply("$rootDir/plugins/android-build.gradle")
 android {
     namespace = "${Config.NAMESPACE}.testing"
 
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion =
-            libs.versions.composeCompiler.get()
-    }
     @Suppress("UnstableApiUsage")
     testFixtures {
         enable = true
