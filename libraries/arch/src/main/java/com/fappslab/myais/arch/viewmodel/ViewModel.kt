@@ -14,19 +14,23 @@ abstract class ViewModel<State, Effect>(initialState: State) : LifecycleViewMode
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<State> = _state.asStateFlow()
 
-    private val _action = Channel<Effect>(Channel.CONFLATED)
-    val action: Flow<Effect> = _action.receiveAsFlow()
+    private val _effect = Channel<Effect>(Channel.CONFLATED)
+    val effect: Flow<Effect> = _effect.receiveAsFlow()
 
     protected fun onState(stateBlock: (State) -> State) {
         _state.update { stateBlock(it) }
     }
 
     protected fun onEffect(actionBlock: () -> Effect) {
-        _action.trySend(actionBlock())
+        _effect.trySend(actionBlock())
     }
 
     override fun onCleared() {
         super.onCleared()
-        _action.close()
+        _effect.close()
     }
+}
+
+interface ViewIntent<Intent> {
+    fun onViewIntent(intent: Intent)
 }

@@ -31,7 +31,7 @@ fun ComponentActivity.permissionLauncher(
         }
     }
 
-    return PermissionsLauncherImpl(permissions.toList(), launcher)
+    return PermissionsLauncherImpl(this, permissions.toList(), launcher)
 }
 
 fun Fragment.permissionLauncher(
@@ -54,7 +54,7 @@ fun Fragment.permissionLauncher(
         }
     }
 
-    return PermissionsLauncherImpl(permissions.toList(), launcher)
+    return PermissionsLauncherImpl(requireContext(), permissions.toList(), launcher)
 }
 
 
