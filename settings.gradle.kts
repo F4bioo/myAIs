@@ -38,6 +38,7 @@ include(
 // Features
 include(
     ":features:home",
+    ":features:memories"
 )
 
 // Libraries

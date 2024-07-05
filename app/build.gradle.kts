@@ -58,6 +58,7 @@ android {
 dependencies {
     // Modules
     implementation(project(Modules.home))
+    implementation(project(Modules.memories))
     implementation(project(Modules.design))
     implementation(project(Modules.arch))
     implementation(project(Modules.remote))

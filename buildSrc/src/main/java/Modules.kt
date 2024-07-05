@@ -9,6 +9,7 @@ object Modules {
 
     // Features
     const val home = ":features:home"
+    const val memories = ":features:memories"
 
     // Libraries
     const val arch = ":libraries:arch"
