@@ -1,11 +1,13 @@
 package com.fappslab.myais.remote.source
 
-import com.fappslab.myais.domain.model.DriveFile
 import com.fappslab.myais.domain.model.DriverItemType
+import com.fappslab.myais.domain.model.Memories
+import com.fappslab.myais.domain.model.Memory
 import com.fappslab.myais.domain.model.SaveMemory
+import kotlinx.coroutines.flow.Flow
 
 internal interface DriveDataSource {
-    suspend fun listFiles(): List<DriveFile>
-    suspend fun deleteItem(itemType: DriverItemType): Boolean
-    suspend fun uploadFile(save: SaveMemory): DriveFile
+    fun listFiles(): Flow<Memories>
+    fun deleteItem(itemType: DriverItemType): Flow<Boolean>
+    fun uploadFile(save: SaveMemory): Flow<Memory>
 }

@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.room)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.ksp)
 }
 apply("$rootDir/plugins/android-build.gradle")
 

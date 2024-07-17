@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Agreement -->
+    <string name="agreement_desc_header_description_granted">Animação de olho indicando permissão concedida.</string>
+    <string name="agreement_desc_header_description_not_granted">Ilustração de olho indicando permissão não concedida.</string>
+    <string name="agreement_desc_open_terms">Abrir Termos e Política de Privacidade</string>
+    <string name="agreement_desc_button_disabled_description">Botão Continuar desativado. Por favor, conceda acesso à câmera para prosseguir.</string>
+    <string name="agreement_desc_button_enabled_description">Botão Continuar ativado. Toque para prosseguir.</string>
+
+    <string name="agreement_brand_message">Explore o mundo de novas maneiras, use IA para salvar e reviver suas recordações.</string>
+    <string name="agreement_camera_access">Acesso à Câmera</string>
+    <string name="agreement_camera_access_description">Permitir que o app %s acesse sua câmera para tirar fotos.</string>
+    <string name="agreement_open_settings">Deseja abrir as configurações do aplicativo para permitir a câmera?</string>
+    <string name="agreement_continue_text">Ao continuar, você concorda com nossos\n</string>
+    <string name="agreement_terms_text">Termos e Política de Privacidade.</string>
+
+    <!-- Home -->
+    <string name="home_desc_navigate_to_memories_screen">Navegar para as Recordações no Google Drive.</string>
+    <string name="home_desc_navigate_to_camera_screen">Navegar para a tela de captura de imagens.</string>
+    <string name="home_desc_save_to_drive">Salvar no Google Drive.</string>
+    <string name="home_desc_save_memory">Salvar recordação.</string>
+    <string name="home_desc_camera_ready">Olho aberto, câmera pronta. Toque duas vezes para capturar uma foto.</string>
+    <string name="home_desc_preview">Olho fechado, análise concluída. %s Toque duas vezes para voltar para a câmera.</string>
+    <string name="home_desc_describing">Olho em movimento, analisando imagem. Por favor, aguarde um momento.</string>
+    <string name="home_desc_uploading">Enviando recordação para a nuvem. Por favor, aguarde um momento.</string>
+    <string name="home_desc_uploaded">Recordação enviada com sucesso.</string>
+
+    <string name="home_simple_description">Olá! Estou aqui para ajudar. Tire uma foto e eu descreverei o que vejo para você. Basta clicar no botão abaixo para começar.</string>
+    <string name="failure_generic_title">Ops! Algo deu errado</string>
+    <string name="failure_generic_message">Ocorreu um erro inesperado. Por favor, tente novamente.</string>
+    <string name="failure_connection_title">Erro de Conexão</string>
+    <string name="failure_connection_message">Não foi possível conectar ao servidor. Por favor, verifique sua conexão com a internet e tente novamente.</string>
+    <string name="failure_analyze_title">Erro de Análise</string>
+    <string name="failure_analyze_message">Ocorreu um erro durante a análise da imagem. Por favor, tente novamente.</string>
+    <string name="failure_upload_title">Erro de Upload</string>
+    <string name="failure_upload_message">Ocorreu um erro durante o upload. Por favor, tente novamente.</string>
+</resources>

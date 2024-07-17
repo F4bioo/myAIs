@@ -5,6 +5,7 @@ import com.fappslab.myais.domain.repository.MyAIsRepository
 import com.fappslab.myais.remote.BuildConfig
 import com.fappslab.myais.remote.api.DriveService
 import com.fappslab.myais.remote.api.GeminiService
+import com.fappslab.myais.remote.api.PromptService
 import com.fappslab.myais.remote.network.HttpClient
 import com.fappslab.myais.remote.network.HttpClientImpl
 import com.fappslab.myais.remote.network.retrofit.RetrofitClient
@@ -16,16 +17,27 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+const val LOCAL_JSON_INTERCEPTORS_QUALIFIER = "LOCAL_JSON_INTERCEPTORS_QUALIFIER"
 const val GEMINI_INTERCEPTORS_QUALIFIER = "GEMINI_INTERCEPTORS_QUALIFIER"
 const val DRIVE_INTERCEPTORS_QUALIFIER = "DRIVE_INTERCEPTORS_QUALIFIER"
+
+const val LOCAL_JSON_RETROFIT_QUALIFIER = "LOCAL_JSON_RETROFIT_QUALIFIER"
 const val GEMINI_RETROFIT_QUALIFIER = "GEMINI_RETROFIT_QUALIFIER"
 const val DRIVE_RETROFIT_QUALIFIER = "DRIVE_RETROFIT_QUALIFIER"
+
+const val LOCAL_JSON_HTTP_CLIENT_QUALIFIER = "LOCAL_JSON_HTTP_CLIENT_QUALIFIER"
 const val GEMINI_HTTP_CLIENT_QUALIFIER = "GEMINI_HTTP_CLIENT_QUALIFIER"
 const val DRIVE_HTTP_CLIENT_QUALIFIER = "DRIVE_HTTP_CLIENT_QUALIFIER"
 
 internal class RemoteModuleShot : KoinShot() {
 
     override val dataModule: Module = module {
+        single<Retrofit>(named(LOCAL_JSON_RETROFIT_QUALIFIER)) {
+            RetrofitClient(
+                baseUrl = BuildConfig.PROMPT_BASE_URL,
+                interceptors = get(named(LOCAL_JSON_INTERCEPTORS_QUALIFIER))
+            ).create()
+        }
         single<Retrofit>(named(GEMINI_RETROFIT_QUALIFIER)) {
             RetrofitClient(
                 baseUrl = BuildConfig.GEMINI_BASE_URL,
@@ -39,6 +51,9 @@ internal class RemoteModuleShot : KoinShot() {
             ).create()
         }
 
+        single<HttpClient>(named(LOCAL_JSON_HTTP_CLIENT_QUALIFIER)) {
+            HttpClientImpl(retrofit = get(named(LOCAL_JSON_RETROFIT_QUALIFIER)))
+        }
         single<HttpClient>(named(GEMINI_HTTP_CLIENT_QUALIFIER)) {
             HttpClientImpl(retrofit = get(named(GEMINI_RETROFIT_QUALIFIER)))
         }
@@ -49,7 +64,10 @@ internal class RemoteModuleShot : KoinShot() {
         factory<MyAIsRepository> {
             MyAIsRepositoryImpl(
                 geminiDataSource = GeminiDataSourceImpl(
-                    service = get<HttpClient>(
+                    promptService = get<HttpClient>(
+                        named(LOCAL_JSON_HTTP_CLIENT_QUALIFIER)
+                    ).create(PromptService::class.java),
+                    geminiService = get<HttpClient>(
                         named(GEMINI_HTTP_CLIENT_QUALIFIER)
                     ).create(GeminiService::class.java),
                 ),

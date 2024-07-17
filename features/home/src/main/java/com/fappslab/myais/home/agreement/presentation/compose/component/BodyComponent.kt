@@ -7,13 +7,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import com.fappslab.myais.design.accessibility.semantics
 import com.fappslab.myais.design.components.button.ButtonType
 import com.fappslab.myais.design.components.button.PlutoButtonComponent
 import com.fappslab.myais.design.theme.PlutoTheme
+import com.fappslab.myais.home.R
 
 @Composable
 internal fun BodyComponent(
@@ -27,10 +29,12 @@ internal fun BodyComponent(
     Column(
         modifier = modifier
     ) {
-
         CheckBoxComponent(
-            title = "Camera Access",
-            description = "Allow myAIs app to access your \ncamera to take photos.",
+            title = stringResource(R.string.agreement_camera_access),
+            description = stringResource(
+                R.string.agreement_camera_access_description,
+                stringResource(R.string.app_name)
+            ),
             isEnable = !isGrantedPermission,
             isChecked = isGrantedPermission,
             onClicked = onRequestClicked
@@ -44,7 +48,7 @@ internal fun BodyComponent(
                     }
                     .fillMaxWidth()
                     .padding(horizontal = PlutoTheme.dimen.dp48),
-                text = "Do you want to open the app settings to allow the camera?",
+                text = stringResource(R.string.agreement_open_settings),
                 buttonType = ButtonType.Tertiary,
                 onClick = onSettingsClicked
             )

@@ -18,13 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.fappslab.myais.design.components.button.model.ButtonState
 import com.fappslab.myais.design.theme.PlutoTheme
 
 @Composable
 fun PlutoButtonComponent(
     modifier: Modifier = Modifier,
     text: String,
-    isEnabled: Boolean = true,
+    buttonState: ButtonState = ButtonState.Enabled,
     clickType: ClickType = ClickType.Debounce,
     buttonType: ButtonType,
     onClick: () -> Unit = {}
@@ -35,7 +36,7 @@ fun PlutoButtonComponent(
             PlutoPrimaryButton(
                 modifier = modifier,
                 text = text,
-                isEnabled = isEnabled,
+                buttonState = buttonState,
                 clickType = clickType,
                 onClick = onClick
             )
@@ -45,7 +46,7 @@ fun PlutoButtonComponent(
             PlutoSecondaryButton(
                 modifier = modifier,
                 text = text,
-                isEnabled = isEnabled,
+                buttonState = buttonState,
                 clickType = clickType,
                 onClick = onClick
             )
@@ -55,7 +56,7 @@ fun PlutoButtonComponent(
             PlutoTertiaryButton(
                 modifier = modifier,
                 text = text,
-                isEnabled = isEnabled,
+                buttonState = buttonState,
                 clickType = clickType,
                 onClick = onClick
             )
@@ -67,13 +68,13 @@ fun PlutoButtonComponent(
 private fun PlutoPrimaryButton(
     modifier: Modifier = Modifier,
     text: String,
-    isEnabled: Boolean = true,
-    clickType: ClickType = ClickType.Debounce,
-    onClick: () -> Unit = {}
+    buttonState: ButtonState,
+    clickType: ClickType,
+    onClick: () -> Unit
 ) {
 
     Button(
-        enabled = isEnabled,
+        enabled = buttonState.isEnabled,
         onClick = rememberClickAction(clickType = clickType, action = onClick),
         modifier = modifier.height(PlutoTheme.dimen.dp52),
         shape = RoundedCornerShape(PlutoTheme.radius.medium),
@@ -90,13 +91,13 @@ private fun PlutoPrimaryButton(
 private fun PlutoSecondaryButton(
     modifier: Modifier = Modifier,
     text: String,
-    isEnabled: Boolean = true,
-    clickType: ClickType = ClickType.Debounce,
-    onClick: () -> Unit = {}
+    buttonState: ButtonState,
+    clickType: ClickType,
+    onClick: () -> Unit
 ) {
 
     OutlinedButton(
-        enabled = isEnabled,
+        enabled = buttonState.isEnabled,
         onClick = rememberClickAction(clickType = clickType, action = onClick),
         modifier = modifier.height(PlutoTheme.dimen.dp52),
         shape = RoundedCornerShape(PlutoTheme.radius.medium),
@@ -116,13 +117,13 @@ private fun PlutoSecondaryButton(
 private fun PlutoTertiaryButton(
     modifier: Modifier = Modifier,
     text: String,
-    isEnabled: Boolean = true,
-    clickType: ClickType = ClickType.Debounce,
-    onClick: () -> Unit = {}
+    buttonState: ButtonState,
+    clickType: ClickType,
+    onClick: () -> Unit
 ) {
 
     TextButton(
-        enabled = isEnabled,
+        enabled = buttonState.isEnabled,
         onClick = rememberClickAction(clickType = clickType, action = onClick),
         modifier = modifier.height(PlutoTheme.dimen.dp52),
         shape = RoundedCornerShape(PlutoTheme.radius.medium),

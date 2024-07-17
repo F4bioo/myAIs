@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import com.fappslab.myais.design.components.lorem.loremIpsum
 import com.fappslab.myais.design.extension.clickable
 import com.fappslab.myais.design.theme.PlutoTheme
 
@@ -34,10 +34,10 @@ internal fun CheckBoxComponent(
     onClicked: () -> Unit
 ) {
     var checked by rememberSaveable { mutableStateOf(value = false) }
+
     LaunchedEffect(isChecked) {
         checked = isChecked
     }
-
     Box(
         modifier = modifier
             .clickable(enabled = isEnable) {
@@ -80,8 +80,8 @@ private fun CheckBoxComponentPreview() {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background),
         isEnable = true,
-        title = LoremIpsum(1).values.first(),
-        description = LoremIpsum(6).values.first(),
+        title = loremIpsum { 1 },
+        description = loremIpsum { 6 },
         isChecked = true,
         onClicked = {}
     )

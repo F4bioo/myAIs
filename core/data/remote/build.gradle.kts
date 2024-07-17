@@ -54,6 +54,11 @@ android {
         )
         buildConfigField(
             type = "String",
+            name = "PROMPT_BASE_URL",
+            value = "\"http://localhost/\""
+        )
+        buildConfigField(
+            type = "String",
             name = "GEMINI_BASE_URL",
             value = "\"https://generativelanguage.googleapis.com/\""
         )

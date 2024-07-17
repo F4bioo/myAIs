@@ -1,17 +1,19 @@
 package com.fappslab.myais.remote.source
 
-import com.fappslab.myais.domain.model.DriveFile
 import com.fappslab.myais.domain.model.DriverItemType
+import com.fappslab.myais.domain.model.Memories
+import com.fappslab.myais.domain.model.Memory
 import com.fappslab.myais.domain.model.SaveMemory
 import com.fappslab.myais.remote.api.DriveService
 import com.fappslab.myais.remote.model.DriveFileMetadata
 import com.fappslab.myais.remote.model.DriveFolderRequest
-import com.fappslab.myais.remote.model.mapper.toDriveFile
-import com.fappslab.myais.remote.model.mapper.toDriveFiles
+import com.fappslab.myais.remote.model.mapper.toMemories
+import com.fappslab.myais.remote.model.mapper.toMemory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 
 const val IMAGE_JPEG_MIME_TYPE = "image/jpeg"
 const val IMAGE_PNG_MIME_TYPE = "image/png"
@@ -22,16 +24,16 @@ internal class DriveDataSourceImpl(
     private val folderType: DriveFolderType = DriveFolderType.MyAIsMemories
 ) : DriveDataSource {
 
-    override suspend fun listFiles(): List<DriveFile> {
+    override fun listFiles(): Flow<Memories> = flow {
         val spaces = if (folderType is DriveFolderType.AppDataFolder) {
             folderType.name
         } else "drive"
 
         val response = service.listFiles(spaces = spaces)
-        return response.files.toDriveFiles()
+        emit(response.toMemories())
     }
 
-    override suspend fun deleteItem(itemType: DriverItemType): Boolean {
+    override fun deleteItem(itemType: DriverItemType): Flow<Boolean> = flow {
         val itemId = when (itemType) {
             DriverItemType.Folder -> {
                 findFolderByName(folderType.name)
@@ -44,15 +46,15 @@ internal class DriveDataSourceImpl(
         }
 
         val response = itemId?.let { service.deleteItem(itemId = it) }
-        return response?.isSuccessful ?: false
+        emit(response?.isSuccessful ?: false)
     }
 
-    override suspend fun uploadFile(save: SaveMemory): DriveFile {
+    override fun uploadFile(save: SaveMemory): Flow<Memory> = flow {
         val folder = if (folderType !is DriveFolderType.AppDataFolder) {
             findFolderByName(folderType.name) ?: createFolder(folderType.name)
         } else folderType.name
 
-        val file = File(save.filePath)
+        val file = requireNotNull(save.fileImage)
         val filePart = MultipartBody.Part.createFormData(
             name = "file",
             filename = file.name,
@@ -65,7 +67,7 @@ internal class DriveDataSourceImpl(
             description = save.description
         )
         val response = service.uploadFile(metadata, filePart)
-        return response.toDriveFile()
+        emit(response.toMemory())
     }
 
     private suspend fun createFolder(folderName: String): String {
@@ -74,13 +76,13 @@ internal class DriveDataSourceImpl(
             mimeType = FOLDER_MIME_TYPE
         )
         val response = service.createFolder(request)
-        return response.toDriveFile().id
+        return response.toMemory().id
     }
 
     private suspend fun findFolderByName(folderName: String): String? {
         val query = "mimeType='$FOLDER_MIME_TYPE' and name='$folderName' and 'me' in owners"
         val response = service.listFiles(query = query, spaces = "drive")
-        return response.files?.firstOrNull()?.toDriveFile()?.id
+        return response.files?.firstOrNull()?.toMemory()?.id
     }
 }
 

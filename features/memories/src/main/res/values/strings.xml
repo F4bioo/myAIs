@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memories_desc_memory_complete">Image description. %1$s Memory created on. %2$s.</string>
+    <string name="memories_desc_delete_memory_alert_message">Dialog box. Delete memory. Are you sure you want to delete this memory?</string>
+    <string name="memories_desc_download_memory_alert_message">Dialog box. File Location. The downloaded image will be saved in the Pictures folder on your device.</string>
+    <string name="memories_desc_user_photo">Circular image. %s\'s photo.</string>
+    <string name="memories_desc_screen_header">Memories screen. %s\'s memories.</string>
+
+    <string name="memories_download_finished">Download finished</string>
+    <string name="memories_delete_memory">Delete memory</string>
+    <string name="memories_download_memory">Download memory</string>
+    <string name="memories_download_memory_alert_title">File Location</string>
+    <string name="memories_download_memory_alert_message">The downloaded image will be saved in the Pictures folder on your device.</string>
+    <string name="memories_delete_memory_alert_message">Are you sure you want to delete this memory?</string>
+    <string name="memories_navigate_to_previous_screen">Navigate to previous screen</string>
+    <string name="memories_logout">Log out of Google account</string>
+    <string name="memories_subtitle">Memories</string>
+    <string name="memories_found">The memory list is empty. Try capturing and saving some moments.</string>
+</resources>

@@ -7,5 +7,5 @@ dependencies {
     // Modules
 
     // Libs
-
+    implementation(libs.kotlinx.coroutines.core)
 }

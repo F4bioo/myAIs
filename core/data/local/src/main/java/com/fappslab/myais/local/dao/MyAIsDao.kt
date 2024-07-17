@@ -4,8 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.fappslab.myais.domain.model.Description
-import com.fappslab.myais.domain.model.Memory
 import com.fappslab.myais.local.model.MemoryEntity
 import kotlinx.coroutines.flow.Flow
 

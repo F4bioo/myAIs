@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.fappslab.myais.design.components.button.ButtonType
 import com.fappslab.myais.design.components.button.PlutoButtonComponent
+import com.fappslab.myais.design.components.lorem.loremIpsum
 import com.fappslab.myais.design.theme.PlutoTheme
 
 @Composable
@@ -36,7 +37,7 @@ fun PlutoFooterLayout(
                 .height(height)
         ) {
             val gradient = Brush.verticalGradient(
-                colors = listOf(color.copy(alpha = 0.02f), Color.Transparent),
+                colors = listOf(color.copy(alpha = 0.05f), Color.Transparent),
                 startY = size.height,
                 endY = 0f
             )
@@ -61,20 +62,20 @@ fun PlutoFooterLayout(
 @Composable
 private fun PlutoFooterLayoutPreview() {
     Box(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
         PlutoFooterLayout {
+            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
             PlutoButtonComponent(
                 modifier = Modifier.fillMaxWidth(),
-                text = LoremIpsum(2).values.first(),
+                text = loremIpsum { 2 },
                 buttonType = ButtonType.Primary
             )
             Spacer(modifier = Modifier.padding(PlutoTheme.dimen.dp8))
             PlutoButtonComponent(
                 modifier = Modifier.fillMaxWidth(),
-                text = LoremIpsum(2).values.first(),
+                text = loremIpsum { 2 },
                 buttonType = ButtonType.Secondary
             )
         }

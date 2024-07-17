@@ -64,3 +64,10 @@ fun Context.openApplicationSettings() {
         data = Uri.fromParts("package", packageName, null)
     }.also(::startActivity)
 }
+
+fun Context.openLinkInBrowser(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(url)
+    }
+    startActivity(intent)
+}

@@ -1,16 +1,22 @@
 package com.fappslab.myais.arch.kofee
 
+import io.mockk.MockK.useImpl
+import io.mockk.MockKDsl.internalMockk
 import java.lang.reflect.Proxy
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 
-inline fun <reified T : Any> fakeBean(): T {
+inline fun <reified T : Any> fakeBean(
+    vararg kClass: KClass<*>,
+): T = useImpl { internalMockk(moreInterfaces = kClass) }
+
+internal inline fun <reified T : Any> fakeBean(): T {
     return fakeBean(T::class)
 }
 
-fun <T : Any> fakeBean(kClass: KClass<T>): T {
+internal fun <T : Any> fakeBean(kClass: KClass<T>): T {
     if (kClass.java.isInterface) {
         return createInterfaceFake(kClass)
     }

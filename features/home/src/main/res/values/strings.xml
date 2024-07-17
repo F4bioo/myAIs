@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Agreement -->
+    <string name="agreement_desc_header_description_granted">Eye animation indicating permission granted.</string>
+    <string name="agreement_desc_header_description_not_granted">Eye illustration indicating permission not granted.</string>
+    <string name="agreement_desc_open_terms">Open Terms and Privacy Policy</string>
+    <string name="agreement_desc_button_disabled_description">Continue button disabled. Please grant camera access to proceed.</string>
+    <string name="agreement_desc_button_enabled_description">Continue button enabled. Tap to proceed.</string>
+
+    <string name="agreement_brand_message">Explore the world in new ways, use AI to save and relive your memories.</string>
+    <string name="agreement_camera_access">Camera Access</string>
+    <string name="agreement_camera_access_description">Allow %s app to access your camera to take photos.</string>
+    <string name="agreement_open_settings">Do you want to open the app settings to allow the camera?</string>
+    <string name="agreement_continue_text">By continuing, you agree to our\n</string>
+    <string name="agreement_terms_text">Terms and Privacy Policy.</string>
+
+
+    <!-- Home -->
+    <string name="home_desc_navigate_to_memories_screen">Navigate to Memories on Google Drive.</string>
+    <string name="home_desc_navigate_to_camera_screen">Navigate to the image capture screen.</string>
+    <string name="home_desc_save_to_drive">Save to Google Drive</string>
+    <string name="home_desc_save_memory">Save memory.</string>
+    <string name="home_desc_camera_ready">Open eye, camera ready. Double tap to take a photo.</string>
+    <string name="home_desc_preview">Closed eye, analysis complete. %s Double tap to return to the camera.</string>
+    <string name="home_desc_describing">Eye moving, analyzing image. Please wait a moment.</string>
+    <string name="home_desc_uploading">Uploading memory to the cloud. Please wait a moment.</string>
+    <string name="home_desc_uploaded">Memory uploaded successfully.</string>
+
+    <string name="home_simple_description">Hello! I\'m here to help. Take a photo and I\'ll describe what I see for you. Just click the button below to get started.</string>
+    <string name="failure_generic_title">Oops! Something went wrong</string>
+    <string name="failure_generic_message">An unexpected error has occurred. Please try again.</string>
+    <string name="failure_connection_title">Connection Error</string>
+    <string name="failure_connection_message">Unable to connect to the server. Please check your internet connection and try again.</string>
+    <string name="failure_analyze_title">Analyze Error</string>
+    <string name="failure_analyze_message">An error occurred while analyzing the image. Please try again.</string>
+    <string name="failure_upload_title">Upload Error</string>
+    <string name="failure_upload_message">An error occurred while uploading. Please try again.</string>
+</resources>

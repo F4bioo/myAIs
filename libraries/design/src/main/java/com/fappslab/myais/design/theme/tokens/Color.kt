@@ -2,6 +2,7 @@ package com.fappslab.myais.design.theme.tokens
 
 import androidx.compose.ui.graphics.Color
 
+// -=-=-= Light Start =-=-=-
 val primaryLight = Color(0xFF415F91)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFCBE6FF)
@@ -109,7 +110,9 @@ val surfaceContainerLowLightHighContrast = Color(0xFFF1F4F9)
 val surfaceContainerLightHighContrast = Color(0xFFEBEEF3)
 val surfaceContainerHighLightHighContrast = Color(0xFFE5E8ED)
 val surfaceContainerHighestLightHighContrast = Color(0xFFE0E3E8)
+// -=-=-= Light End =-=-=-
 
+// -=-=-= Dark Start =-=-=-
 val primaryDark = Color(0xFF3F51B5)
 val onPrimaryDark = Color(0xFF00344F)
 val primaryContainerDark = Color(0xFF014B71)
@@ -217,6 +220,15 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF181C20)
 val surfaceContainerDarkHighContrast = Color(0xFF1C2024)
 val surfaceContainerHighDarkHighContrast = Color(0xFF262A2E)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF313539)
+// -=-=-= Dark End =-=-=-
+
+// -=-=-= Pluto Colors Light Start =-=-=-
+val stealthGrayLight = Color(0xFF3C4853)
+// -=-=-= Pluto Colors Light End =-=-=-
+
+// -=-=-= Pluto Colors Dark Start =-=-=-
+val stealthGrayDark = Color(0xFFCECECE)
+// -=-=-= Pluto Colors Dark End =-=-=-
 
 val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)

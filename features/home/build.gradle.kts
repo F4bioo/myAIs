@@ -28,9 +28,8 @@ dependencies {
     // Libs
     implementation(libs.coil.compose)
     implementation(libs.lottie.compose)
-    implementation(libs.navigation.common.ktx)
-    implementation(libs.navigation.runtime.ktx)
-    implementation(libs.navigation.compose)
+    implementation(libs.camera.view)
+    implementation(libs.androidx.ui.util)
 
     // TestLibs
     testImplementation(testFixtures(project(Modules.testing)))

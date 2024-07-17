@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -16,33 +17,32 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.fappslab.myais.design.extension.clickable
 import com.fappslab.myais.design.theme.PlutoTheme
+import com.fappslab.myais.home.R
 
 @Composable
 internal fun PrivacyPolicyComponent(
     modifier: Modifier = Modifier,
-    onClicked: (String) -> Unit
+    onClicked: () -> Unit
 ) {
 
     Box(
         modifier = modifier.clickable(
-            onClickLabel = "Open Terms and Privacy Policy",
-            onClicked = {
-                onClicked("https://fappslab.com/myAIs/terms.html")
-            }
+            onClickLabel = stringResource(R.string.agreement_desc_open_terms),
+            onClicked = onClicked
         ),
         contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier.padding(PlutoTheme.dimen.dp16),
             text = buildAnnotatedString {
-                append("By continuing, you agree to our\n")
+                append(stringResource(R.string.agreement_continue_text))
                 withStyle(
                     style = SpanStyle(
                         color = Color.Blue,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    append("Terms and Privacy Policy.")
+                    append(stringResource(R.string.agreement_terms_text))
                 }
             },
             style = PlutoTheme.typography.bodyMedium,

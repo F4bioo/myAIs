@@ -1,3 +1,6 @@
+apply plugin: "org.jetbrains.kotlin.plugin.serialization"
+apply plugin: "kotlin-parcelize"
+
 android {
     compileSdk Config.COMPILE_SDK
 
@@ -61,6 +64,9 @@ android {
         resources {
             excludes += [
                 "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE-notice.md",
+                "/META-INF/LICENSE.md",
             ]
         }
     }
@@ -85,6 +91,8 @@ dependencies {
     implementation(libs.fragment.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.bundles.defaultLibs)
+    implementation(libs.bundles.navigationLibs)
+    implementation(libs.serialization.json)
     implementation platform(libs.androidx.compose.bom)
 
     // Tests

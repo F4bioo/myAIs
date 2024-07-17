@@ -17,8 +17,8 @@ internal data class DriveFileResponse(
 ) {
 
     data class DriveOwnerResponse(
-        @SerializedName("photoLink") val photoLink: String?,
         @SerializedName("displayName") val displayName: String?,
         @SerializedName("emailAddress") val emailAddress: String?,
+        @SerializedName("photoLink") val photoLink: String?,
     )
 }

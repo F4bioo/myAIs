@@ -68,10 +68,10 @@ dependencies {
     implementation(project(Modules.testing))
 
     // Libs
-    implementation(libs.common)
-    implementation("androidx.multidex:multidex:2.0.1")
-    implementation(libs.navigation.runtime.ktx)
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.multidex)
+    implementation(libs.gemini.common)
+    implementation(libs.core.splashscreen)
+    implementation(libs.accompanist.permissions)
 
     debugImplementation(libs.flipper)
     debugImplementation(libs.soloader)

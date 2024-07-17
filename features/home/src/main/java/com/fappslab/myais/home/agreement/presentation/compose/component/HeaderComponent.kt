@@ -18,19 +18,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieCompositionSpec.RawRes
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.fappslab.myais.design.accessibility.semantics
 import com.fappslab.myais.design.theme.PlutoTheme
 import com.fappslab.myais.home.R
 import kotlinx.coroutines.delay
@@ -41,17 +42,19 @@ internal fun HeaderComponent(
     modifier: Modifier = Modifier,
     isGrantedPermission: Boolean
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.eye_load))
+    val composition by rememberLottieComposition(RawRes(R.raw.eye_load))
     var isPlaying by remember { mutableStateOf(value = false) }
     val progress by animateLottieCompositionAsState(
         composition = composition,
         isPlaying = isPlaying
     )
+    val contentDescription = if (isGrantedPermission) {
+        stringResource(R.string.agreement_desc_header_description_granted)
+    } else stringResource(R.string.agreement_desc_header_description_not_granted)
 
     LaunchedEffect(isGrantedPermission) {
         isPlaying = isGrantedPermission
     }
-
     LaunchedEffect(progress, isGrantedPermission) {
         if (progress == 1f && isGrantedPermission) {
             isPlaying = false
@@ -61,17 +64,16 @@ internal fun HeaderComponent(
             isPlaying = true
         }
     }
-
     Column(
         modifier = modifier.semantics(mergeDescendants = true) {
+            this.liveRegion = LiveRegionMode.Assertive
+            this.stateDescription = contentDescription
             heading()
-            contentDescription = "Header of the myAIs app with the logo of a eye."
         }
     ) {
-        Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp4))
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.app_name),
+            text = stringResource(R.string.app_name),
             style = PlutoTheme.typography.headlineLarge,
             textAlign = TextAlign.Center
         )
@@ -84,15 +86,14 @@ internal fun HeaderComponent(
         ) {
             if (isGrantedPermission) {
                 LottieAnimation(
-                    modifier = Modifier,
                     progress = { progress },
                     composition = composition,
                 )
             } else {
                 Image(
                     modifier = Modifier.padding(top = PlutoTheme.dimen.dp16),
-                    painter = painterResource(id = R.drawable.illu_eye_off),
-                    colorFilter = ColorFilter.tint(Color(0xFF3C4853)),
+                    painter = painterResource(R.drawable.illu_eye_off),
+                    colorFilter = ColorFilter.tint(PlutoTheme.colors.stealthGray),
                     contentDescription = null
                 )
             }

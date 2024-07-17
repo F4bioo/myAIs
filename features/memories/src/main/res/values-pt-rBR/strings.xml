@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memories_desc_memory_complete">Descrição da imagem. %1$s Recordação criada em. %2$s.</string>
+    <string name="memories_desc_delete_memory_alert_message">Caixa de diálogo. Deletar recordação. Tem certeza de que deseja excluir esta recordação?</string>
+    <string name="memories_desc_download_memory_alert_message">Caixa de diálogo. Localização do arquivo. A imagem baixada será salva na pasta Pictures do seu aparelho.</string>
+    <string name="memories_desc_user_photo">Imagem circular. Foto de perfil de. %s.</string>
+    <string name="memories_desc_screen_header">Tela de recordações. recordações de %s.</string>
+
+    <string name="memories_download_finished">Transferência finalizada</string>
+    <string name="memories_delete_memory">Deletar recordação</string>
+    <string name="memories_download_memory">Baixar recordação</string>
+    <string name="memories_download_memory_alert_title">Localização do arquivo</string>
+    <string name="memories_download_memory_alert_message">A imagem baixada será salva na pasta Pictures do seu aparelho.</string>
+    <string name="memories_delete_memory_alert_message">Tem certeza de que deseja excluir esta recordação?</string>
+    <string name="memories_navigate_to_previous_screen">Navegar para a tela anterior</string>
+    <string name="memories_logout">Sair da conta Google</string>
+    <string name="memories_subtitle">Recordações</string>
+    <string name="memories_found">A lista de recordações está vazia. Experimente capturar e salvar alguns momentos.</string>
+</resources>

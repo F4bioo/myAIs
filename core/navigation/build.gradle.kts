@@ -20,8 +20,7 @@ android {
 dependencies {
     // Modules
     implementation(project(Modules.domain))
-    implementation(libs.navigation.common.ktx)
-    implementation(libs.navigation.runtime.ktx)
+    implementation(project(Modules.arch))
 
     // Libs
 

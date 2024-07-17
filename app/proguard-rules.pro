@@ -18,6 +18,18 @@
 }
 -keep class kotlin.Metadata { *; }
 
+# Serializable
+-keepattributes *Annotation*, InnerClasses, EnclosingMethod
+-keepclassmembers class * {
+    @kotlinx.serialization.Serializable <fields>;
+}
+-keep class kotlinx.serialization.** { *; }
+-keep class kotlinx.serialization.internal.** { *; }
+-keepnames class * {
+    public static final kotlinx.serialization.internal.GeneratedSerializer serialVersionUID;
+}
+-keepclassmembers class kotlin.Metadata { *; }
+
 # Enum
 -keepclassmembers enum * {
     <fields>;

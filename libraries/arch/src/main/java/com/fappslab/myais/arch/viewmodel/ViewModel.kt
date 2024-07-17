@@ -17,6 +17,9 @@ abstract class ViewModel<State, Effect>(initialState: State) : LifecycleViewMode
     private val _effect = Channel<Effect>(Channel.CONFLATED)
     val effect: Flow<Effect> = _effect.receiveAsFlow()
 
+    val viewState: State
+        get() = state.value
+
     protected fun onState(stateBlock: (State) -> State) {
         _state.update { stateBlock(it) }
     }

@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.fappslab.myais.design.theme.defaults.LocalPlutoColorsDark
+import com.fappslab.myais.design.theme.defaults.LocalPlutoColorsLight
 import com.fappslab.myais.design.theme.defaults.LocalPlutoDimens
 import com.fappslab.myais.design.theme.defaults.LocalPlutoElevation
 import com.fappslab.myais.design.theme.defaults.LocalPlutoFontFontStyle
@@ -30,7 +32,10 @@ import com.fappslab.myais.design.theme.defaults.LocalPlutoTextDark
 import com.fappslab.myais.design.theme.defaults.LocalPlutoTextLight
 import com.fappslab.myais.design.theme.defaults.LocalPlutoTypography
 import com.fappslab.myais.design.theme.defaults.dark.DesignLanguageDark
+import com.fappslab.myais.design.theme.defaults.dark.PlutoColorsDark
 import com.fappslab.myais.design.theme.defaults.light.DesignLanguageLight
+import com.fappslab.myais.design.theme.defaults.light.PlutoColorsLight
+import com.fappslab.myais.design.theme.tokens.PlutoColors
 import com.fappslab.myais.design.theme.tokens.PlutoDimens
 import com.fappslab.myais.design.theme.tokens.PlutoElevation
 import com.fappslab.myais.design.theme.tokens.PlutoFontSizing
@@ -433,8 +438,12 @@ fun PlutoTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            //window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            window.statusBarColor = colorScheme.background.copy(PlutoOpacity.opaque).toArgb()
+            window.navigationBarColor = colorScheme.background.copy(PlutoOpacity.opaque).toArgb()
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
     CompositionLocalProvider(
@@ -448,6 +457,8 @@ fun PlutoTheme(
         LocalPlutoTypography provides PlutoTypography,
         LocalPlutoTextDark provides DesignLanguageDark.text,
         LocalPlutoTextLight provides DesignLanguageLight.text,
+        LocalPlutoColorsLight provides PlutoColorsLight,
+        LocalPlutoColorsDark provides PlutoColorsDark,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -522,4 +533,13 @@ object PlutoTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalPlutoTypography.current
+
+    val colors: PlutoColors
+        @Composable
+        @ReadOnlyComposable
+        get() = if (isSystemInDarkTheme()) {
+            LocalPlutoColorsDark.current
+        } else {
+            LocalPlutoColorsLight.current
+        }
 }

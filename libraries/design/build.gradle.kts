@@ -18,8 +18,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.ui.text.google.fonts)
     // Modules
 
     // Libs
+    implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.coil.compose)
+    implementation ("androidx.core:core-splashscreen:1.0.1")
 }
