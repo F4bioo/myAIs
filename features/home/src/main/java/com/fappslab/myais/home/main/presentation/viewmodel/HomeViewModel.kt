@@ -6,6 +6,7 @@ import com.fappslab.myais.arch.extension.toBase64
 import com.fappslab.myais.arch.viewmodel.ViewIntent
 import com.fappslab.myais.arch.viewmodel.ViewModel
 import com.fappslab.myais.domain.model.Description
+import com.fappslab.myais.domain.model.ModelType
 import com.fappslab.myais.domain.model.PromptType
 import com.fappslab.myais.domain.model.SaveMemory
 import com.fappslab.myais.domain.usecase.CreateContentUseCase
@@ -114,7 +115,12 @@ internal class HomeViewModel(
             .flowOn(dispatcher)
             .onStart { onState { it.getDescriptionStartState() } }
             .flatMapConcat { textPrompt ->
-                createContentUseCase { text(textPrompt); image(encodedImage) }
+                createContentUseCase {
+                    // TODO: In the future, allow users to select the model type from the UI.
+                    model(ModelType.GEMINI_1_5_FLASH)
+                    image(encodedImage)
+                    text(textPrompt)
+                }
             }
             .catch { getDescriptionFailure(cause = it) }
             .onEach { getDescriptionSuccess(imageDescription = it) }

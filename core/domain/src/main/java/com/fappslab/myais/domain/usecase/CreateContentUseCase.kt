@@ -12,7 +12,7 @@ class CreateContentUseCase(
     operator fun invoke(init: ContentBuilder.() -> Unit): Flow<Description> {
         val builder = ContentBuilder()
         builder.init()
-        val parts = builder.build()
-        return repository.generateContent(parts)
+        val (modelType, parts) = builder.build()
+        return repository.generateContent(modelType.model, parts)
     }
 }

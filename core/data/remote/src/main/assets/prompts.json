@@ -1,5 +1,5 @@
 {
   "prompts": {
-    "imageDescription": "Please provide a detailed but concise description of this image in %s. Include key elements such as:\n- Colors\n- Shapes\n- Textures\n- Objects\n- Animals (if any)\n- People (if any), including their expressions and clothing\n- Background elements\n- Nature elements\n- Time of day\n- Weather conditions\n- Lighting conditions\n- Any significant details\n\nIf there is any text in the image, summarize it briefly for context. Ensure the description is vivid but limit the response to 500 characters. Avoid repeating words and phrases, and use synonyms or varied descriptions where appropriate."
+    "imageDescription": "Please provide a detailed but concise description of this image in %s. Include key elements such as:Colors; Shapes; Textures; Objects; Animals (if any); People (if any), including their expressions and clothing; Background elements; Nature elements; Time of day; Weather conditions; Lighting conditions; Any significant details. If there is any text in the image, summarize it briefly for context. Ensure the description is vivid but limit the response to 500 characters. Avoid repeating words and phrases, and use synonyms or varied descriptions where appropriate."
   }
 }

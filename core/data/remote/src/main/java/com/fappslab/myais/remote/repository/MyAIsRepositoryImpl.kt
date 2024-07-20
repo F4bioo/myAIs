@@ -21,8 +21,8 @@ internal class MyAIsRepositoryImpl(
         return geminiDataSource.getPrompt(promptType)
     }
 
-    override fun generateContent(parts: List<PartType>): Flow<Description> {
-        return geminiDataSource.generateContent(parts)
+    override fun generateContent(model: String, parts: List<PartType>): Flow<Description> {
+        return geminiDataSource.generateContent(model, parts)
     }
 
     override fun listDriveFiles(): Flow<Memories> {

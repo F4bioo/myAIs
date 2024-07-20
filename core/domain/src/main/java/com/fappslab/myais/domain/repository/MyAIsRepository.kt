@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MyAIsRepository {
     fun getPrompt(promptType: PromptType): Flow<String>
-    fun generateContent(parts: List<PartType>): Flow<Description>
+    fun generateContent(model: String, parts: List<PartType>): Flow<Description>
 
     fun listDriveFiles(): Flow<Memories>
     fun deleteDriveItem(itemType: DriverItemType): Flow<Boolean>

@@ -17,18 +17,21 @@ internal class GeminiDataSourceImpl(
     private val geminiService: GeminiService
 ) : GeminiDataSource {
 
-    override fun getPrompt(promptType: PromptType): Flow<String> = flow {
-        val response = promptService.getPrompts()
-        val result = when (promptType) {
-            PromptType.ImageDescription -> response.prompts.imageDescription
+    override fun getPrompt(promptType: PromptType): Flow<String> =
+        flow {
+            val response = promptService.getPrompts()
+            val result = when (promptType) {
+                PromptType.ImageDescription -> response.prompts.imageDescription
+            }
+            val locale = Locale.getDefault()
+            emit(result.format(locale.displayName))
         }
-        val locale = Locale.getDefault()
-        emit(result.format(locale.displayName))
-    }
 
-    override fun generateContent(parts: List<PartType>): Flow<Description> = flow {
-        val request = parts.toDescriptionRequest()
-        val result = geminiService.generateContent(request).toDescription()
-        emit(result)
-    }.parseHttpError()
+    override fun generateContent(model: String, parts: List<PartType>): Flow<Description> =
+        flow {
+            val request = parts.toDescriptionRequest()
+            val result = geminiService.generateContent(model, request)
+            val description = result.toDescription()
+            emit(description)
+        }.parseHttpError()
 }

@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface GeminiDataSource {
     fun getPrompt(promptType: PromptType): Flow<String>
-    fun generateContent(parts: List<PartType>): Flow<Description>
+    fun generateContent(model: String, parts: List<PartType>): Flow<Description>
 }
