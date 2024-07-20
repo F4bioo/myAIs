@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -27,10 +28,15 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.graphics.BlendModeColorFilterCompat.createBlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec.RawRes
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.rememberLottieDynamicProperties
+import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.fappslab.myais.design.accessibility.semantics
 import com.fappslab.myais.design.theme.PlutoTheme
 import com.fappslab.myais.home.R
@@ -43,6 +49,16 @@ internal fun HeaderComponent(
     isGrantedPermission: Boolean
 ) {
     val composition by rememberLottieComposition(RawRes(R.raw.eye_load))
+    val dynamicProperties = rememberLottieDynamicProperties(
+        rememberLottieDynamicProperty(
+            property = LottieProperty.COLOR_FILTER,
+            value = createBlendModeColorFilterCompat(
+                PlutoTheme.colors.stealthGray.toArgb(),
+                BlendModeCompat.SRC_ATOP
+            ),
+            keyPath = arrayOf("**")
+        )
+    )
     var isPlaying by remember { mutableStateOf(value = false) }
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -87,20 +103,18 @@ internal fun HeaderComponent(
             if (isGrantedPermission) {
                 LottieAnimation(
                     progress = { progress },
+                    dynamicProperties = dynamicProperties,
                     composition = composition,
                 )
-            } else {
-                Image(
-                    modifier = Modifier.padding(top = PlutoTheme.dimen.dp16),
-                    painter = painterResource(R.drawable.illu_eye_off),
-                    colorFilter = ColorFilter.tint(PlutoTheme.colors.stealthGray),
-                    contentDescription = null
-                )
-            }
+            } else Image(
+                modifier = Modifier.padding(top = PlutoTheme.dimen.dp16),
+                colorFilter = ColorFilter.tint(PlutoTheme.colors.stealthGray),
+                painter = painterResource(R.drawable.illu_eye_off),
+                contentDescription = null
+            )
         }
     }
 }
-
 
 @Preview
 @Composable
@@ -109,6 +123,6 @@ private fun HeaderComponentPreview() {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background),
-        isGrantedPermission = true
+        isGrantedPermission = false
     )
 }

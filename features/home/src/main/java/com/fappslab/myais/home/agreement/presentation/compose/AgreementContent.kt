@@ -3,8 +3,8 @@ package com.fappslab.myais.home.agreement.presentation.compose
 import android.Manifest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -39,7 +39,7 @@ import com.fappslab.myais.home.agreement.presentation.viewmodel.AgreementViewSta
 
 @Composable
 internal fun AgreementContent(
-    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
     state: AgreementViewState,
     intent: (AgreementViewIntent) -> Unit,
 ) {
@@ -52,7 +52,7 @@ internal fun AgreementContent(
         intent(AgreementViewIntent.OnPermissionResult(currentPermissionStatus))
     }
     Column(
-        modifier = Modifier.padding(paddingValues)
+        modifier = modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -109,12 +109,19 @@ internal fun AgreementContent(
     }
 }
 
-@Preview(showSystemUi = true, device = "id:pixel_4")
+@Preview(device = "id:pixel_7", showBackground = true)
 @Composable
 private fun AgreementContentPreview() {
-    AgreementContent(
-        paddingValues = PaddingValues(),
-        state = AgreementViewState(),
-        intent = {}
-    )
+    PlutoTheme(
+        darkTheme = false
+    ) {
+        AgreementContent(
+            state = AgreementViewState(
+                isGrantedPermission = false,
+                isAlwaysDenied = false,
+                buttonState = ButtonState.Enabled
+            ),
+            intent = {}
+        )
+    }
 }

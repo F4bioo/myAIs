@@ -1,7 +1,7 @@
 package com.fappslab.myais.home.agreement.presentation.compose
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,6 +15,7 @@ import com.fappslab.myais.arch.navigation.extension.LocalNavController
 import com.fappslab.myais.arch.simplepermission.extension.openApplicationSettings
 import com.fappslab.myais.arch.simplepermission.extension.openLinkInBrowser
 import com.fappslab.myais.arch.viewmodel.extension.observeAsEvents
+import com.fappslab.myais.design.theme.PlutoTheme
 import com.fappslab.myais.home.agreement.presentation.viewmodel.AgreementViewEffect
 import com.fappslab.myais.home.agreement.presentation.viewmodel.AgreementViewModel
 import com.fappslab.myais.home.di.HomeModuleLoad
@@ -25,19 +26,17 @@ import org.koin.compose.koinInject
 private const val PRIVACY_POLICY_URL = "https://fappslab.com/myAIs/terms.html"
 
 @Composable
-internal fun AgreementScreen(
-    modifier: Modifier = Modifier,
-) {
+internal fun AgreementScreen() {
     KoinLazyModuleInitializer(HomeModuleLoad)
     val viewModel: AgreementViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     AgreementEffectObserve(viewModel.effect)
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-    ) {
+    PlutoTheme {
         AgreementContent(
-            paddingValues = it,
+            modifier = Modifier
+                .statusBarsPadding()
+                .navigationBarsPadding(),
             state = state,
             intent = viewModel::onViewIntent
         )

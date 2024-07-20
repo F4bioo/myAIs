@@ -10,5 +10,6 @@ object PlutoOpacity {
     val medium = 0.32f
     val frosted = 0.5f
     val opaque = 0.77f
+    val semiTransparent = 0.87f
     val solid = 1f
 }

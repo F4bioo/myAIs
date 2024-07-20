@@ -69,7 +69,8 @@ internal fun HomeContent(
     intent: (HomeViewIntent) -> Unit,
 ) {
     var isShutterEffect by remember { mutableStateOf(value = false) }
-    val scrimColor = MaterialTheme.colorScheme.surface.copy(PlutoTheme.opacity.opaque)
+    val scrimColor = MaterialTheme.colorScheme.surface
+        .copy(PlutoTheme.opacity.semiTransparent)
     val description = if (state.mainStateType == MainStateType.Camera) {
         stringResource(R.string.home_simple_description)
     } else state.imageDescription.text
@@ -192,12 +193,8 @@ private fun TopBarComponent(
         isActionButtonEnabled = state.mainStateType.run {
             this == MainStateType.Camera || this == MainStateType.Preview
         },
-        onNavigationIconClicked = {
-            intent(HomeViewIntent.OnNavigateToCamera)
-        },
-        onActionButtonClicked = {
-            intent(HomeViewIntent.OnGoogleAuthMemories)
-        }
+        onNavigationIconClicked = { intent(HomeViewIntent.OnNavigateToCamera) },
+        onActionButtonClicked = { intent(HomeViewIntent.OnGoogleAuthMemories) }
     )
 }
 
@@ -261,9 +258,7 @@ private fun FooterEyeCaptureComponent(
                     intent(HomeViewIntent.OnTakePicture(it))
                 }
             },
-            previewBlock = {
-                intent(HomeViewIntent.OnNavigateToCamera)
-            }
+            previewBlock = { intent(HomeViewIntent.OnNavigateToCamera) }
         )
     }
 
@@ -293,10 +288,14 @@ private fun HomeContentPreview() {
         imageDescription = imageDescription,
         mainStateType = MainStateType.Camera,
     )
-    HomeContent(
-        previewView = PreviewView(LocalContext.current),
-        cameraXPreview = fakeCameraXPreview(),
-        state = state,
-        intent = {},
-    )
+    PlutoTheme(
+        darkTheme = true
+    ) {
+        HomeContent(
+            previewView = PreviewView(LocalContext.current),
+            cameraXPreview = fakeCameraXPreview(),
+            state = state,
+            intent = {},
+        )
+    }
 }

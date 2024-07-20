@@ -1,6 +1,6 @@
 [versions]
 # Default
-agp = "8.5.0"
+agp = "8.5.1"
 ksp = "2.0.0-1.0.22"
 cameraCamera2 = "1.3.4"
 kotlin = "2.0.0"

@@ -35,7 +35,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
@@ -51,7 +53,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
-import com.fappslab.myais.design.accessibility.semantics
+import com.fappslab.myais.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.design.components.button.rememberClickAction
 import com.fappslab.myais.design.components.footer.PlutoFooterLayout
 import com.fappslab.myais.design.extension.clickable
@@ -75,7 +77,7 @@ internal fun FooterEyeCaptureComponent(
     onCameraPhoto: () -> Unit,
     onCameraFlip: () -> Unit
 ) {
-    val actionBackground = MaterialTheme.colorScheme
+    val buttonBackground = MaterialTheme.colorScheme
         .surface.copy(PlutoTheme.opacity.frosted)
 
     PlutoFooterLayout {
@@ -87,7 +89,7 @@ internal fun FooterEyeCaptureComponent(
         ) {
             Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
             ButtonFlashComponent(
-                actionBackground = actionBackground,
+                buttonBackground = buttonBackground,
                 mainStateType = mainStateType,
                 onCameraFlash = onCameraFlash
             )
@@ -105,8 +107,8 @@ internal fun FooterEyeCaptureComponent(
                         },
                     shape = RoundedCornerShape(PlutoTheme.dimen.dp16),
                     colors = CardDefaults.cardColors(
-                        containerColor = actionBackground,
-                        disabledContainerColor = actionBackground.copy(alpha = 0.03f)
+                        containerColor = buttonBackground,
+                        disabledContainerColor = buttonBackground.copy(alpha = 0.03f)
                     )
                 ) {
                     ButtonPhotoComponent(
@@ -117,7 +119,7 @@ internal fun FooterEyeCaptureComponent(
             }
             Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp32))
             ButtonFlipComponent(
-                actionBackground = actionBackground,
+                buttonBackground = buttonBackground,
                 mainStateType = mainStateType,
                 onCameraFlip = onCameraFlip
             )
@@ -182,76 +184,89 @@ private fun EyeImageComponent(
 
 @Composable
 private fun ButtonFlashComponent(
-    actionBackground: Color,
+    buttonBackground: Color,
     mainStateType: MainStateType,
     onCameraFlash: (FlashType) -> Unit
 ) {
-    val flashType = rememberSaveable { mutableStateOf(Off) }
+    var flashType by rememberSaveable { mutableStateOf(value = Off) }
     val debounceClick = rememberClickAction {
-        val type = when (flashType.value) {
+        val type = when (flashType) {
             Off -> On; On -> Auto; Auto -> Off
         }
+        flashType = type
         onCameraFlash(type)
-        flashType.value = type
     }
 
-    IconButton(
-        modifier = Modifier
-            .semantics {
-                this.liveRegion = LiveRegionMode.Polite
-                this.stateDescription = flashType
-                    .value.stateDescription()
-                this.role = Role.Button
-            }
-            .clip(CircleShape)
-            .background(actionBackground),
-        enabled = mainStateType.isEnabled(),
-        onClick = debounceClick,
-    ) {
-        Icon(
-            painter = painterResource(flashType.value.iconRes),
-            tint = PlutoTheme.colors.stealthGray,
-            contentDescription = null,
-        )
+    if (mainStateType == MainStateType.Camera) {
+        IconButton(
+            modifier = Modifier
+                .clearAndSetSemantics {
+                    this.liveRegion = LiveRegionMode.Polite
+                    this.stateDescription = stringResource(flashType.stringResFlash())
+                    this.role = Role.Button
+                }
+                .clip(CircleShape)
+                .size(PlutoTheme.dimen.dp48)
+                .layoutId(flashType)
+                .background(buttonBackground),
+            onClick = debounceClick,
+        ) {
+            Icon(
+                painter = painterResource(flashType.iconRes),
+                tint = PlutoTheme.colors.stealthGray,
+                contentDescription = null,
+            )
+        }
+    } else Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp48))
+}
+
+private fun FlashType.stringResFlash(): Int {
+    return when (this) {
+        On -> R.string.home_desc_flash_on
+        Off -> R.string.home_desc_flash_off
+        Auto -> R.string.home_desc_flash_auto
     }
 }
 
 @Composable
 private fun ButtonFlipComponent(
-    actionBackground: Color,
+    buttonBackground: Color,
     mainStateType: MainStateType,
     onCameraFlip: () -> Unit
 ) {
-    var cameraSide by rememberSaveable { mutableStateOf(value = true) }
+    var backCameraSide by rememberSaveable { mutableStateOf(value = true) }
     var rotationDegrees by remember { mutableFloatStateOf(value = INITIAL_ROTATION) }
     val rotationAnim = remember { Animatable(initialValue = INITIAL_ROTATION) }
     val debounceClick = rememberClickAction {
-        cameraSide = !cameraSide
+        backCameraSide = !backCameraSide
         rotationDegrees -= ROTATION_INCREMENT_DEGREES
         onCameraFlip()
     }
 
-    IconButton(
-        modifier = Modifier
-            .semantics {
-                this.liveRegion = LiveRegionMode.Polite
-                this.stateDescription = if (cameraSide) {
-                    "Exibindo câmera frontal"
-                } else "Exibindo câmera traseira."
-                this.role = Role.Button
-            }
-            .clip(CircleShape)
-            .background(actionBackground)
-            .graphicsLayer { rotationZ = rotationAnim.value },
-        enabled = mainStateType.isEnabled(),
-        onClick = debounceClick
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_flip_camera),
-            tint = PlutoTheme.colors.stealthGray,
-            contentDescription = null
-        )
-    }
+    if (mainStateType == MainStateType.Camera) {
+        IconButton(
+            modifier = Modifier
+                .clearAndSetSemantics {
+                    this.liveRegion = LiveRegionMode.Polite
+                    this.stateDescription = if (backCameraSide) {
+                        stringResource(R.string.home_desc_showing_back_camera)
+                    } else stringResource(R.string.home_desc_showing_front_camera)
+                    this.role = Role.Button
+                }
+                .clip(CircleShape)
+                .size(PlutoTheme.dimen.dp48)
+                .layoutId(backCameraSide)
+                .background(buttonBackground)
+                .graphicsLayer { rotationZ = rotationAnim.value },
+            onClick = debounceClick
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_flip_camera),
+                tint = PlutoTheme.colors.stealthGray,
+                contentDescription = null
+            )
+        }
+    } else Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp48))
     LaunchedEffect(rotationDegrees) {
         rotationAnim.animateTo(
             targetValue = rotationDegrees,
@@ -263,26 +278,17 @@ private fun ButtonFlipComponent(
     }
 }
 
-private fun MainStateType.isEnabled(): Boolean {
-    return this != MainStateType.Analyze && this != MainStateType.Preview
-}
-
-@Composable
-private fun FlashType.stateDescription(): String {
-    return when (this) {
-        On -> "Flash Ligado."
-        Off -> "Flash Desligado"
-        Auto -> "Flash Automático"
-    }
-}
-
 @Preview(showBackground = true, backgroundColor = 0xFF171717)
 @Composable
 private fun FooterEyeCaptureComponentPreview() {
-    FooterEyeCaptureComponent(
-        mainStateType = MainStateType.Camera,
-        onCameraFlash = {},
-        onCameraPhoto = {},
-        onCameraFlip = {}
-    )
+    PlutoTheme(
+        darkTheme = true
+    ) {
+        FooterEyeCaptureComponent(
+            mainStateType = MainStateType.Camera,
+            onCameraFlash = {},
+            onCameraPhoto = {},
+            onCameraFlip = {}
+        )
+    }
 }

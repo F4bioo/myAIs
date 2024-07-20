@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.fappslab.myais.home.R
 
-enum class FailureType(
+internal enum class FailureType(
     @DrawableRes val illuRes: Int,
     @StringRes val titleRes: Int,
     @StringRes val messageRes: Int,
