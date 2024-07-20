@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -134,7 +135,8 @@ private fun TextDescription(
                     end = PlutoTheme.dimen.dp8,
                 ),
             text = description,
-            style = PlutoTheme.typography.bodyMedium,
+            style = PlutoTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         UploadButtonComponent(
             mainStateType = mainStateType,
@@ -172,7 +174,7 @@ private fun UploadButtonComponent(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_cloud_upload),
-                    tint = PlutoTheme.text.colorPlaceholder,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = stringResource(contentDescription),
                 )
             }

@@ -4,11 +4,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import com.fappslab.myais.design.theme.tokens.PlutoText
 import com.fappslab.myais.design.theme.tokens.onBackgroundDark
-import com.fappslab.myais.design.theme.tokens.onBackgroundLight
 import com.fappslab.myais.design.theme.tokens.primaryDark
-import com.fappslab.myais.design.theme.tokens.primaryLight
 import com.fappslab.myais.design.theme.tokens.secondaryDark
-import com.fappslab.myais.design.theme.tokens.secondaryLight
 
 @Immutable
 object PlutoTextDark : PlutoText {

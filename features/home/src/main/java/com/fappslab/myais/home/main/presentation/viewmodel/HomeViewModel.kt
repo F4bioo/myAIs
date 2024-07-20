@@ -13,6 +13,7 @@ import com.fappslab.myais.domain.usecase.GetPromptUseCase
 import com.fappslab.myais.domain.usecase.UploadDriveFileUseCase
 import com.fappslab.myais.home.main.presentation.model.AuthType
 import com.fappslab.myais.home.main.presentation.model.FailureType
+import com.fappslab.myais.home.main.presentation.model.FlashType
 import com.fappslab.myais.home.main.presentation.model.MainStateType
 import com.fappslab.myais.remote.network.exception.model.HttpThrowable
 import com.fappslab.myais.remote.network.exception.model.InternetThrowable
@@ -37,6 +38,9 @@ internal class HomeViewModel(
 
     override fun onViewIntent(intent: HomeViewIntent) {
         when (intent) {
+            HomeViewIntent.OnCameraFlash -> handleCameraFlash()
+            HomeViewIntent.OnCameraPhoto -> handleCameraPhoto()
+            HomeViewIntent.OnCameraFlip -> handleCameraFlip()
             HomeViewIntent.OnNavigateToCamera -> handleNavigateToCamera()
             HomeViewIntent.OnFailureModalClose -> handleFailureModalClose()
             HomeViewIntent.OnGoogleAuthMemories -> handleGoogleAuthMemories()
@@ -47,6 +51,23 @@ internal class HomeViewModel(
             is HomeViewIntent.OnGoogleAuthMemory -> handleGoogleAuthMemory(intent.saveMemory)
             is HomeViewIntent.OnFailureModalRetry -> handleFailureModalRetry(intent.failureType)
         }
+    }
+
+    private fun handleCameraFlash() {
+        val flashType = when (viewState.flashType) {
+            FlashType.Off -> FlashType.On
+            FlashType.On -> FlashType.Auto
+            FlashType.Auto -> FlashType.Off
+        }
+        onState { it.copy(flashType = flashType) }
+    }
+
+    private fun handleCameraPhoto() {
+
+    }
+
+    private fun handleCameraFlip() {
+        onEffect { HomeViewEffect.FlipCamera }
     }
 
     private fun handleGoogleAuth(authType: AuthType) {

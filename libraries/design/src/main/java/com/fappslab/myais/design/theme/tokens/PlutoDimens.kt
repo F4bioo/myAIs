@@ -29,6 +29,7 @@ object PlutoDimens {
     val dp80 = 80.dp
     val dp100 = 100.dp
     val dp120 = 120.dp
+    val dp140 = 140.dp
     val dp160 = 160.dp
     val dp200 = 200.dp
 }

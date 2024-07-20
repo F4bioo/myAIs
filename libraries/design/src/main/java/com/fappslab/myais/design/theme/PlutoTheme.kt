@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -416,6 +417,8 @@ val unspecified_scheme = ColorFamily(
 fun PlutoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
+    statusBarColor: Color = colorScheme.background.copy(PlutoOpacity.opaque),
+    navigationBarColor: Color = colorScheme.background.copy(PlutoOpacity.opaque),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -438,11 +441,13 @@ fun PlutoTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.copy(PlutoOpacity.opaque).toArgb()
-            window.navigationBarColor = colorScheme.background.copy(PlutoOpacity.opaque).toArgb()
+            window.statusBarColor = statusBarColor.toArgb()
+            window.navigationBarColor = navigationBarColor.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
                 isAppearanceLightStatusBars = !darkTheme
                 isAppearanceLightNavigationBars = !darkTheme
+                //hide(WindowInsetsCompat.Type.statusBars())
+                //hide(WindowInsetsCompat.Type.navigationBars())
             }
         }
     }

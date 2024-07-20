@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.fappslab.myais.arch.camerax.CameraXPreview
 import com.fappslab.myais.arch.camerax.CameraXPreviewImpl
-import com.fappslab.myais.arch.camerax.model.FlashType
+import com.fappslab.myais.arch.camerax.model.CameraFlashType
 import com.fappslab.myais.arch.camerax.model.RatioType
 
 @Composable
@@ -68,7 +68,7 @@ fun fakeCameraXPreview(): CameraXPreview {
         override fun setPhotoQuality(quality: Int) {}
         override fun setLinearZoom(value: Float) {}
         override fun takePicture(onCaptureSuccess: (Bitmap) -> Unit) {}
-        override fun toggleFlash(flashType: FlashType) {}
+        override fun toggleFlash(cameraFlashType: CameraFlashType) {}
         override fun flipCamera() {}
         override fun restartCamera() {}
         override fun shutdownCamera() {}

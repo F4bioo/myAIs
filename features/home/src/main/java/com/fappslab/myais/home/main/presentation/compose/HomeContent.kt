@@ -53,127 +53,68 @@ private const val FILE_NAME = "myAIs_memory_%d.jpeg"
 
 @Composable
 internal fun HomeContent(
-    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
     previewView: PreviewView,
     cameraXPreview: CameraXPreview,
     state: HomeViewState,
     intent: (HomeViewIntent) -> Unit,
 ) {
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    var isShutterEffect by remember { mutableStateOf(false) }
-    val onEyeButtonClicked: () -> Unit = {
-        state.mainStateType.onEyeButtonClicked(
-            cameraBlock = {
-                cameraXPreview.takePicture {
-                    isShutterEffect = true
-                    intent(HomeViewIntent.OnTakePicture(it))
-                }
-            },
-            previewBlock = {
-                intent(HomeViewIntent.OnNavigateToCamera)
-            }
-        )
-    }
+    var isShutterEffect by remember { mutableStateOf(value = false) }
+    val scrimColor = MaterialTheme.colorScheme.surface.copy(PlutoTheme.opacity.opaque)
     val description = if (state.mainStateType == MainStateType.Camera) {
         stringResource(R.string.home_simple_description)
     } else state.imageDescription.text
-    val stateDescription = when (state.mainStateType) {
-        MainStateType.Camera -> stringResource(R.string.home_desc_camera_ready)
-        MainStateType.Analyze -> stringResource(R.string.home_desc_describing)
-        MainStateType.Preview -> stringResource(R.string.home_desc_preview, description)
-    }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
+    CameraPreviewComponent(
+        modifier = modifier.fillMaxSize(),
+        previewView = previewView,
+        imageBitmap = state.imageBitmap,
+        mainStateType = state.mainStateType,
+        isShutterEffect = isShutterEffect,
+        onRestartCamera = {
+            cameraXPreview.restartCamera()
+        },
+        onShutdownCamera = {
+            isShutterEffect = false
+            cameraXPreview.shutdownCamera()
+        }
     ) {
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
         ) {
-            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
-            CameraPreviewComponent(
-                modifier = Modifier.padding(horizontal = PlutoTheme.dimen.dp16),
-                previewView = previewView,
-                imageBitmap = state.imageBitmap,
-                ratioType = state.ratioType,
-                mainStateType = state.mainStateType,
-                isShutterEffect = isShutterEffect,
-                onRestartCamera = {
-                    cameraXPreview.restartCamera()
-                },
-                onShutdownCamera = {
-                    isShutterEffect = false
-                    cameraXPreview.shutdownCamera()
-                }
-            )
-            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
-            BodyDescriptionComponent(
-                modifier = Modifier.padding(horizontal = PlutoTheme.dimen.dp16),
-                description = description,
-                mainStateType = state.mainStateType,
-                uploadDescription = state.uploadDescription,
-                onUploadClicked = {
-                    val file = state.imageBitmap?.toFile(
-                        fileName = FILE_NAME.format(System.currentTimeMillis()),
-                        context = context
-                    )
-                    val saveMemory = SaveMemory(
-                        description = state.imageDescription.text,
-                        mimeType = IMAGE_JPEG_MIME_TYPE,
-                        fileImage = file,
-                    )
-                    intent(HomeViewIntent.OnGoogleAuthMemory(saveMemory))
-                }
+            TopBarComponent(
+                scrimColor = scrimColor,
+                state = state,
+                intent = intent
             )
             Spacer(modifier = Modifier.weight(1f))
-            FooterEyeCaptureComponent(
-                modifier = Modifier.clearAndSetSemantics {
-                    this.liveRegion = LiveRegionMode.Assertive
-                    this.stateDescription = stateDescription
-                    this.role = Role.Button
-                },
-                mainStateType = state.mainStateType,
-                isButtonEyeEnabled = state.isButtonEyeEnabled,
-                onEyeButtonClicked = onEyeButtonClicked
+            BodyDescriptionComponent(
+                scrimColor = scrimColor,
+                description = description,
+                state = state,
+                intent = intent
             )
-        }
-        PlutoLoadingDialog(
-            shouldShowDialog = state.shouldShowLoading,
-            shouldShowLabel = true
-        )
-        PlutoModalComponent(
-            isDraggable = false,
-            shouldShow = state.shouldShowFailure,
-            titleRes = state.failureType.titleRes,
-            messageRes = state.failureType.messageRes,
-            image = {
-                Image(
-                    modifier = Modifier.size(PlutoTheme.dimen.dp64),
-                    painter = painterResource(state.failureType.illuRes),
-                    colorFilter = ColorFilter.tint(PlutoTheme.colors.stealthGray),
-                    contentDescription = null
-                )
-            },
-            primaryButton = takeIf { state.failureType != FailureType.UploadError }?.let {
-                {
-                    buttonTextRes = R.string.common_try_again
-                    onCLicked = {
-                        intent(HomeViewIntent.OnFailureModalRetry(state.failureType))
-                    }
-                }
-            },
-            secondaryButton = {
-                buttonTextRes = R.string.common_close
-                onCLicked = {
-                    intent(HomeViewIntent.OnFailureModalClose)
-                }
-            },
-            onDismiss = {
-                intent(HomeViewIntent.OnFailureModalClose)
+            FooterEyeCaptureComponent(
+                scrimColor = scrimColor,
+                description = description,
+                cameraXPreview = cameraXPreview,
+                state = state,
+                intent = intent
+            ) {
+                isShutterEffect = it
             }
-        )
+        }
     }
-    DisposableEffect(lifecycleOwner) {
+    PlutoLoadingDialog(
+        shouldShowDialog = state.shouldShowLoading,
+        shouldShowLabel = true
+    )
+    ErrorModal(
+        shouldShowFailure = state.shouldShowFailure,
+        failureType = state.failureType,
+        intent = intent
+    )
+    DisposableEffect(LocalLifecycleOwner.current) {
         onDispose {
             cameraXPreview.shutdownCamera()
         }
@@ -185,7 +126,157 @@ internal fun HomeContent(
     }
 }
 
-@Preview(showSystemUi = true, device = "id:pixel_7")
+@Composable
+private fun ErrorModal(
+    shouldShowFailure: Boolean,
+    failureType: FailureType,
+    intent: (HomeViewIntent) -> Unit
+) {
+
+    PlutoModalComponent(
+        isSheetSwipeEnabled = false,
+        shouldShow = shouldShowFailure,
+        titleRes = failureType.titleRes,
+        messageRes = failureType.messageRes,
+        image = {
+            Image(
+                modifier = Modifier.size(PlutoTheme.dimen.dp64),
+                painter = painterResource(failureType.illuRes),
+                colorFilter = ColorFilter.tint(PlutoTheme.colors.stealthGray),
+                contentDescription = null
+            )
+        },
+        onDismiss = {
+            intent(HomeViewIntent.OnFailureModalClose)
+        },
+        primaryButton = if (failureType != FailureType.UploadError) {
+            {
+                buttonTextRes = R.string.common_try_again
+                onCLicked = {
+                    intent(HomeViewIntent.OnFailureModalRetry(failureType))
+                }
+            }
+        } else null,
+        secondaryButton = {
+            buttonTextRes = R.string.common_close
+            onCLicked = {
+                intent(HomeViewIntent.OnFailureModalClose)
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarComponent(
+    scrimColor: Color,
+    state: HomeViewState,
+    intent: (HomeViewIntent) -> Unit
+) {
+
+    TopBarComponent(
+        modifier = Modifier.fillMaxWidth(),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = scrimColor
+        ),
+        shouldShowNavigationIcon = state.mainStateType == MainStateType.Preview,
+        isActionButtonEnabled = state.mainStateType.run {
+            this == MainStateType.Camera || this == MainStateType.Preview
+        },
+        onNavigationIconClicked = {
+            intent(HomeViewIntent.OnNavigateToCamera)
+        },
+        onActionButtonClicked = {
+            intent(HomeViewIntent.OnGoogleAuthMemories)
+        }
+    )
+}
+
+@Composable
+private fun BodyDescriptionComponent(
+    scrimColor: Color,
+    description: String,
+    state: HomeViewState,
+    intent: (HomeViewIntent) -> Unit
+) {
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier
+            .background(scrimColor)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
+        BodyDescriptionComponent(
+            modifier = Modifier
+                .padding(horizontal = PlutoTheme.dimen.dp16)
+                .heightIn(min = PlutoTheme.dimen.dp140),
+            description = description,
+            mainStateType = state.mainStateType,
+            uploadDescription = state.uploadDescription,
+            onUploadClicked = {
+                val file = state.imageBitmap?.toFile(
+                    fileName = FILE_NAME.format(System.currentTimeMillis()),
+                    context = context
+                )
+                val saveMemory = SaveMemory(
+                    description = state.imageDescription.text,
+                    mimeType = IMAGE_JPEG_MIME_TYPE,
+                    fileImage = file,
+                )
+                intent(HomeViewIntent.OnGoogleAuthMemory(saveMemory))
+            }
+        )
+    }
+}
+
+@Composable
+private fun FooterEyeCaptureComponent(
+    scrimColor: Color,
+    description: String,
+    cameraXPreview: CameraXPreview,
+    state: HomeViewState,
+    intent: (HomeViewIntent) -> Unit,
+    onTakePicture: (Boolean) -> Unit
+) {
+    val stateDescription = when (state.mainStateType) {
+        MainStateType.Camera -> stringResource(R.string.home_desc_camera_ready)
+        MainStateType.Analyze -> stringResource(R.string.home_desc_describing)
+        MainStateType.Preview -> stringResource(R.string.home_desc_preview, description)
+    }
+    val onEyeButtonClicked: () -> Unit = {
+        state.mainStateType.onEyeButtonClicked(
+            cameraBlock = {
+                cameraXPreview.takePicture {
+                    onTakePicture(true)
+                    intent(HomeViewIntent.OnTakePicture(it))
+                }
+            },
+            previewBlock = {
+                intent(HomeViewIntent.OnNavigateToCamera)
+            }
+        )
+    }
+
+    Column(
+        modifier = Modifier.background(scrimColor)
+    ) {
+        FooterEyeCaptureComponent(
+            modifier = Modifier.clearAndSetSemantics {
+                this.liveRegion = LiveRegionMode.Assertive
+                this.stateDescription = stateDescription
+                this.role = Role.Button
+            },
+            mainStateType = state.mainStateType,
+            onCameraFlash = { cameraXPreview.toggleFlash(it.typeOf()) },
+            onCameraPhoto = onEyeButtonClicked,
+            onCameraFlip = { cameraXPreview.flipCamera() }
+        )
+        Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
+    }
+}
+
+@Preview(device = "id:pixel_7")
 @Composable
 private fun HomeContentPreview() {
     val imageDescription = Description(loremIpsum { 30 })
@@ -194,7 +285,6 @@ private fun HomeContentPreview() {
         mainStateType = MainStateType.Camera,
     )
     HomeContent(
-        paddingValues = PaddingValues(),
         previewView = PreviewView(LocalContext.current),
         cameraXPreview = fakeCameraXPreview(),
         state = state,

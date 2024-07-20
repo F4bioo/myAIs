@@ -37,7 +37,7 @@ import com.fappslab.myais.design.theme.PlutoTheme
 @Composable
 fun PlutoModalComponent(
     shouldShow: Boolean,
-    isDraggable: Boolean = true,
+    isSheetSwipeEnabled: Boolean = true,
     onDismiss: () -> Unit = {},
     @StringRes titleRes: Int? = null,
     titleStr: String? = null,
@@ -49,28 +49,30 @@ fun PlutoModalComponent(
     tertiaryButton: (ButtonModel.() -> Unit)? = null,
     customContent: @Composable (() -> Unit)? = null,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val modalState = rememberModalBottomSheetState(
-        confirmValueChange = { isDraggable },
+    val sheetState = rememberModalBottomSheetState(
+        confirmValueChange = { isSheetSwipeEnabled },
         skipPartiallyExpanded = true,
     )
 
     if (shouldShow) {
         ModalBottomSheet(
+            properties = ModalBottomSheetProperties(
+                securePolicy = SecureFlagPolicy.SecureOff,
+                isFocusable = true,
+                shouldDismissOnBackPress = isSheetSwipeEnabled
+            ),
             onDismissRequest = {
-                keyboardController?.hide()
                 onDismiss()
             },
-            sheetState = modalState,
+            sheetState = sheetState,
             shape = RoundedCornerShape(
                 topStart = PlutoTheme.radius.large,
                 topEnd = PlutoTheme.radius.large
             ),
             dragHandle = {
                 PlutoDragHandleComponent(
-                    isDraggable = isDraggable,
+                    isSheetSwipeEnabled = isSheetSwipeEnabled,
                     onClosed = {
-                        keyboardController?.hide()
                         onDismiss()
                     }
                 )
@@ -78,6 +80,7 @@ fun PlutoModalComponent(
             scrimColor = Color.Black.copy(alpha = .5f)
         ) {
             ModalDefaultContent(
+                isDragEnabled = isSheetSwipeEnabled,
                 titleRes = titleRes,
                 titleStr = titleStr,
                 messageRes = messageRes,
@@ -95,6 +98,7 @@ fun PlutoModalComponent(
 @Composable
 private fun ModalDefaultContent(
     modifier: Modifier = Modifier,
+    isDragEnabled: Boolean,
     @StringRes titleRes: Int?,
     titleStr: String?,
     @StringRes messageRes: Int?,
@@ -111,7 +115,8 @@ private fun ModalDefaultContent(
             .fillMaxWidth()
             .padding(PlutoTheme.dimen.dp16)
             .navigationBarsPadding()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .dragEnabled(isDragEnabled),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (titleRes != null || titleStr != null) {
@@ -181,11 +186,20 @@ private fun ModalDefaultContent(
     }
 }
 
+fun Modifier.dragEnabled(enabled: Boolean): Modifier {
+    return pointerInput(enabled) {
+        if (!enabled) {
+            detectDragGestures { _, _ -> }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun ModalDefaultContentPreview() {
     ModalDefaultContent(
         modifier = Modifier.padding(PlutoTheme.dimen.dp16),
+        isDragEnabled = true,
         titleRes = null,
         titleStr = loremIpsum { 2 },
         messageRes = null,

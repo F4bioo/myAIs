@@ -28,21 +28,21 @@ import com.fappslab.myais.design.theme.PlutoTheme
 
 @Composable
 fun PlutoDragHandleComponent(
-    isDraggable: Boolean,
+    isSheetSwipeEnabled: Boolean,
     onClosed: () -> Unit = {}
 ) {
-    val modifier = if (isDraggable) {
+    val modifier = if (isSheetSwipeEnabled) {
         Modifier.clearAndSetSemantics { }
     } else Modifier
 
     Box(
         modifier = modifier
             .fillMaxWidth(),
-        contentAlignment = if (isDraggable) {
+        contentAlignment = if (isSheetSwipeEnabled) {
             Alignment.Center
         } else Alignment.CenterEnd
     ) {
-        if (isDraggable) {
+        if (isSheetSwipeEnabled) {
             Spacer(
                 modifier = Modifier
                     .padding(top = PlutoTheme.dimen.dp16)
@@ -90,12 +90,12 @@ private fun DragHandlePreview() {
     ) {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             PlutoDragHandleComponent(
-                isDraggable = true
+                isSheetSwipeEnabled = true
             )
         }
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             PlutoDragHandleComponent(
-                isDraggable = false
+                isSheetSwipeEnabled = false
             )
         }
     }

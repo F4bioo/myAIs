@@ -17,7 +17,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.fappslab.myais.arch.camerax.model.FlashType
+import com.fappslab.myais.arch.camerax.model.CameraFlashType
 import com.fappslab.myais.arch.camerax.model.RatioType
 import com.fappslab.myais.arch.extension.cropToAspectRatio
 import com.fappslab.myais.arch.extension.isNotNull
@@ -34,7 +34,7 @@ internal class CameraXPreviewImpl(
     private var cameraExecutor = Executors.newSingleThreadExecutor()
     private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var flashMode = ImageCapture.FLASH_MODE_OFF
-    private var ratioType = RatioType.RATIO_9_16
+    private var ratioType = RatioType.RATIO_1_1
     private var isShutterSound = false
     private var quality = 80
 
@@ -149,8 +149,8 @@ internal class CameraXPreviewImpl(
         initializeCamera()
     }
 
-    override fun toggleFlash(flashType: FlashType) {
-        flashMode = flashType.flashMode
+    override fun toggleFlash(cameraFlashType: CameraFlashType) {
+        flashMode = cameraFlashType.flashMode
         restartCamera()
     }
 

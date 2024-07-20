@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 @Immutable
 object PlutoOpacity {
     val transparent = 0f
+    val clear = 0.05f
     val faint = 0.12f
     val medium = 0.32f
     val frosted = 0.5f
