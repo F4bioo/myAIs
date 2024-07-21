@@ -11,7 +11,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.fappslab.myais.home.di.HomeModuleShot"
+                android:name="com.fappslab.myais.features.home.di.HomeModuleShot"
                 android:value="androidx.startup" />
         </provider>
     </application>
