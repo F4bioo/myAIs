@@ -1,6 +1,5 @@
 apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 apply plugin: "kotlin-parcelize"
-//apply plugin: "androidx.baselineprofile"
 
 android {
     compileSdk Config.COMPILE_SDK
@@ -17,6 +16,7 @@ android {
     buildTypes {
         staging {
             initWith(buildTypes.release)
+            matchingFallbacks += "release"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     "$rootDir/app/proguard-rules.pro",
                     "$rootDir/app/proguard-rules-staging.pro"
@@ -94,7 +94,6 @@ dependencies {
     implementation(libs.bundles.defaultLibs)
     implementation(libs.bundles.navigationLibs)
     implementation(libs.serialization.json)
-    //implementation(libs.profileinstaller)
     implementation platform(libs.androidx.compose.bom)
 
     // Tests

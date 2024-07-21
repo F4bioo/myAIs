@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    //alias(libs.plugins.androidx.baselineprofile)
 }
 apply("$rootDir/plugins/android-build.gradle")
 
@@ -68,6 +69,7 @@ dependencies {
     implementation(libs.gemini.common)
     implementation(libs.core.splashscreen)
     implementation(libs.accompanist.permissions)
+    //implementation(libs.profileinstaller)
 
     debugImplementation(libs.flipper)
     debugImplementation(libs.soloader)

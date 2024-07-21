@@ -16,9 +16,9 @@
 
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:configChanges="orientation"
             android:theme="@style/PlutoTheme"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
