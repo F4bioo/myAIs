@@ -68,17 +68,6 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
--keep class com.fappslab.myais.local.** { *; }
--keepnames class com.fappslab.myais.arch.koin.KoinModules { *; }
--keep class com.fappslab.myais.arch.koin.koinload.KoinLoad { *; }
-
--keep class com.fappslab.myais.remote.api.** { *; }
--keep class com.fappslab.myais.remote.network.interceptor.AuthInterceptor { *; }
-
--keep class com.fappslab.myais.arch.koin.koinshot.ModuleInitializer { *; }
--keep class com.fappslab.myais.design.theme.PlutoThemeKt { *; }
--keep class com.fappslab.myais.design.theme.** { *; }
-
 -if interface * { @retrofit2.http.* public *** *(...); }
 -keep,allowoptimization,allowshrinking,allowobfuscation class <3>
 -keep class kotlin.coroutines.Continuation
@@ -96,3 +85,49 @@
 -keep class androidx.compose.** { *; }
 
 -keepclassmembers class * implements org.koin.core.module.Module { *; }
+
+# Warn
+-dontwarn edu.umd.cs.findbugs.annotations.SuppressFBWarnings
+-dontwarn java.lang.instrument.UnmodifiableClassException
+-dontwarn com.fappslab.myais.libraries.arch.extension.DateExtensionKt
+-dontwarn com.fappslab.myais.libraries.arch.extension.DateFormatType
+-dontwarn com.fappslab.myais.libraries.arch.extension.LongExtensionKt
+-dontwarn com.fappslab.myais.libraries.arch.extension.StringExtensionKt
+-dontwarn com.fappslab.myais.core.navigation.AgreementNavigation
+-dontwarn com.fappslab.myais.core.navigation.HomeNavigation
+-dontwarn com.fappslab.myais.core.navigation.MemoriesNavigation
+-dontwarn com.fappslab.myais.core.navigation.AgreementRoute
+-dontwarn com.fappslab.myais.core.navigation.HomeRoute
+-dontwarn com.fappslab.myais.libraries.arch.navigation.extension.NavGraphBuilderExtensionKt
+-dontwarn io.ktor.client.engine.mock.MockEngine$Companion
+-dontwarn io.ktor.client.engine.mock.MockEngine
+-dontwarn io.ktor.client.engine.mock.MockRequestHandleScope
+-dontwarn io.ktor.client.engine.mock.MockUtilsKt
+-dontwarn org.apiguardian.api.API$Status
+-dontwarn org.apiguardian.api.API
+
+# Core modules
+-keep class com.fappslab.myais.core.data.local.** { *; }
+-keep class com.fappslab.myais.core.data.remote.** { *; }
+-keep class com.fappslab.myais.core.domain.** { *; }
+-keep class com.fappslab.myais.core.navigation.** { *; }
+
+# Feature modules
+-keep class com.fappslab.myais.features.home.** { *; }
+-keep class com.fappslab.myais.features.memories.** { *; }
+
+# Libraries modules
+-keep class com.fappslab.myais.libraries.arch.** { *; }
+-keep class com.fappslab.myais.libraries.design.** { *; }
+-keep class com.fappslab.myais.libraries.testing.** { *; }
+
+# Others
+-keepnames class com.fappslab.myais.libraries.arch.koin.KoinModules { *; }
+-keep class com.fappslab.myais.libraries.arch.koin.koinload.KoinLoad { *; }
+
+-keep class com.fappslab.myais.core.data.remote.api.** { *; }
+-keep class com.fappslab.myais.core.data.remote.network.interceptor.AuthInterceptor { *; }
+
+-keep class com.fappslab.myais.libraries.arch.koin.koinshot.ModuleInitializer { *; }
+-keep class com.fappslab.myais.libraries.design.theme.PlutoThemeKt { *; }
+-keep class com.fappslab.myais.libraries.design.theme.** { *; }

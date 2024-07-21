@@ -6,7 +6,7 @@ plugins {
 apply("$rootDir/plugins/android-build.gradle")
 
 android {
-    namespace = "${Config.NAMESPACE}.home"
+    namespace = "${Config.NAMESPACE}.features.home"
 
     buildFeatures {
         compose = true

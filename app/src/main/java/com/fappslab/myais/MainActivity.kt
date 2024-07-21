@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.fappslab.myais.arch.di.FEATURE_ROUTES_QUALIFIER
-import com.fappslab.myais.arch.navigation.extension.NavHostControllerProvider
-import com.fappslab.myais.design.theme.PlutoTheme
+import com.fappslab.myais.libraries.arch.di.FEATURE_ROUTES_QUALIFIER
+import com.fappslab.myais.libraries.arch.navigation.extension.NavHostControllerProvider
+import com.fappslab.myais.libraries.design.theme.PlutoTheme
 import com.fappslab.myais.presentation.compose.MainNavGraph
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named

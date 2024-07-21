@@ -2,7 +2,7 @@ package com.fappslab.myais.application
 
 import android.app.Application
 import com.fappslab.myais.BuildConfig
-import com.fappslab.myais.arch.koin.koinshot.ModuleInitializer
+import com.fappslab.myais.libraries.arch.koin.koinshot.ModuleInitializer
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.KoinApplication

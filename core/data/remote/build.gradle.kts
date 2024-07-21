@@ -24,7 +24,7 @@ if (apiKeyPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "${Config.NAMESPACE}.remote"
+    namespace = "${Config.NAMESPACE}.core.data.remote"
 
     defaultConfig {
         buildConfigField(

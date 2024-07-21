@@ -15,7 +15,7 @@ android {
     }
     buildTypes {
         staging {
-            minifyEnabled true
+            initWith(buildTypes.release)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     "$rootDir/app/proguard-rules.pro",
                     "$rootDir/app/proguard-rules-staging.pro"
@@ -63,10 +63,10 @@ android {
     packagingOptions {
         resources {
             excludes += [
-                "/META-INF/{AL2.0,LGPL2.1}",
-                "/META-INF/DEPENDENCIES",
-                "/META-INF/LICENSE-notice.md",
-                "/META-INF/LICENSE.md",
+                    "/META-INF/{AL2.0,LGPL2.1}",
+                    "/META-INF/DEPENDENCIES",
+                    "/META-INF/LICENSE-notice.md",
+                    "/META-INF/LICENSE.md",
             ]
         }
     }

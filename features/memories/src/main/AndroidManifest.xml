@@ -9,7 +9,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.fappslab.myais.memories.di.MemoriesModuleShot"
+                android:name="com.fappslab.myais.features.memories.di.MemoriesModuleShot"
                 android:value="androidx.startup" />
         </provider>
     </application>

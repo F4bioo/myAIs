@@ -13,7 +13,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.fappslab.myais.remote.di.RemoteModuleShot"
+                android:name="com.fappslab.myais.core.data.remote.di.RemoteModuleShot"
                 android:value="androidx.startup" />
         </provider>
     </application>

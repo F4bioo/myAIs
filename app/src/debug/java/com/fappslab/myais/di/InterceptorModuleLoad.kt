@@ -11,7 +11,7 @@ import com.facebook.flipper.plugins.navigation.NavigationFlipperPlugin
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
-import com.fappslab.myais.arch.koin.koinload.KoinLoad
+import com.fappslab.myais.libraries.arch.koin.koinload.KoinLoad
 import com.fappslab.myais.debugtools.SharedPreferencesPlugin.getDescriptors
 import com.fappslab.myais.remote.di.DRIVE_INTERCEPTORS_QUALIFIER
 import com.fappslab.myais.remote.di.GEMINI_INTERCEPTORS_QUALIFIER

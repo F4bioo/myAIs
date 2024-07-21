@@ -7,7 +7,7 @@ plugins {
 apply("$rootDir/plugins/android-build.gradle")
 
 android {
-    namespace = "${Config.NAMESPACE}.local"
+    namespace = "${Config.NAMESPACE}.core.data.local"
 
     defaultConfig {
         buildConfigField(

@@ -7,9 +7,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.fappslab.core.navigation.AgreementRoute
-import com.fappslab.core.navigation.HomeRoute
-import com.fappslab.myais.arch.navigation.FeatureRoute
+import com.fappslab.myais.core.navigation.AgreementRoute
+import com.fappslab.myais.core.navigation.HomeRoute
+import com.fappslab.myais.libraries.arch.navigation.FeatureRoute
 
 @Composable
 fun MainNavGraph(

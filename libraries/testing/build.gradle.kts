@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.compose.compiler)
 }
 apply("$rootDir/plugins/android-build.gradle")
 
 android {
-    namespace = "${Config.NAMESPACE}.testing"
+    namespace = "${Config.NAMESPACE}.libraries.testing"
 
     @Suppress("UnstableApiUsage")
     testFixtures {

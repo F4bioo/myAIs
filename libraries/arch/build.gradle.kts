@@ -6,15 +6,11 @@ plugins {
 apply("$rootDir/plugins/android-build.gradle")
 
 android {
-    namespace = "${Config.NAMESPACE}.arch"
+    namespace = "${Config.NAMESPACE}.libraries.arch"
 
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion =
-            libs.versions.composeCompiler.get()
     }
 }
 
