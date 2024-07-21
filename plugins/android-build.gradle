@@ -24,7 +24,8 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    "$rootDir/app/proguard-rules.pro"
+                    "$rootDir/app/proguard-rules.pro",
+                    "$rootDir/app/proguard-rules-release.pro"
         }
         setupApplicationBuildTypes(buildTypes)
     }
