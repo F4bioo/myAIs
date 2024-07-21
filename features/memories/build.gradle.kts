@@ -6,14 +6,10 @@ plugins {
 apply("$rootDir/plugins/android-build.gradle")
 
 android {
-    namespace = "${Config.NAMESPACE}.memories"
+    namespace = "${Config.NAMESPACE}.features.memories"
 
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion =
-            libs.versions.composeCompiler.get()
     }
     composeOptions {
         kotlinCompilerExtensionVersion =
