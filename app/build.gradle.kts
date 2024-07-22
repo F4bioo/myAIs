@@ -36,6 +36,20 @@ android {
     }
 
     buildTypes {
+        named("debug") {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+        named("staging") {
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            matchingFallbacks += listOf("release", "debug")
+            isMinifyEnabled = true
+        }
+        named("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+        }
         configureEach {
             if (name == "staging" || name == "release") {
                 if (keystorePropertiesFile.exists()) {
@@ -46,6 +60,13 @@ android {
             }
         }
     }
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/java")
+        getByName("debug").java.srcDirs("src/debug/java")
+        getByName("release").java.srcDirs("src/release/java")
+        getByName("staging").java.srcDirs("src/staging/java")
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true

@@ -13,35 +13,17 @@ android {
             useSupportLibrary true
         }
     }
+
     buildTypes {
         staging {
-            minifyEnabled true
-            matchingFallbacks += ["debug", "release"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     "$rootDir/app/proguard-rules.pro",
                     "$rootDir/app/proguard-rules-staging.pro"
         }
         release {
-            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     "$rootDir/app/proguard-rules.pro",
                     "$rootDir/app/proguard-rules-release.pro"
-        }
-        setupApplicationBuildTypes(buildTypes)
-    }
-
-    sourceSets {
-        main {
-            java.srcDirs = ['src/main/java']
-        }
-        debug {
-            java.srcDirs = ['src/debug/java']
-        }
-        release {
-            java.srcDirs = ['src/release/java']
-        }
-        staging {
-            java.srcDirs = ['src/staging/java']
         }
     }
 
@@ -70,19 +52,6 @@ android {
                     "/META-INF/LICENSE-notice.md",
                     "/META-INF/LICENSE.md",
             ]
-        }
-    }
-}
-
-def setupApplicationBuildTypes(buildTypes) {
-    buildTypes.all { buildType ->
-        if (project.plugins.hasPlugin("com.android.application")) {
-            if (buildType.name == 'release') {
-                buildType.shrinkResources true
-            } else {
-                buildType.applicationIdSuffix = ".${buildType.name}"
-                buildType.versionNameSuffix = "-${buildType.name}"
-            }
         }
     }
 }

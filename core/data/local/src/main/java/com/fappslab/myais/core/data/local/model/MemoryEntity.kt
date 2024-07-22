@@ -1,11 +1,9 @@
 package com.fappslab.myais.core.data.local.model
 
-import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Keep
 @Entity(tableName = "memory")
 internal data class MemoryEntity(
     @PrimaryKey(autoGenerate = true)

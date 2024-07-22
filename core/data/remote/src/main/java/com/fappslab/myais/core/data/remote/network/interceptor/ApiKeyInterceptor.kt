@@ -1,6 +1,5 @@
 package com.fappslab.myais.core.data.remote.network.interceptor
 
-import androidx.annotation.Keep
 import com.fappslab.myais.core.data.remote.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -8,7 +7,6 @@ import java.io.IOException
 
 private const val API_KEY_PARAM = "key"
 
-@Keep
 class ApiKeyInterceptor : Interceptor {
 
     @Throws(IOException::class)

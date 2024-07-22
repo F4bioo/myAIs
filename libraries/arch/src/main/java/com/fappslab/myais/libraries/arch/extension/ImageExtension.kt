@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import androidx.annotation.DrawableRes
-import androidx.annotation.Keep
 import com.fappslab.myais.libraries.arch.camerax.model.RatioType
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -49,7 +48,6 @@ fun Bitmap.cropToAspectRatio(ratioType: RatioType): Bitmap {
     )
 }
 
-@Keep
 fun Bitmap.toBase64(quality: Int = 80): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
@@ -57,7 +55,6 @@ fun Bitmap.toBase64(quality: Int = 80): String {
     return Base64.encodeToString(byteArray, Base64.NO_WRAP)
 }
 
-@Keep
 fun Context.fileFromDrawable(@DrawableRes drawableId: Int, quality: Int = 80): File {
     val bitmap = BitmapFactory.decodeResource(resources, drawableId)
     val file = File(cacheDir, "myAIs_memory_${System.currentTimeMillis()}.jpg")
