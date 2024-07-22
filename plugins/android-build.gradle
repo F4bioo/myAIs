@@ -15,8 +15,8 @@ android {
     }
     buildTypes {
         staging {
-            initWith(buildTypes.release)
-            matchingFallbacks += "release"
+            minifyEnabled true
+            matchingFallbacks += ["debug", "release"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     "$rootDir/app/proguard-rules.pro",
                     "$rootDir/app/proguard-rules-staging.pro"
