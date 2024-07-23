@@ -7,19 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.fappslab.myais.libraries.arch.camerax.model.RatioType
-import com.fappslab.myais.libraries.arch.extension.DateFormatType
-import com.fappslab.myais.libraries.arch.extension.toFormatDate
-import com.fappslab.myais.libraries.design.components.loading.PlutoLoadingDialog
-import com.fappslab.myais.libraries.design.components.lorem.loremIpsum
-import com.fappslab.myais.libraries.design.theme.PlutoTheme
 import com.fappslab.myais.core.domain.model.Memory
 import com.fappslab.myais.core.domain.model.Owner
 import com.fappslab.myais.features.memories.presentation.compose.component.EmptyScreenComponent
@@ -27,6 +21,12 @@ import com.fappslab.myais.features.memories.presentation.compose.component.Memor
 import com.fappslab.myais.features.memories.presentation.compose.component.TopBarComponent
 import com.fappslab.myais.features.memories.presentation.viewmodel.MemoriesViewIntent
 import com.fappslab.myais.features.memories.presentation.viewmodel.MemoriesViewState
+import com.fappslab.myais.libraries.arch.camerax.model.RatioType
+import com.fappslab.myais.libraries.arch.extension.DateFormatType
+import com.fappslab.myais.libraries.arch.extension.toFormatDate
+import com.fappslab.myais.libraries.design.components.loading.PlutoLoadingDialog
+import com.fappslab.myais.libraries.design.components.lorem.loremIpsum
+import com.fappslab.myais.libraries.design.theme.PlutoTheme
 
 @Composable
 internal fun MemoriesContent(
@@ -61,7 +61,7 @@ internal fun MemoriesContent(
                 )
                 Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
             }
-            items(state.memories.orEmpty()) { memory ->
+            itemsIndexed(state.memories.orEmpty()) { index, memory ->
                 MemoryItemComponent(
                     modifier = Modifier.padding(horizontal = PlutoTheme.dimen.dp16),
                     aspectRatio = state.aspectRatio,
@@ -73,9 +73,11 @@ internal fun MemoriesContent(
                         intent(MemoriesViewIntent.OnShowDownloadDialog(memory = it))
                     },
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(bottom = PlutoTheme.dimen.dp16)
-                )
+                if (index < state.memories.orEmpty().lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(bottom = PlutoTheme.dimen.dp16)
+                    )
+                }
             }
         }
         PlutoLoadingDialog(
@@ -91,7 +93,7 @@ internal fun MemoriesContent(
     )
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(device = "id:pixel_7", showBackground = true)
 @Composable
 private fun MemoriesContentPreview() {
     val createdTime = "2024-07-05T05:10:12.168Z"
@@ -118,7 +120,9 @@ private fun MemoriesContentPreview() {
         owner = owner,
         memories = List(2) { memory }
     )
-    PlutoTheme {
+    PlutoTheme(
+        darkTheme = false
+    ) {
         MemoriesContent(
             contentPadding = PaddingValues(),
             state = state,

@@ -5,11 +5,17 @@ import androidx.activity.compose.BackHandler
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -27,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -36,14 +43,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.fappslab.myais.libraries.arch.camerax.CameraXPreview
-import com.fappslab.myais.libraries.arch.camerax.compose.fakeCameraXPreview
-import com.fappslab.myais.libraries.arch.extension.toFile
-import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
-import com.fappslab.myais.libraries.design.components.loading.PlutoLoadingDialog
-import com.fappslab.myais.libraries.design.components.lorem.loremIpsum
-import com.fappslab.myais.libraries.design.components.modal.PlutoModalComponent
-import com.fappslab.myais.libraries.design.theme.PlutoTheme
+import com.fappslab.myais.core.data.remote.source.IMAGE_JPEG_MIME_TYPE
 import com.fappslab.myais.core.domain.model.Description
 import com.fappslab.myais.core.domain.model.SaveMemory
 import com.fappslab.myais.features.home.R
@@ -56,7 +56,14 @@ import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewIntent
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewState
-import com.fappslab.myais.core.data.remote.source.IMAGE_JPEG_MIME_TYPE
+import com.fappslab.myais.libraries.arch.camerax.CameraXPreview
+import com.fappslab.myais.libraries.arch.camerax.compose.fakeCameraXPreview
+import com.fappslab.myais.libraries.arch.extension.toFile
+import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
+import com.fappslab.myais.libraries.design.components.loading.PlutoLoadingDialog
+import com.fappslab.myais.libraries.design.components.lorem.loremIpsum
+import com.fappslab.myais.libraries.design.components.modal.PlutoModalComponent
+import com.fappslab.myais.libraries.design.theme.PlutoTheme
 
 private const val FILE_NAME = "myAIs_memory_%d.jpeg"
 
@@ -81,9 +88,7 @@ internal fun HomeContent(
         imageBitmap = state.imageBitmap,
         mainStateType = state.mainStateType,
         isShutterEffect = isShutterEffect,
-        onRestartCamera = {
-            cameraXPreview.restartCamera()
-        },
+        onRestartCamera = { cameraXPreview.restartCamera() },
         onShutdownCamera = {
             isShutterEffect = false
             cameraXPreview.shutdownCamera()
@@ -97,14 +102,20 @@ internal fun HomeContent(
                 state = state,
                 intent = intent
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier.aspectRatio(
+                    state.ratioType.toRatio()
+                )
+            )
             BodyDescriptionComponent(
+                modifier = Modifier.weight(1f),
                 scrimColor = scrimColor,
                 description = description,
                 state = state,
                 intent = intent
             )
             FooterEyeCaptureComponent(
+                modifier = Modifier,
                 scrimColor = scrimColor,
                 description = description,
                 cameraXPreview = cameraXPreview,
@@ -179,13 +190,14 @@ private fun ErrorModal(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarComponent(
+    modifier: Modifier = Modifier,
     scrimColor: Color,
     state: HomeViewState,
     intent: (HomeViewIntent) -> Unit
 ) {
 
     TopBarComponent(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = scrimColor
         ),
@@ -200,6 +212,7 @@ private fun TopBarComponent(
 
 @Composable
 private fun BodyDescriptionComponent(
+    modifier: Modifier = Modifier,
     scrimColor: Color,
     description: String,
     state: HomeViewState,
@@ -208,36 +221,42 @@ private fun BodyDescriptionComponent(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier
-            .background(scrimColor)
-            .verticalScroll(rememberScrollState())
+        modifier = modifier
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Bottom
     ) {
-        Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
-        BodyDescriptionComponent(
+        Box(
             modifier = Modifier
-                .padding(horizontal = PlutoTheme.dimen.dp16)
-                .heightIn(min = PlutoTheme.dimen.dp140),
-            description = description,
-            mainStateType = state.mainStateType,
-            uploadDescription = state.uploadDescription,
-            onUploadClicked = {
-                val file = state.imageBitmap?.toFile(
-                    fileName = FILE_NAME.format(System.currentTimeMillis()),
-                    context = context
-                )
-                val saveMemory = SaveMemory(
-                    description = state.imageDescription.text,
-                    mimeType = IMAGE_JPEG_MIME_TYPE,
-                    fileImage = file,
-                )
-                intent(HomeViewIntent.OnGoogleAuthMemory(saveMemory))
-            }
-        )
+                .fillMaxWidth()
+                .background(scrimColor)
+        ) {
+            BodyDescriptionComponent(
+                modifier = Modifier
+                    .padding(PlutoTheme.dimen.dp16)
+                    .heightIn(min = PlutoTheme.dimen.dp140),
+                description = description,
+                mainStateType = state.mainStateType,
+                uploadDescription = state.uploadDescription,
+                onUploadClicked = {
+                    val file = state.imageBitmap?.toFile(
+                        fileName = FILE_NAME.format(System.currentTimeMillis()),
+                        context = context
+                    )
+                    val saveMemory = SaveMemory(
+                        description = state.imageDescription.text,
+                        mimeType = IMAGE_JPEG_MIME_TYPE,
+                        fileImage = file,
+                    )
+                    intent(HomeViewIntent.OnGoogleAuthMemory(saveMemory))
+                }
+            )
+        }
     }
 }
 
 @Composable
 private fun FooterEyeCaptureComponent(
+    modifier: Modifier = Modifier,
     scrimColor: Color,
     description: String,
     cameraXPreview: CameraXPreview,
@@ -245,6 +264,9 @@ private fun FooterEyeCaptureComponent(
     intent: (HomeViewIntent) -> Unit,
     onTakePicture: (Boolean) -> Unit
 ) {
+    val navigationBarHeight = with(LocalDensity.current) {
+        WindowInsets.navigationBars.getBottom(this).toDp()
+    }
     val stateDescription = when (state.mainStateType) {
         MainStateType.Camera -> stringResource(R.string.home_desc_camera_ready)
         MainStateType.Analyze -> stringResource(R.string.home_desc_describing)
@@ -263,33 +285,34 @@ private fun FooterEyeCaptureComponent(
     }
 
     Column(
-        modifier = Modifier.background(scrimColor)
+        modifier = modifier.background(scrimColor)
     ) {
         FooterEyeCaptureComponent(
-            modifier = Modifier.clearAndSetSemantics {
-                this.liveRegion = LiveRegionMode.Assertive
-                this.stateDescription = stateDescription
-                this.role = Role.Button
-            },
+            modifier = modifier
+                .clearAndSetSemantics {
+                    this.liveRegion = LiveRegionMode.Assertive
+                    this.stateDescription = stateDescription
+                    this.role = Role.Button
+                },
             mainStateType = state.mainStateType,
             onCameraFlash = { cameraXPreview.toggleFlash(it.typeOf()) },
             onCameraPhoto = onEyeButtonClicked,
             onCameraFlip = { cameraXPreview.flipCamera() }
         )
-        Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
+        Spacer(modifier = Modifier.height(navigationBarHeight))
     }
 }
 
 @Preview(device = "id:pixel_7")
 @Composable
 private fun HomeContentPreview() {
-    val imageDescription = Description(loremIpsum { 30 })
+    val imageDescription = Description(loremIpsum { 300 })
     val state = HomeViewState(
         imageDescription = imageDescription,
         mainStateType = MainStateType.Camera,
     )
     PlutoTheme(
-        darkTheme = true
+        darkTheme = false
     ) {
         HomeContent(
             previewView = PreviewView(LocalContext.current),

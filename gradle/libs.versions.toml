@@ -51,6 +51,7 @@ accompanistPermissions = "0.34.0"
 coreSplashscreen = "1.0.1"
 baselineprofile = "1.2.4"
 profileinstaller = "1.3.1"
+constraintlayoutCompose = "1.0.1"
 
 [libraries]
 # Default
@@ -126,6 +127,7 @@ work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version
 multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [plugins]

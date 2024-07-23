@@ -1,13 +1,13 @@
 package com.fappslab.myais.core.data.remote.source
 
-import com.fappslab.myais.core.domain.model.Description
-import com.fappslab.myais.core.domain.model.PartType
-import com.fappslab.myais.core.domain.model.PromptType
 import com.fappslab.myais.core.data.remote.api.GeminiService
 import com.fappslab.myais.core.data.remote.api.PromptService
 import com.fappslab.myais.core.data.remote.model.mapper.toDescription
 import com.fappslab.myais.core.data.remote.model.mapper.toDescriptionRequest
 import com.fappslab.myais.core.data.remote.network.exception.extension.parseHttpError
+import com.fappslab.myais.core.domain.model.Description
+import com.fappslab.myais.core.domain.model.PartType
+import com.fappslab.myais.core.domain.model.PromptType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.Locale

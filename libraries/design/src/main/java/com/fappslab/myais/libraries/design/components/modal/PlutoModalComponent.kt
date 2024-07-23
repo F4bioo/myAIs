@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -59,6 +60,7 @@ fun PlutoModalComponent(
 
     if (shouldShow) {
         ModalBottomSheet(
+            windowInsets = WindowInsets(left = 0, top = 0, right = 0, bottom = 0),
             properties = ModalBottomSheetProperties(
                 securePolicy = SecureFlagPolicy.SecureOff,
                 isFocusable = true,
