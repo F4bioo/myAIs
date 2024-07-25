@@ -12,6 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.fappslab.myais.core.navigation.MemoriesNavigation
 import com.fappslab.myais.core.navigation.MemoriesRoute
+import com.fappslab.myais.features.home.di.HomeModuleLoad
+import com.fappslab.myais.features.home.main.presentation.extension.getAuthorizationClient
+import com.fappslab.myais.features.home.main.presentation.model.AuthType
+import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewEffect
+import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewIntent
+import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewModel
 import com.fappslab.myais.libraries.arch.auth.AuthManager
 import com.fappslab.myais.libraries.arch.camerax.compose.CameraXPreviewProvider
 import com.fappslab.myais.libraries.arch.camerax.compose.LocalCameraXPreview
@@ -20,12 +26,6 @@ import com.fappslab.myais.libraries.arch.koin.koinlazy.extension.KoinLazyModuleI
 import com.fappslab.myais.libraries.arch.navigation.extension.LocalNavController
 import com.fappslab.myais.libraries.arch.viewmodel.extension.observeAsEvents
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.features.home.di.HomeModuleLoad
-import com.fappslab.myais.features.home.main.presentation.extension.getAuthorizationClient
-import com.fappslab.myais.features.home.main.presentation.model.AuthType
-import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewEffect
-import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewIntent
-import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -87,6 +87,9 @@ private fun HomeEffectObserve(
                     onLoggedIn = {
                         val route = MemoriesRoute(effect.ratioType.toRatio())
                         memoriesNavigation.navigateToFeature(navController, route)
+                    },
+                    onFailure = {
+                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(it))
                     }
                 )
             }
@@ -98,6 +101,9 @@ private fun HomeEffectObserve(
                     onLoggedIn = {
                         val saveMemory = effect.saveMemory
                         viewModel.onViewIntent(HomeViewIntent.OnSaveMemory(saveMemory))
+                    },
+                    onFailure = {
+                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(it))
                     }
                 )
             }
@@ -106,8 +112,6 @@ private fun HomeEffectObserve(
                 val route = MemoriesRoute(effect.ratioType.toRatio())
                 memoriesNavigation.navigateToFeature(navController, route)
             }
-
-            HomeViewEffect.FlipCamera -> {}
         }
     }
 }

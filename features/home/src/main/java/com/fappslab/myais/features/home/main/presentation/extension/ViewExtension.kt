@@ -1,39 +1,31 @@
 package com.fappslab.myais.features.home.main.presentation.extension
 
 import androidx.activity.result.IntentSenderRequest
-import com.fappslab.myais.libraries.arch.auth.AuthManager
-import com.fappslab.myais.libraries.arch.camerax.model.CameraFlashType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType.Auto
 import com.fappslab.myais.features.home.main.presentation.model.FlashType.Off
 import com.fappslab.myais.features.home.main.presentation.model.FlashType.On
+import com.fappslab.myais.libraries.arch.auth.AuthManager
+import com.fappslab.myais.libraries.arch.camerax.model.CameraFlashType
 
-internal fun AuthManager.getAuthorizationClient(
+internal suspend fun AuthManager.getAuthorizationClient(
     onLoggedOut: (IntentSenderRequest) -> Unit,
-    onLoggedIn: () -> Unit
+    onLoggedIn: () -> Unit,
+    onFailure: (Throwable) -> Unit
 ) {
-    getAuthorizationClient(
-        onSuccess = { authorizationResult ->
-            if (authorizationResult.hasResolution()) {
-                runCatching {
-                    val intentSenderRequest = authorizationResult
-                        .pendingIntent?.intentSender?.let {
-                            IntentSenderRequest.Builder(it).build()
-                        }
-                    requireNotNull(intentSenderRequest)
-                }.onFailure { cause ->
-                    cause.printStackTrace()
-                }.onSuccess { intentSenderRequest ->
-                    onLoggedOut(intentSenderRequest)
+    runCatching {
+        getAuthorizationClient()
+    }.onFailure {
+        onFailure(it)
+    }.onSuccess { authorizationResult ->
+        if (authorizationResult.hasResolution()) {
+            val intentSenderRequest = authorizationResult
+                .pendingIntent?.intentSender?.let {
+                    IntentSenderRequest.Builder(it).build()
                 }
-            } else {
-                onLoggedIn()
-            }
-        },
-        onFailure = { cause ->
-            cause.printStackTrace()
-        }
-    )
+            intentSenderRequest?.let(onLoggedOut::invoke)
+        } else onLoggedIn()
+    }
 }
 
 internal fun FlashType.typeOf(): CameraFlashType {

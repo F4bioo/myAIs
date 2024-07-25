@@ -1,9 +1,10 @@
 package com.fappslab.myais.core.data.remote.api
 
 import com.fappslab.myais.core.data.remote.model.DriveFileMetadata
-import com.fappslab.myais.core.data.remote.model.DriveFileResponse
 import com.fappslab.myais.core.data.remote.model.DriveFilesResponse
+import com.fappslab.myais.core.data.remote.model.DriveFilesResponse.DriveFileResponse
 import com.fappslab.myais.core.data.remote.model.DriveFolderRequest
+import com.fappslab.myais.core.data.remote.model.DriveUserResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,6 +16,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+const val FETCH_LIMIT = 5
 const val QUERY_FILES_ONLY = "'me' in owners and mimeType != 'application/vnd.google-apps.folder'"
 
 private val fieldsProvider: String
@@ -29,13 +31,16 @@ private val fieldsProvider: String
 
 internal interface DriveService {
 
+    @GET("drive/v3/about?fields=user")
+    suspend fun getDriveUser(): DriveUserResponse
+
     @GET("drive/v3/files")
     suspend fun listFiles(
-        @Query("q") query: String = com.fappslab.myais.core.data.remote.api.QUERY_FILES_ONLY,
+        @Query("q") query: String = QUERY_FILES_ONLY,
         @Query("spaces") spaces: String,
-        @Query("fields") fields: String = com.fappslab.myais.core.data.remote.api.fieldsProvider,
+        @Query("fields") fields: String = fieldsProvider,
         @Query("pageToken") pageToken: String? = null,
-        @Query("pageSize") pageSize: Int = 10
+        @Query("pageSize") pageSize: Int = FETCH_LIMIT
     ): DriveFilesResponse
 
     @DELETE("drive/v3/files/{itemId}")

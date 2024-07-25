@@ -64,10 +64,9 @@ fun PlutoDragHandleComponent(
                     )
                 }
                 .padding(
-                    top = PlutoTheme.dimen.dp16,
-                    end = PlutoTheme.dimen.dp16
-                )
-                .size(PlutoTheme.dimen.dp24),
+                    top = PlutoTheme.dimen.dp8,
+                    end = PlutoTheme.dimen.dp8
+                ),
             onClick = onClosed
         ) {
             Icon(

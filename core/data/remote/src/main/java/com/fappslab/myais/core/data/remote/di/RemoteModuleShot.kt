@@ -1,7 +1,5 @@
 package com.fappslab.myais.core.data.remote.di
 
-import com.fappslab.myais.libraries.arch.koin.koinshot.KoinShot
-import com.fappslab.myais.core.domain.repository.MyAIsRepository
 import com.fappslab.myais.core.data.remote.BuildConfig
 import com.fappslab.myais.core.data.remote.api.DriveService
 import com.fappslab.myais.core.data.remote.api.GeminiService
@@ -12,6 +10,8 @@ import com.fappslab.myais.core.data.remote.network.retrofit.RetrofitClient
 import com.fappslab.myais.core.data.remote.repository.MyAIsRepositoryImpl
 import com.fappslab.myais.core.data.remote.source.DriveDataSourceImpl
 import com.fappslab.myais.core.data.remote.source.GeminiDataSourceImpl
+import com.fappslab.myais.core.domain.repository.MyAIsRepository
+import com.fappslab.myais.libraries.arch.koin.koinshot.KoinShot
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

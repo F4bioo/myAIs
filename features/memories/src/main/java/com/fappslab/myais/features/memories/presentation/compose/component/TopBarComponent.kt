@@ -28,13 +28,13 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.fappslab.myais.core.domain.model.Owner
+import com.fappslab.myais.features.memories.R
 import com.fappslab.myais.libraries.arch.extension.isNotNull
 import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.libraries.design.components.image.PlutoAsyncImage
 import com.fappslab.myais.libraries.design.extension.clickable
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.core.domain.model.Owner
-import com.fappslab.myais.features.memories.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -163,7 +163,7 @@ private fun PlutoTopBarComponentPreview() {
     val owner = Owner(
         name = "User Name",
         photoUrl = "photoUrl",
-        parentFolderId = "parentFolderId"
+        email = "user@gmail.com"
     )
     TopBarComponent(
         onNavigationIconClicked = {},

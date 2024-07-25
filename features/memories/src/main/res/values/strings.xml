@@ -16,4 +16,9 @@
     <string name="memories_logout">Log out of Google account</string>
     <string name="memories_subtitle">Memories</string>
     <string name="memories_found">The memory list is empty. Try capturing and saving some moments.</string>
+    <string name="memories_list_drive_files_error_title">Oops! Error loading</string>
+    <string name="memories_list_drive_files_error_message">Could not load the list of Drive files. Please try again.</string>
+    <string name="memories_delete_drive_item_error_title">Oops! Error deleting</string>
+    <string name="memories_delete_drive_item_error_message">Could not delete this memory. Please try again.</string>
+    <string name="memories_load_items_error_message">Failed to load more items. Please try again.</string>
 </resources>

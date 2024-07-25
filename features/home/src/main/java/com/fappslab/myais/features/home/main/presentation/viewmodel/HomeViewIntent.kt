@@ -8,11 +8,10 @@ import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 
 internal sealed interface HomeViewIntent {
     data object OnCameraFlash : HomeViewIntent
-    data object OnCameraPhoto : HomeViewIntent
-    data object OnCameraFlip : HomeViewIntent
     data object OnNavigateToCamera : HomeViewIntent
     data object OnFailureModalClose : HomeViewIntent
     data object OnGoogleAuthMemories : HomeViewIntent
+    data class OnFailureCheckAuth(val cause: Throwable) : HomeViewIntent
     data class OnGoogleAuthMemory(val saveMemory: SaveMemory) : HomeViewIntent
     data class OnGoogleAuth(val authType: AuthType) : HomeViewIntent
     data class OnTakePicture(val imageBitmap: Bitmap) : HomeViewIntent

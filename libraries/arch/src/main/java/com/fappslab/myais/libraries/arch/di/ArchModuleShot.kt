@@ -2,6 +2,8 @@ package com.fappslab.myais.libraries.arch.di
 
 import android.app.DownloadManager
 import android.content.Context
+import com.fappslab.myais.libraries.arch.auth.AuthManager
+import com.fappslab.myais.libraries.arch.auth.AuthManagerImpl
 import com.fappslab.myais.libraries.arch.downloader.Downloader
 import com.fappslab.myais.libraries.arch.downloader.DownloaderImpl
 import com.fappslab.myais.libraries.arch.koin.koinshot.KoinShot
@@ -16,8 +18,8 @@ const val FEATURE_ROUTES_QUALIFIER = "feature_routes"
 internal class ArchModuleShot : KoinShot() {
 
     override val dataModule: Module = module {
-        single<com.fappslab.myais.libraries.arch.auth.AuthManager> {
-            com.fappslab.myais.libraries.arch.auth.AuthManagerImpl(androidApplication())
+        single<AuthManager> {
+            AuthManagerImpl(androidApplication())
         }
     }
 

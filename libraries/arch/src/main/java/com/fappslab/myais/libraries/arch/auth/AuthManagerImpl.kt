@@ -12,18 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-internal class AuthManagerImpl(private val context: Context) :
-    com.fappslab.myais.libraries.arch.auth.AuthManager {
+internal class AuthManagerImpl(private val context: Context) : AuthManager {
 
-    override fun getAuthorizationClient(
-        onSuccess: (AuthorizationResult) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
-
-        Identity.getAuthorizationClient(context)
+    override suspend fun getAuthorizationClient(): AuthorizationResult {
+        return Identity.getAuthorizationClient(context)
             .authorize(authorizationRequest())
-            .addOnSuccessListener(onSuccess::invoke)
-            .addOnFailureListener(onFailure::invoke)
+            .await()
     }
 
     override suspend fun logout(
@@ -46,11 +40,7 @@ internal class AuthManagerImpl(private val context: Context) :
     }
 
     override suspend fun getAccessToken(): String? {
-        val authorizationResult = Identity
-            .getAuthorizationClient(context)
-            .authorize(authorizationRequest())
-            .await()
-
+        val authorizationResult = getAuthorizationClient()
         return authorizationResult.accessToken
     }
 

@@ -40,8 +40,6 @@ internal class HomeViewModel(
     override fun onViewIntent(intent: HomeViewIntent) {
         when (intent) {
             HomeViewIntent.OnCameraFlash -> handleCameraFlash()
-            HomeViewIntent.OnCameraPhoto -> handleCameraPhoto()
-            HomeViewIntent.OnCameraFlip -> handleCameraFlip()
             HomeViewIntent.OnNavigateToCamera -> handleNavigateToCamera()
             HomeViewIntent.OnFailureModalClose -> handleFailureModalClose()
             HomeViewIntent.OnGoogleAuthMemories -> handleGoogleAuthMemories()
@@ -49,6 +47,7 @@ internal class HomeViewModel(
             is HomeViewIntent.OnSaveMemory -> handleSaveMemory(intent.saveMemory)
             is HomeViewIntent.OnTakePicture -> handleTakePicture(intent.imageBitmap)
             is HomeViewIntent.OnBackHandler -> handleBackHandler(intent.mainStateType)
+            is HomeViewIntent.OnFailureCheckAuth -> handleFailureCheckAuth(intent.cause)
             is HomeViewIntent.OnGoogleAuthMemory -> handleGoogleAuthMemory(intent.saveMemory)
             is HomeViewIntent.OnFailureModalRetry -> handleFailureModalRetry(intent.failureType)
         }
@@ -61,14 +60,6 @@ internal class HomeViewModel(
             FlashType.Auto -> FlashType.Off
         }
         onState { it.copy(flashType = flashType) }
-    }
-
-    private fun handleCameraPhoto() {
-
-    }
-
-    private fun handleCameraFlip() {
-        onEffect { HomeViewEffect.FlipCamera }
     }
 
     private fun handleGoogleAuth(authType: AuthType) {
@@ -146,6 +137,10 @@ internal class HomeViewModel(
         if (mainStateType == MainStateType.Preview) {
             handleNavigateToCamera()
         }
+    }
+
+    private fun handleFailureCheckAuth(cause: Throwable) {
+        getDescriptionFailure(cause)
     }
 
     private fun handleGoogleAuthMemories() {

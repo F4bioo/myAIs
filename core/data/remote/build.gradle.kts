@@ -74,6 +74,10 @@ dependencies {
     implementation(project(Modules.domain))
 
     // Libs
+    api(libs.paging.compose)
+    api(libs.paging.common)
+    api(libs.paging.runtime.ktx)
+    api(libs.paging.common.android)
     api(libs.retrofit)
     api(libs.converter.gson)
     api(libs.gson)
@@ -83,17 +87,17 @@ dependencies {
 
     // Google Sign-In and Drive API
     // DriveScopes
-    api("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0"){
+    api("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0") {
         exclude(group = "org.apache.httpcomponents", module = "httpclient")
     }
     // Identity, AuthorizationRequest
     api("com.google.android.gms:play-services-auth:21.2.0")
     // CredentialManager
-    api ("androidx.credentials:credentials-play-services-auth:1.2.2")
+    api("androidx.credentials:credentials-play-services-auth:1.2.2")
     // GetGoogleIdOption, GoogleIdTokenCredential, GoogleIdTokenParsingException
-    api ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    api("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     // Coroutines await
-    api ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
-    implementation("androidx.annotation:annotation:1.8.0")
+    implementation("androidx.annotation:annotation:1.8.1")
 }

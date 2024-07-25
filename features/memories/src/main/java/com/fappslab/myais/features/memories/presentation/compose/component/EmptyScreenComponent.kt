@@ -29,23 +29,22 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec.RawRes
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.fappslab.myais.features.memories.R
 import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.libraries.design.accessibility.semantics
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.core.domain.model.Memory
-import com.fappslab.myais.features.memories.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EmptyScreenComponent(
     modifier: Modifier = Modifier,
-    memories: List<Memory>?,
+    shouldShowEmptyScreen: Boolean,
     onNavigationIconClicked: () -> Unit,
 ) {
     val composition by rememberLottieComposition(RawRes(R.raw.astronaut))
     val emptyText = stringResource(R.string.memories_found)
 
-    if (memories.isNullOrEmpty()) {
+    if (shouldShowEmptyScreen) {
         Scaffold(
             modifier = modifier.fillMaxSize(),
             topBar = {
@@ -114,7 +113,7 @@ internal fun EmptyScreenComponent(
 @Composable
 private fun EmptyScreenComponentPreview() {
     EmptyScreenComponent(
-        memories = emptyList(),
+        shouldShowEmptyScreen = true,
         onNavigationIconClicked = {}
     )
 }

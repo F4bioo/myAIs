@@ -1,14 +1,14 @@
 package com.fappslab.myais.core.domain.model
 
 data class Memories(
-    val owner: Owner,
     val list: List<Memory>,
+    val nextPageToken: String?
 )
 
 data class Owner(
     val name: String,
+    val email: String,
     val photoUrl: String,
-    val parentFolderId: String,
 )
 
 data class Memory(
@@ -20,5 +20,6 @@ data class Memory(
     val createdTime: String,
     val webViewLink: String,
     val webContentLink: String,
-    val thumbnailLink: String
+    val thumbnailLink: String,
+    val parentFolderId: String,
 )

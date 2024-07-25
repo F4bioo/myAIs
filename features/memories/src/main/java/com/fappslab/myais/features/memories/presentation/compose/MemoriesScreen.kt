@@ -12,23 +12,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.fappslab.myais.core.navigation.MemoriesRoute
-import com.fappslab.myais.libraries.arch.auth.AuthManager
-import com.fappslab.myais.libraries.arch.downloader.Downloader
-import com.fappslab.myais.libraries.arch.downloader.Downloader.DownloaderParams
-import com.fappslab.myais.libraries.arch.koin.koinlazy.extension.KoinLazyModuleInitializer
-import com.fappslab.myais.libraries.arch.navigation.extension.LocalNavController
-import com.fappslab.myais.libraries.arch.viewmodel.extension.observeAsEvents
 import com.fappslab.myais.core.domain.model.Memory
+import com.fappslab.myais.core.navigation.MemoriesRoute
 import com.fappslab.myais.features.memories.di.MemoriesModuleLoad
 import com.fappslab.myais.features.memories.presentation.compose.component.DeleteAlertDialogComponent
 import com.fappslab.myais.features.memories.presentation.compose.component.DownloadAlertDialogComponent
 import com.fappslab.myais.features.memories.presentation.viewmodel.MemoriesViewEffect
 import com.fappslab.myais.features.memories.presentation.viewmodel.MemoriesViewIntent
 import com.fappslab.myais.features.memories.presentation.viewmodel.MemoriesViewModel
-import kotlinx.coroutines.launch
+import com.fappslab.myais.libraries.arch.auth.AuthManager
+import com.fappslab.myais.libraries.arch.downloader.Downloader
+import com.fappslab.myais.libraries.arch.downloader.Downloader.DownloaderParams
+import com.fappslab.myais.libraries.arch.koin.koinlazy.extension.KoinLazyModuleInitializer
+import com.fappslab.myais.libraries.arch.navigation.extension.LocalNavController
+import com.fappslab.myais.libraries.arch.viewmodel.extension.observeAsEvents
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
@@ -63,7 +61,6 @@ internal fun MemoriesEffectObserve(
     downloader: Downloader = koinInject(),
     authManager: AuthManager = koinInject(),
 ) {
-    val scope = rememberCoroutineScope()
     val navController = LocalNavController.current
     val shouldShowDownloadDialog = remember { mutableStateOf(value = false) }
     val shouldShowDeleteDialog = remember { mutableStateOf(value = false) }
@@ -78,14 +75,10 @@ internal fun MemoriesEffectObserve(
             MemoriesViewEffect.NavigateToHome -> onPopBackStack()
 
             MemoriesViewEffect.Logout -> {
-                scope.launch {
-                    authManager.logout(
-                        onSuccess = onPopBackStack,
-                        onFailure = {
-                            println("<L> onFailure: ${it.message}")
-                        }
-                    )
-                }
+                authManager.logout(
+                    onSuccess = onPopBackStack,
+                    onFailure = { it.printStackTrace() }
+                )
             }
 
             is MemoriesViewEffect.NavigateToDownload -> {
@@ -118,7 +111,7 @@ internal fun MemoriesEffectObserve(
         },
         onPrimaryClicked = {
             shouldShowDeleteDialog.value = false
-            fileId.value?.let { viewModel.onViewIntent(MemoriesViewIntent.OnDeleteMemory(it)) }
+            viewModel.onViewIntent(MemoriesViewIntent.OnDeleteMemory(fileId.value))
         }
     )
 }

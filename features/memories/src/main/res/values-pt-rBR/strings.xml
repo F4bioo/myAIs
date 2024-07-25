@@ -16,4 +16,9 @@
     <string name="memories_logout">Sair da conta Google</string>
     <string name="memories_subtitle">Recordações</string>
     <string name="memories_found">A lista de recordações está vazia. Experimente capturar e salvar alguns momentos.</string>
+    <string name="memories_list_drive_files_error_title">Ops! Erro ao carregar</string>
+    <string name="memories_list_drive_files_error_message">Não foi possível carregar a lista de arquivos do Drive. Por favor, tente novamente.</string>
+    <string name="memories_delete_drive_item_error_title">Ops! Erro ao excluir</string>
+    <string name="memories_delete_drive_item_error_message">Não foi possível excluir essa recordação. Por favor, tente novamente.</string>
+    <string name="memories_load_items_error_message">Falha ao carregar mais itens. Por favor, tente novamente.</string>
 </resources>

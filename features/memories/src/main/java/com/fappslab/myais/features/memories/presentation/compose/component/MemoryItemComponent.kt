@@ -23,14 +23,14 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import com.fappslab.myais.core.domain.model.Memory
+import com.fappslab.myais.features.memories.R
 import com.fappslab.myais.libraries.arch.camerax.model.RatioType
 import com.fappslab.myais.libraries.arch.extension.DateFormatType
 import com.fappslab.myais.libraries.arch.extension.toFormatDate
 import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.libraries.design.components.lorem.loremIpsum
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.core.domain.model.Memory
-import com.fappslab.myais.features.memories.R
 
 @Composable
 internal fun MemoryItemComponent(
@@ -121,7 +121,8 @@ private fun MemoryItemComponentPreview() {
         createdTime = createdTime,
         webViewLink = "webViewLink",
         webContentLink = "webContentLink",
-        thumbnailLink = "thumbnailLink"
+        thumbnailLink = "thumbnailLink",
+        parentFolderId = "parentFolderId"
     )
     PlutoTheme {
         MemoryItemComponent(
