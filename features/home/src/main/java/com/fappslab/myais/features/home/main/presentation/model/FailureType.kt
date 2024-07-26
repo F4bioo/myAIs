@@ -10,6 +10,12 @@ internal enum class FailureType(
     @StringRes val messageRes: Int,
 ) {
 
+    NavigateToMemoriesError(
+        illuRes = R.drawable.illu_error_connection,
+        titleRes = R.string.failure_connection_title,
+        messageRes = R.string.failure_connection_message,
+    ),
+
     GenericError(
         illuRes = R.drawable.illu_error_generic,
         titleRes = R.string.failure_generic_title,

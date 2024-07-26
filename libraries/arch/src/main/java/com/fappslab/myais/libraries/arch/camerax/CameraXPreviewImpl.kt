@@ -34,7 +34,7 @@ internal class CameraXPreviewImpl(
     private var cameraExecutor = Executors.newSingleThreadExecutor()
     private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var flashMode = ImageCapture.FLASH_MODE_OFF
-    private var ratioType = RatioType.RATIO_1_1
+    private var ratioType = RatioType.RATIO_9_16
     private var isShutterSound = false
     private var quality = 80
 

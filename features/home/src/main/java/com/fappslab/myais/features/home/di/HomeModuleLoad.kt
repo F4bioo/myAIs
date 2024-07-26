@@ -16,6 +16,7 @@ internal object HomeModuleLoad : KoinLoad() {
         viewModel { AgreementViewModel() }
         viewModel {
             HomeViewModel(
+                networkMonitor = get(),
                 getPromptUseCase = GetPromptUseCase(repository = get()),
                 createContentUseCase = CreateContentUseCase(repository = get()),
                 uploadDriveFileUseCase = UploadDriveFileUseCase(repository = get())

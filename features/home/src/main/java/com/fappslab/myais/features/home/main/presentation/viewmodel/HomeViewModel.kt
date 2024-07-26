@@ -16,6 +16,7 @@ import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 import com.fappslab.myais.libraries.arch.extension.toBase64
+import com.fappslab.myais.libraries.arch.network.NetworkMonitor
 import com.fappslab.myais.libraries.arch.viewmodel.ViewIntent
 import com.fappslab.myais.libraries.arch.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class HomeViewModel(
+    private val networkMonitor: NetworkMonitor,
     private val getPromptUseCase: GetPromptUseCase,
     private val createContentUseCase: CreateContentUseCase,
     private val uploadDriveFileUseCase: UploadDriveFileUseCase,
@@ -39,6 +41,7 @@ internal class HomeViewModel(
 
     override fun onViewIntent(intent: HomeViewIntent) {
         when (intent) {
+            HomeViewIntent.OnInitView -> networkMonitorChecker()
             HomeViewIntent.OnCameraFlash -> handleCameraFlash()
             HomeViewIntent.OnNavigateToCamera -> handleNavigateToCamera()
             HomeViewIntent.OnFailureModalClose -> handleFailureModalClose()
@@ -97,7 +100,7 @@ internal class HomeViewModel(
 
     private fun handleTakePicture(imageBitmap: Bitmap) {
         onState { it.copy(imageBitmap = imageBitmap) }
-        val encodedImage = imageBitmap.toBase64()
+        val encodedImage = imageBitmap.toBase64(quality = 50)
         getDescription(encodedImage)
     }
 
@@ -144,7 +147,14 @@ internal class HomeViewModel(
     }
 
     private fun handleGoogleAuthMemories() {
-        onEffect { HomeViewEffect.CheckAuthMemories(viewState.ratioType) }
+        if (viewState.isOnLine) {
+            onEffect { HomeViewEffect.CheckAuthMemories(viewState.ratioType) }
+        } else onState {
+            it.copy(
+                failureType = FailureType.NavigateToMemoriesError,
+                shouldShowFailure = true
+            )
+        }
     }
 
     private fun handleGoogleAuthMemory(saveMemory: SaveMemory) {
@@ -163,7 +173,20 @@ internal class HomeViewModel(
                 }
             }
 
+            FailureType.NavigateToMemoriesError -> {
+                onState { it.copy(shouldShowFailure = false) }
+                handleGoogleAuthMemories()
+            }
+
             else -> Unit
         }
+    }
+
+    private fun networkMonitorChecker() {
+        networkMonitor.isOnline()
+            .flowOn(dispatcher)
+            .catch { onState { it.copy(isOnLine = false) } }
+            .onEach { result -> onState { it.copy(isOnLine = result) } }
+            .launchIn(viewModelScope)
     }
 }

@@ -49,9 +49,6 @@ internal fun MemoriesContent(
     LaunchedEffect(pagingItems.loadState) {
         intent(MemoriesViewIntent.OnLoadStates(pagingItems))
     }
-    LaunchedEffect(Unit) {
-        intent(MemoriesViewIntent.OnInitView)
-    }
     Box(
         contentAlignment = Alignment.Center,
     ) {

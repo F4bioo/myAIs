@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,6 +39,9 @@ internal fun HomeScreen() {
     val viewModel: HomeViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     HomeEffectObserve(viewModel)
+    LaunchedEffect(Unit) {
+        viewModel.onViewIntent(HomeViewIntent.OnInitView)
+    }
 
     PlutoTheme(
         statusBarColor = Color.Transparent,

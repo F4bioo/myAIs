@@ -8,6 +8,8 @@ import com.fappslab.myais.libraries.arch.downloader.Downloader
 import com.fappslab.myais.libraries.arch.downloader.DownloaderImpl
 import com.fappslab.myais.libraries.arch.koin.koinshot.KoinShot
 import com.fappslab.myais.libraries.arch.navigation.FeatureRoute
+import com.fappslab.myais.libraries.arch.network.NetworkMonitor
+import com.fappslab.myais.libraries.arch.network.NetworkMonitorImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -18,6 +20,10 @@ const val FEATURE_ROUTES_QUALIFIER = "feature_routes"
 internal class ArchModuleShot : KoinShot() {
 
     override val dataModule: Module = module {
+        single<NetworkMonitor> {
+            NetworkMonitorImpl(androidApplication())
+        }
+
         single<AuthManager> {
             AuthManagerImpl(androidApplication())
         }

@@ -7,6 +7,7 @@ import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 
 internal sealed interface HomeViewIntent {
+    data object OnInitView : HomeViewIntent
     data object OnCameraFlash : HomeViewIntent
     data object OnNavigateToCamera : HomeViewIntent
     data object OnFailureModalClose : HomeViewIntent

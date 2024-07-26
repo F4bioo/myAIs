@@ -2,15 +2,16 @@ package com.fappslab.myais.features.home.main.presentation.viewmodel
 
 import android.graphics.Bitmap
 import androidx.annotation.StringRes
-import com.fappslab.myais.libraries.arch.camerax.model.RatioType
 import com.fappslab.myais.core.domain.model.Description
 import com.fappslab.myais.core.domain.model.SaveMemory
 import com.fappslab.myais.features.home.R
 import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
+import com.fappslab.myais.libraries.arch.camerax.model.RatioType
 
 internal data class HomeViewState(
+    val isOnLine: Boolean = false,
     val imageBitmap: Bitmap? = null,
     val saveMemory: SaveMemory? = null,
     val shouldShowLoading: Boolean = false,

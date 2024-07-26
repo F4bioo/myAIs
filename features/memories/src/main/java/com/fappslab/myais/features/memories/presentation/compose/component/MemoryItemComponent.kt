@@ -17,12 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.fappslab.myais.core.domain.model.Memory
 import com.fappslab.myais.features.memories.R
 import com.fappslab.myais.libraries.arch.camerax.model.RatioType
@@ -53,15 +55,9 @@ internal fun MemoryItemComponent(
                 )
             }
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(aspectRatio)
-                    .clip(RoundedCornerShape(PlutoTheme.radius.large))
-                    .background(MaterialTheme.colorScheme.onBackground.copy(PlutoTheme.opacity.frosted)),
+            LoadMemoryImage(
+                aspectRatio = aspectRatio,
                 model = memory.thumbnailLink,
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
             )
             Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
             Column(
@@ -74,7 +70,8 @@ internal fun MemoryItemComponent(
                 Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp4))
                 Text(
                     text = memory.createdTime,
-                    style = PlutoTheme.typography.labelSmall.copy(fontStyle = FontStyle.Italic),
+                    style = PlutoTheme.typography.labelSmall
+                        .copy(fontStyle = FontStyle.Italic),
                     color = PlutoTheme.text.colorPlaceholder,
                 )
             }
@@ -104,6 +101,33 @@ internal fun MemoryItemComponent(
             }
         }
     }
+}
+
+@Composable
+private fun LoadMemoryImage(
+    modifier: Modifier = Modifier,
+    aspectRatio: Float,
+    model: String
+) {
+
+    AsyncImage(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(aspectRatio)
+            .clip(RoundedCornerShape(PlutoTheme.radius.large))
+            .background(
+                MaterialTheme.colorScheme.onBackground
+                    .copy(PlutoTheme.opacity.frosted)
+            ),
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(model)
+            .crossfade(true)
+            .build(),
+        contentScale = ContentScale.Crop,
+        placeholder = painterResource(R.drawable.illu_placeholder),
+        contentDescription = null,
+    )
+
 }
 
 @Preview(showBackground = true)

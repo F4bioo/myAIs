@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +41,9 @@ internal fun MemoriesScreen(
     val viewModel: MemoriesViewModel = koinViewModel { parametersOf(args) }
     val state by viewModel.state.collectAsState()
     MemoriesEffectObserve(viewModel)
+    LaunchedEffect(Unit) {
+        viewModel.onViewIntent(MemoriesViewIntent.OnInitView)
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize()

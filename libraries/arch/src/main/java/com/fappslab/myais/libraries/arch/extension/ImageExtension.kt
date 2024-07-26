@@ -48,7 +48,7 @@ fun Bitmap.cropToAspectRatio(ratioType: RatioType): Bitmap {
     )
 }
 
-fun Bitmap.toBase64(quality: Int = 80): String {
+fun Bitmap.toBase64(quality: Int = COMPRESSION): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
     val byteArray = byteArrayOutputStream.toByteArray()
@@ -67,7 +67,7 @@ fun Context.fileFromDrawable(@DrawableRes drawableId: Int, quality: Int = 80): F
 
 fun Bitmap.toByteArray(
     compressFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
-    quality: Int = 80
+    quality: Int = COMPRESSION
 ): ByteArray {
     val stream = ByteArrayOutputStream()
     this.compress(compressFormat, quality, stream)
@@ -76,7 +76,7 @@ fun Bitmap.toByteArray(
 
 fun Bitmap.toFile(
     compressFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
-    quality: Int = 50,
+    quality: Int = COMPRESSION,
     fileName: String,
     context: Context
 ): File {
