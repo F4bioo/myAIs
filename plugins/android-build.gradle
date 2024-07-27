@@ -81,4 +81,14 @@ dependencies {
     // AndroidTests
     androidTestImplementation(libs.bundles.defaultAndroidTestLibs)
     androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation(libs.bundles.defaultTestLibs)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.koin.test.junit4)
+    androidTestImplementation(libs.kotlin.test.junit)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.core.testing)
 }

@@ -11,12 +11,12 @@ import com.fappslab.myais.core.domain.model.SaveMemory
 import com.fappslab.myais.core.domain.usecase.CreateContentUseCase
 import com.fappslab.myais.core.domain.usecase.GetPromptUseCase
 import com.fappslab.myais.core.domain.usecase.UploadDriveFileUseCase
+import com.fappslab.myais.core.domain.usecase.WatchNetworkStateUseCase
 import com.fappslab.myais.features.home.main.presentation.model.AuthType
 import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 import com.fappslab.myais.libraries.arch.extension.toBase64
-import com.fappslab.myais.libraries.arch.network.NetworkMonitor
 import com.fappslab.myais.libraries.arch.viewmodel.ViewIntent
 import com.fappslab.myais.libraries.arch.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class HomeViewModel(
-    private val networkMonitor: NetworkMonitor,
     private val getPromptUseCase: GetPromptUseCase,
     private val createContentUseCase: CreateContentUseCase,
     private val uploadDriveFileUseCase: UploadDriveFileUseCase,
+    private val watchNetworkStateUseCase: WatchNetworkStateUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<HomeViewState, HomeViewEffect>(HomeViewState()),
     ViewIntent<HomeViewIntent> {
@@ -183,10 +183,12 @@ internal class HomeViewModel(
     }
 
     private fun networkMonitorChecker() {
-        networkMonitor.isOnline()
+        watchNetworkStateUseCase()
             .flowOn(dispatcher)
             .catch { onState { it.copy(isOnLine = false) } }
-            .onEach { result -> onState { it.copy(isOnLine = result) } }
+            .onEach { result ->
+                onState { it.copy(isOnLine = result.isOnline) }
+            }
             .launchIn(viewModelScope)
     }
 }

@@ -57,6 +57,7 @@ internal fun MemoriesContent(
             contentPadding = contentPadding,
         ) {
             item {
+                Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
                 TopBarComponent(
                     modifier = Modifier.padding(
                         end = PlutoTheme.dimen.dp12

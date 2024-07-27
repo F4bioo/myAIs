@@ -1,16 +1,22 @@
 package com.fappslab.myais.core.data.remote.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.fappslab.myais.core.data.remote.BuildConfig
 import com.fappslab.myais.core.data.remote.api.DriveService
 import com.fappslab.myais.core.data.remote.api.GeminiService
 import com.fappslab.myais.core.data.remote.api.PromptService
 import com.fappslab.myais.core.data.remote.network.HttpClient
 import com.fappslab.myais.core.data.remote.network.HttpClientImpl
+import com.fappslab.myais.core.data.remote.network.monitor.NetworkMonitor
+import com.fappslab.myais.core.data.remote.network.monitor.NetworkMonitorImpl
 import com.fappslab.myais.core.data.remote.network.retrofit.RetrofitClient
 import com.fappslab.myais.core.data.remote.repository.MyAIsRepositoryImpl
+import com.fappslab.myais.core.data.remote.repository.NetworkMonitorRepositoryImpl
 import com.fappslab.myais.core.data.remote.source.DriveDataSourceImpl
 import com.fappslab.myais.core.data.remote.source.GeminiDataSourceImpl
 import com.fappslab.myais.core.domain.repository.MyAIsRepository
+import com.fappslab.myais.core.domain.repository.NetworkMonitorRepository
 import com.fappslab.myais.libraries.arch.koin.koinshot.KoinShot
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -76,6 +82,20 @@ internal class RemoteModuleShot : KoinShot() {
                         named(DRIVE_HTTP_CLIENT_QUALIFIER)
                     ).create(DriveService::class.java),
                 ),
+            )
+        }
+
+        single<NetworkMonitor> {
+            NetworkMonitorImpl(
+                connectivityManager = get<Context>().getSystemService(
+                    Context.CONNECTIVITY_SERVICE
+                ) as ConnectivityManager
+            )
+        }
+
+        factory<NetworkMonitorRepository> {
+            NetworkMonitorRepositoryImpl(
+                networkMonitor = get()
             )
         }
     }

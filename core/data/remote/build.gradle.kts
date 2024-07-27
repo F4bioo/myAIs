@@ -100,4 +100,8 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
     implementation("androidx.annotation:annotation:1.8.1")
+
+    // TestLibs
+    testImplementation(testFixtures(project(Modules.testing)))
+    androidTestImplementation(testFixtures(project(Modules.testing)))
 }

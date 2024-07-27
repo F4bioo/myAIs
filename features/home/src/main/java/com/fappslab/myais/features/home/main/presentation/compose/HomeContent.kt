@@ -77,7 +77,7 @@ internal fun HomeContent(
 ) {
     var isShutterEffect by remember { mutableStateOf(value = false) }
     val scrimColor = MaterialTheme.colorScheme.surface
-        .copy(PlutoTheme.opacity.semiTransparent)
+        .copy(PlutoTheme.opacity.opaque)
     val description = if (state.mainStateType == MainStateType.Camera) {
         stringResource(R.string.home_simple_description)
     } else state.imageDescription.text
