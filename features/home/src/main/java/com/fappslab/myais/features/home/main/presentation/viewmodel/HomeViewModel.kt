@@ -11,7 +11,6 @@ import com.fappslab.myais.core.domain.model.SaveMemory
 import com.fappslab.myais.core.domain.usecase.CreateContentUseCase
 import com.fappslab.myais.core.domain.usecase.GetPromptUseCase
 import com.fappslab.myais.core.domain.usecase.UploadDriveFileUseCase
-import com.fappslab.myais.core.domain.usecase.WatchNetworkStateUseCase
 import com.fappslab.myais.features.home.main.presentation.model.AuthType
 import com.fappslab.myais.features.home.main.presentation.model.FailureType
 import com.fappslab.myais.features.home.main.presentation.model.FlashType
@@ -19,6 +18,8 @@ import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 import com.fappslab.myais.libraries.arch.extension.toBase64
 import com.fappslab.myais.libraries.arch.viewmodel.ViewIntent
 import com.fappslab.myais.libraries.arch.viewmodel.ViewModel
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.Status
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,28 +32,28 @@ import kotlinx.coroutines.flow.onStart
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class HomeViewModel(
+    flashType: FlashType = FlashType.Off,
     private val getPromptUseCase: GetPromptUseCase,
     private val createContentUseCase: CreateContentUseCase,
     private val uploadDriveFileUseCase: UploadDriveFileUseCase,
-    private val watchNetworkStateUseCase: WatchNetworkStateUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel<HomeViewState, HomeViewEffect>(HomeViewState()),
+) : ViewModel<HomeViewState, HomeViewEffect>(HomeViewState(flashType)),
     ViewIntent<HomeViewIntent> {
 
     override fun onViewIntent(intent: HomeViewIntent) {
         when (intent) {
-            HomeViewIntent.OnInitView -> networkMonitorChecker()
             HomeViewIntent.OnCameraFlash -> handleCameraFlash()
             HomeViewIntent.OnNavigateToCamera -> handleNavigateToCamera()
+            HomeViewIntent.OnGoogleAuthResulOk -> handleGoogleAuthResulOk()
             HomeViewIntent.OnFailureModalClose -> handleFailureModalClose()
-            HomeViewIntent.OnGoogleAuthMemories -> handleGoogleAuthMemories()
-            is HomeViewIntent.OnGoogleAuth -> handleGoogleAuth(intent.authType)
+            HomeViewIntent.OnMemoriesAuthChecker -> handleMemoriesAuthChecker()
             is HomeViewIntent.OnSaveMemory -> handleSaveMemory(intent.saveMemory)
             is HomeViewIntent.OnTakePicture -> handleTakePicture(intent.imageBitmap)
             is HomeViewIntent.OnBackHandler -> handleBackHandler(intent.mainStateType)
             is HomeViewIntent.OnFailureCheckAuth -> handleFailureCheckAuth(intent.cause)
-            is HomeViewIntent.OnGoogleAuthMemory -> handleGoogleAuthMemory(intent.saveMemory)
+            is HomeViewIntent.OnUploadAuthChecker -> handleUploadAuthChecker(intent.saveMemory)
             is HomeViewIntent.OnFailureModalRetry -> handleFailureModalRetry(intent.failureType)
+            is HomeViewIntent.OnGoogleAuthResulCanceled -> handleGoogleAuthResulCanceled(intent.status)
         }
     }
 
@@ -63,16 +64,6 @@ internal class HomeViewModel(
             FlashType.Auto -> FlashType.Off
         }
         onState { it.copy(flashType = flashType) }
-    }
-
-    private fun handleGoogleAuth(authType: AuthType) {
-        when (authType) {
-            AuthType.NavigateToMemories -> {
-                onEffect { HomeViewEffect.NavigateToMemories(viewState.ratioType) }
-            }
-
-            AuthType.UploadMemory -> viewState.saveMemory?.let(::handleSaveMemory)
-        }
     }
 
     private fun handleFailureModalClose() {
@@ -89,8 +80,7 @@ internal class HomeViewModel(
     }
 
     private fun handleSaveMemoryFailure(cause: Throwable) {
-        val failureType = FailureType.UploadError
-        onState { it.handleSaveMemoryFailureState(failureType) }
+        onState { it.handleSaveMemoryFailureState(FailureType.UploadErrorMemory) }
         cause.printStackTrace()
     }
 
@@ -100,8 +90,7 @@ internal class HomeViewModel(
 
     private fun handleTakePicture(imageBitmap: Bitmap) {
         onState { it.copy(imageBitmap = imageBitmap) }
-        val encodedImage = imageBitmap.toBase64(quality = 50)
-        getDescription(encodedImage)
+        getDescription(imageBitmap.toBase64(quality = 50))
     }
 
     private fun getDescription(encodedImage: String) {
@@ -122,14 +111,13 @@ internal class HomeViewModel(
     }
 
     private fun getDescriptionFailure(cause: Throwable) {
+        cause.printStackTrace()
         val failureType = when (cause) {
-            is InternetThrowable -> FailureType.ConnectionError
-            is HttpThrowable -> FailureType.AnalyzeError
-            else -> FailureType.GenericError
-
+            is InternetThrowable -> FailureType.ConnectionErrorDescription
+            is HttpThrowable -> FailureType.AnalyzeErrorDescription
+            else -> FailureType.GenericErrorDescription
         }
         onState { it.getDescriptionFailureState(failureType) }
-        cause.printStackTrace()
     }
 
     private fun getDescriptionSuccess(imageDescription: Description) {
@@ -137,58 +125,56 @@ internal class HomeViewModel(
     }
 
     private fun handleBackHandler(mainStateType: MainStateType) {
-        if (mainStateType == MainStateType.Preview) {
-            handleNavigateToCamera()
-        }
+        if (mainStateType == MainStateType.Preview) handleNavigateToCamera()
     }
 
     private fun handleFailureCheckAuth(cause: Throwable) {
         getDescriptionFailure(cause)
     }
 
-    private fun handleGoogleAuthMemories() {
-        if (viewState.isOnLine) {
-            onEffect { HomeViewEffect.CheckAuthMemories(viewState.ratioType) }
-        } else onState {
-            it.copy(
-                failureType = FailureType.NavigateToMemoriesError,
-                shouldShowFailure = true
-            )
-        }
+    private fun handleMemoriesAuthChecker() {
+        onState { it.copy(shouldShowFailure = false, authType = AuthType.NavigateToMemories) }
+        onEffect { HomeViewEffect.MemoriesAuthManager(viewState.ratioType) }
     }
 
-    private fun handleGoogleAuthMemory(saveMemory: SaveMemory) {
-        onState { it.copy(saveMemory = saveMemory) }
-        onEffect { HomeViewEffect.CheckAuthMemory(saveMemory) }
+    private fun handleUploadAuthChecker(saveMemory: SaveMemory) {
+        onState { it.copy(saveMemory = saveMemory, authType = AuthType.UploadMemory) }
+        onEffect { HomeViewEffect.UploadAuthManager(saveMemory) }
     }
 
     private fun handleFailureModalRetry(failureType: FailureType) {
         when (failureType) {
-            FailureType.GenericError,
-            FailureType.ConnectionError,
-            FailureType.AnalyzeError -> {
+            FailureType.GenericErrorDescription,
+            FailureType.ConnectionErrorDescription,
+            FailureType.AnalyzeErrorDescription -> {
                 viewState.imageBitmap?.let { imageBitmap ->
-                    val encodedImage = imageBitmap.toBase64()
-                    getDescription(encodedImage)
+                    getDescription(encodedImage = imageBitmap.toBase64())
                 }
             }
 
-            FailureType.NavigateToMemoriesError -> {
-                onState { it.copy(shouldShowFailure = false) }
-                handleGoogleAuthMemories()
-            }
-
+            FailureType.ConnectionErrorMemories -> handleMemoriesAuthChecker()
             else -> Unit
         }
     }
 
-    private fun networkMonitorChecker() {
-        watchNetworkStateUseCase()
-            .flowOn(dispatcher)
-            .catch { onState { it.copy(isOnLine = false) } }
-            .onEach { result ->
-                onState { it.copy(isOnLine = result.isOnline) }
+    private fun handleGoogleAuthResulOk() {
+        when (viewState.authType) {
+            AuthType.NavigateToMemories -> {
+                onEffect { HomeViewEffect.NavigateToMemories(viewState.ratioType) }
             }
-            .launchIn(viewModelScope)
+
+            AuthType.UploadMemory -> viewState.saveMemory?.let(::handleSaveMemory)
+            else -> Unit
+        }
+    }
+
+    private fun handleGoogleAuthResulCanceled(status: Status) {
+        when (status.statusCode) {
+            CommonStatusCodes.NETWORK_ERROR -> {
+                onState { it.googleAuthResulCanceledState(FailureType.ConnectionErrorMemories) }
+            }
+
+            else -> Unit
+        }
     }
 }

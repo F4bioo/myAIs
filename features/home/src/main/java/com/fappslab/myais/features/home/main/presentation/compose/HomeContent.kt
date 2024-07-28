@@ -53,6 +53,7 @@ import com.fappslab.myais.features.home.main.presentation.compose.component.TopB
 import com.fappslab.myais.features.home.main.presentation.extension.onEyeButtonClicked
 import com.fappslab.myais.features.home.main.presentation.extension.typeOf
 import com.fappslab.myais.features.home.main.presentation.model.FailureType
+import com.fappslab.myais.features.home.main.presentation.model.FlashType
 import com.fappslab.myais.features.home.main.presentation.model.MainStateType
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewIntent
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewState
@@ -170,7 +171,7 @@ private fun ErrorModal(
         onDismiss = {
             intent(HomeViewIntent.OnFailureModalClose)
         },
-        primaryButton = if (failureType != FailureType.UploadError) {
+        primaryButton = if (failureType != FailureType.UploadErrorMemory) {
             {
                 buttonTextRes = R.string.common_try_again
                 onCLicked = {
@@ -206,7 +207,7 @@ private fun TopBarComponent(
             this == MainStateType.Camera || this == MainStateType.Preview
         },
         onNavigationIconClicked = { intent(HomeViewIntent.OnNavigateToCamera) },
-        onActionButtonClicked = { intent(HomeViewIntent.OnGoogleAuthMemories) }
+        onActionButtonClicked = { intent(HomeViewIntent.OnMemoriesAuthChecker) }
     )
 }
 
@@ -247,7 +248,7 @@ private fun BodyDescriptionComponent(
                         mimeType = IMAGE_JPEG_MIME_TYPE,
                         fileImage = file,
                     )
-                    intent(HomeViewIntent.OnGoogleAuthMemory(saveMemory))
+                    intent(HomeViewIntent.OnUploadAuthChecker(saveMemory))
                 }
             )
         }
@@ -308,6 +309,7 @@ private fun FooterEyeCaptureComponent(
 private fun HomeContentPreview() {
     val imageDescription = Description(loremIpsum { 300 })
     val state = HomeViewState(
+        flashType = FlashType.Off,
         imageDescription = imageDescription,
         mainStateType = MainStateType.Camera,
     )

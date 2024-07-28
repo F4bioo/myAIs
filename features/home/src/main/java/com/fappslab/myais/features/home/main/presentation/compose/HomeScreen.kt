@@ -1,21 +1,16 @@
 package com.fappslab.myais.features.home.main.presentation.compose
 
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.fappslab.myais.core.navigation.MemoriesNavigation
 import com.fappslab.myais.core.navigation.MemoriesRoute
 import com.fappslab.myais.features.home.di.HomeModuleLoad
 import com.fappslab.myais.features.home.main.presentation.extension.getAuthorizationClient
-import com.fappslab.myais.features.home.main.presentation.model.AuthType
+import com.fappslab.myais.features.home.main.presentation.extension.handleLauncherResult
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewEffect
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewIntent
 import com.fappslab.myais.features.home.main.presentation.viewmodel.HomeViewModel
@@ -30,18 +25,12 @@ import com.fappslab.myais.libraries.design.theme.PlutoTheme
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-private const val NAVIGATE_TO_MEMORIES_RESULT_CODE = 1000
-private const val UPLOAD_MEMORY_RESULT_CODE = 1001
-
 @Composable
 internal fun HomeScreen() {
     KoinLazyModuleInitializer(HomeModuleLoad)
     val viewModel: HomeViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     HomeEffectObserve(viewModel)
-    LaunchedEffect(Unit) {
-        viewModel.onViewIntent(HomeViewIntent.OnInitView)
-    }
 
     PlutoTheme(
         statusBarColor = Color.Transparent,
@@ -65,27 +54,13 @@ private fun HomeEffectObserve(
     memoriesNavigation: MemoriesNavigation = koinInject()
 ) {
     val navController = LocalNavController.current
-    val resultCode = remember { mutableIntStateOf(RESULT_CANCELED) }
     val signInLauncher = rememberLauncherForActivityResult(StartIntentSenderForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            when (resultCode.intValue) {
-                NAVIGATE_TO_MEMORIES_RESULT_CODE -> {
-                    val authType = AuthType.NavigateToMemories
-                    viewModel.onViewIntent(HomeViewIntent.OnGoogleAuth(authType))
-                }
-
-                UPLOAD_MEMORY_RESULT_CODE -> {
-                    val authType = AuthType.UploadMemory
-                    viewModel.onViewIntent(HomeViewIntent.OnGoogleAuth(authType))
-                }
-            }
-        }
+        result.handleLauncherResult(viewModel::onViewIntent)
     }
 
     viewModel.effect.observeAsEvents { effect ->
         when (effect) {
-            is HomeViewEffect.CheckAuthMemories -> {
-                resultCode.intValue = NAVIGATE_TO_MEMORIES_RESULT_CODE
+            is HomeViewEffect.MemoriesAuthManager -> {
                 authManager.getAuthorizationClient(
                     onLoggedOut = signInLauncher::launch,
                     onLoggedIn = {
@@ -93,13 +68,12 @@ private fun HomeEffectObserve(
                         memoriesNavigation.navigateToFeature(navController, route)
                     },
                     onFailure = {
-                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(it))
+                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(cause = it))
                     }
                 )
             }
 
-            is HomeViewEffect.CheckAuthMemory -> {
-                resultCode.intValue = UPLOAD_MEMORY_RESULT_CODE
+            is HomeViewEffect.UploadAuthManager -> {
                 authManager.getAuthorizationClient(
                     onLoggedOut = signInLauncher::launch,
                     onLoggedIn = {
@@ -107,7 +81,7 @@ private fun HomeEffectObserve(
                         viewModel.onViewIntent(HomeViewIntent.OnSaveMemory(saveMemory))
                     },
                     onFailure = {
-                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(it))
+                        viewModel.onViewIntent(HomeViewIntent.OnFailureCheckAuth(cause = it))
                     }
                 )
             }
