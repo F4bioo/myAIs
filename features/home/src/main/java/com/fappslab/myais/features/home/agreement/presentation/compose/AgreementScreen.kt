@@ -10,20 +10,18 @@ import androidx.compose.ui.platform.LocalContext
 import com.fappslab.myais.core.navigation.AgreementRoute
 import com.fappslab.myais.core.navigation.HomeNavigation
 import com.fappslab.myais.core.navigation.HomeRoute
+import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewEffect
+import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewModel
+import com.fappslab.myais.features.home.di.HomeModuleLoad
 import com.fappslab.myais.libraries.arch.koin.koinlazy.extension.KoinLazyModuleInitializer
 import com.fappslab.myais.libraries.arch.navigation.extension.LocalNavController
 import com.fappslab.myais.libraries.arch.simplepermission.extension.openApplicationSettings
 import com.fappslab.myais.libraries.arch.simplepermission.extension.openLinkInBrowser
 import com.fappslab.myais.libraries.arch.viewmodel.extension.observeAsEvents
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewEffect
-import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewModel
-import com.fappslab.myais.features.home.di.HomeModuleLoad
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
-
-private const val PRIVACY_POLICY_URL = "https://fappslab.com/myAIs/terms.html"
 
 @Composable
 internal fun AgreementScreen() {
@@ -59,12 +57,12 @@ private fun AgreementEffectObserve(
                 }
             }
 
-            AgreementViewEffect.NavigateToPrivacyPolicy -> {
-                context.openLinkInBrowser(PRIVACY_POLICY_URL)
-            }
-
             AgreementViewEffect.NavigateToSettings -> {
                 context.openApplicationSettings()
+            }
+
+            is AgreementViewEffect.NavigateToConditions -> {
+                context.openLinkInBrowser(effect.link)
             }
         }
     }

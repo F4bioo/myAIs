@@ -224,10 +224,12 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF313539)
 
 // -=-=-= Pluto Colors Light Start =-=-=-
 val stealthGrayLight = Color(0xFF3C4853)
+val blueLinkLight = Color(0xFF1E88E5)
 // -=-=-= Pluto Colors Light End =-=-=-
 
 // -=-=-= Pluto Colors Dark Start =-=-=-
 val stealthGrayDark = Color(0xFFCECECE)
+val blueLinkDark = Color(0xFF90CAF9)
 // -=-=-= Pluto Colors Dark End =-=-=-
 
 val white = Color(0xFFFFFFFF)

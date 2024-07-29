@@ -70,10 +70,11 @@ internal class AgreementRouteViewModelTest {
     fun `Given view model initialized When OnPrivacyPolicy intent received Then should navigate to privacy policy`() {
         runTest {
             // Given
-            val expectedEffect = AgreementViewEffect.NavigateToPrivacyPolicy
+            val link = "some_link"
+            val expectedEffect = AgreementViewEffect.NavigateToConditions(link)
 
             // When
-            subject.onViewIntent(AgreementViewIntent.OnPrivacyPolicy)
+            subject.onViewIntent(AgreementViewIntent.OnConditions(link))
 
             // Then
             subject.effect.test {

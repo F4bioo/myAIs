@@ -3,7 +3,8 @@
     <!-- Agreement -->
     <string name="agreement_desc_header_description_granted">Animação de olho indicando permissão concedida.</string>
     <string name="agreement_desc_header_description_not_granted">Ilustração de olho indicando permissão não concedida.</string>
-    <string name="agreement_desc_open_terms">Abrir Termos e Política de Privacidade</string>
+    <string name="agreement_desc_open_terms">Abrir Termos e Política de Privacidade.</string>
+    <string name="agreement_desc_open_privacy">Abrir Política de Privacidade.</string>
     <string name="agreement_desc_button_disabled_description">O botão Continuar está desativado. Por favor, conceda acesso à câmera para prosseguir.</string>
     <string name="agreement_desc_button_enabled_description">O botão Continuar agora está ativado.</string>
 
@@ -11,8 +12,9 @@
     <string name="agreement_camera_access">Acesso à Câmera</string>
     <string name="agreement_camera_access_description">Permitir que o app %s acesse sua câmera para tirar fotos?</string>
     <string name="agreement_open_settings">Deseja abrir as configurações do aplicativo para permitir a câmera?</string>
-    <string name="agreement_continue_text">Ao continuar, você concorda com nossos\n</string>
-    <string name="agreement_terms_text">Termos e Política de Privacidade.</string>
+    <string name="agreement_continue_text">Ao continuar, você concorda com nossos</string>
+    <string name="agreement_terms">Termos de Serviço</string>
+    <string name="agreement_privacy">Política de Privacidade</string>
 
     <!-- Home -->
     <string name="home_desc_navigate_to_memories_screen">Navegar para as Recordações no Google Drive.</string>

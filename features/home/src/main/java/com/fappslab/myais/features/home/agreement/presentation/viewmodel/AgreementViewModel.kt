@@ -12,7 +12,7 @@ internal class AgreementViewModel :
         when (intent) {
             AgreementViewIntent.OnContinue -> handleContinue()
             AgreementViewIntent.OnOpenSettings -> handleOpenSettings()
-            AgreementViewIntent.OnPrivacyPolicy -> handlePrivacyPolicy()
+            is AgreementViewIntent.OnConditions -> handleConditions(intent.link)
             is AgreementViewIntent.OnPermissionResult -> {
                 handlePermissionResult(intent.status)
             }
@@ -27,8 +27,8 @@ internal class AgreementViewModel :
         onEffect { AgreementViewEffect.NavigateToSettings }
     }
 
-    private fun handlePrivacyPolicy() {
-        onEffect { AgreementViewEffect.NavigateToPrivacyPolicy }
+    private fun handleConditions(link: String) {
+        onEffect { AgreementViewEffect.NavigateToConditions(link) }
     }
 
     private fun handlePermissionResult(status: PermissionStatus) {

@@ -23,6 +23,12 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.fappslab.myais.features.home.R
+import com.fappslab.myais.features.home.agreement.presentation.compose.component.BodyComponent
+import com.fappslab.myais.features.home.agreement.presentation.compose.component.ConditionsComponent
+import com.fappslab.myais.features.home.agreement.presentation.compose.component.HeaderComponent
+import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewIntent
+import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewState
 import com.fappslab.myais.libraries.arch.simplepermission.extension.rememberPermissionLauncher
 import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.libraries.design.components.button.ButtonType
@@ -30,12 +36,6 @@ import com.fappslab.myais.libraries.design.components.button.PlutoButtonComponen
 import com.fappslab.myais.libraries.design.components.button.model.ButtonState
 import com.fappslab.myais.libraries.design.components.footer.PlutoFooterLayout
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.features.home.R
-import com.fappslab.myais.features.home.agreement.presentation.compose.component.BodyComponent
-import com.fappslab.myais.features.home.agreement.presentation.compose.component.HeaderComponent
-import com.fappslab.myais.features.home.agreement.presentation.compose.component.PrivacyPolicyComponent
-import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewIntent
-import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewState
 
 @Composable
 internal fun AgreementContent(
@@ -85,11 +85,12 @@ internal fun AgreementContent(
             }
         }
         PlutoFooterLayout {
-            PrivacyPolicyComponent(
-                modifier = Modifier.fillMaxWidth(),
-                onClicked = { intent(AgreementViewIntent.OnPrivacyPolicy) }
-            )
             Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
+            ConditionsComponent(
+                modifier = Modifier.fillMaxWidth(),
+                onClicked = { intent(AgreementViewIntent.OnConditions(link = it)) }
+            )
+            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
             PlutoButtonComponent(
                 modifier = Modifier
                     .fillMaxWidth()

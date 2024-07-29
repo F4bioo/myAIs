@@ -47,7 +47,6 @@ internal class AuthManagerImpl(private val context: Context) : AuthManager {
     private fun authorizationRequest(): AuthorizationRequest {
         val requestedScopes = listOf(
             Scope(DriveScopes.DRIVE_FILE),
-            Scope(DriveScopes.DRIVE_APPDATA)
         )
         return AuthorizationRequest.Builder()
             .setRequestedScopes(requestedScopes)
