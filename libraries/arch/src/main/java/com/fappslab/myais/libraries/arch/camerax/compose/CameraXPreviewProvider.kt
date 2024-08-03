@@ -2,8 +2,10 @@ package com.fappslab.myais.libraries.arch.camerax.compose
 
 import android.graphics.Bitmap
 import android.widget.LinearLayout.LayoutParams
+import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.camera.view.PreviewView.ImplementationMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -43,8 +45,8 @@ private fun rememberPreviewView(): PreviewView {
     val context = LocalContext.current
     return remember {
         PreviewView(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            implementationMode = PreviewView.ImplementationMode.PERFORMANCE
+            layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            implementationMode = ImplementationMode.PERFORMANCE
             scaleType = PreviewView.ScaleType.FILL_CENTER
             controller = LifecycleCameraController(context)
         }

@@ -22,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.tooling.preview.Preview
+import com.fappslab.myais.features.home.R
 import com.fappslab.myais.libraries.design.accessibility.semantics
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
-import com.fappslab.myais.features.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,7 +89,7 @@ internal fun TopBarComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun PlutoTopBarComponentPreview() {
+private fun TopBarComponentPreview() {
     TopBarComponent(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White

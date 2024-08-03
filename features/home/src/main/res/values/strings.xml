@@ -19,6 +19,7 @@
 
 
     <!-- Home -->
+    <string name="home_desc_about">About.</string>
     <string name="home_desc_navigate_to_memories_screen">Navigate to Memories on Google Drive.</string>
     <string name="home_desc_navigate_to_camera_screen">Navigate to the image capture screen.</string>
     <string name="home_desc_save_to_drive">Save to Google Drive</string>

@@ -17,6 +17,7 @@
     <string name="agreement_privacy">Política de Privacidade</string>
 
     <!-- Home -->
+    <string name="home_desc_about">Sobre.</string>
     <string name="home_desc_navigate_to_memories_screen">Navegar para as Recordações no Google Drive.</string>
     <string name="home_desc_navigate_to_camera_screen">Navegar para a tela de captura de imagens.</string>
     <string name="home_desc_save_to_drive">Salvar no Google Drive.</string>

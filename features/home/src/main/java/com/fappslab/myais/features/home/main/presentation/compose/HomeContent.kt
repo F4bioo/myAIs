@@ -234,7 +234,7 @@ private fun BodyDescriptionComponent(
             BodyDescriptionComponent(
                 modifier = Modifier
                     .padding(PlutoTheme.dimen.dp16)
-                    .heightIn(min = PlutoTheme.dimen.dp140),
+                    .heightIn(min = PlutoTheme.dimen.dp120),
                 description = description,
                 mainStateType = state.mainStateType,
                 uploadDescription = state.uploadDescription,

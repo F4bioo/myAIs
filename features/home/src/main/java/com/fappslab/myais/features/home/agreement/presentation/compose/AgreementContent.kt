@@ -1,8 +1,11 @@
 package com.fappslab.myais.features.home.agreement.presentation.compose
 
 import android.Manifest
+import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,12 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
@@ -23,12 +28,15 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import com.fappslab.myais.features.home.R
 import com.fappslab.myais.features.home.agreement.presentation.compose.component.BodyComponent
 import com.fappslab.myais.features.home.agreement.presentation.compose.component.ConditionsComponent
 import com.fappslab.myais.features.home.agreement.presentation.compose.component.HeaderComponent
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewIntent
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewState
+import com.fappslab.myais.libraries.arch.camerax.CameraXPreview
+import com.fappslab.myais.libraries.arch.camerax.compose.fakeCameraXPreview
 import com.fappslab.myais.libraries.arch.simplepermission.extension.rememberPermissionLauncher
 import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
 import com.fappslab.myais.libraries.design.components.button.ButtonType
@@ -40,6 +48,8 @@ import com.fappslab.myais.libraries.design.theme.PlutoTheme
 @Composable
 internal fun AgreementContent(
     modifier: Modifier = Modifier,
+    previewView: PreviewView,
+    cameraXPreview: CameraXPreview,
     state: AgreementViewState,
     intent: (AgreementViewIntent) -> Unit,
 ) {
@@ -51,8 +61,11 @@ internal fun AgreementContent(
     LaunchedEffect(permissionLauncher) {
         intent(AgreementViewIntent.OnPermissionResult(currentPermissionStatus))
     }
-    Column(
-        modifier = modifier.fillMaxSize()
+    CameraPreviewHandler(
+        modifier = modifier,
+        previewView = previewView,
+        onRestartCamera = { cameraXPreview.restartCamera() },
+        isGrantedCameraPermission = state.isGrantedPermission
     ) {
         Column(
             modifier = Modifier
@@ -95,9 +108,10 @@ internal fun AgreementContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clearAndSetSemantics {
-                        val contextDescriptionRes = if (state.buttonState == ButtonState.Disabled) {
-                            R.string.agreement_desc_button_disabled_description
-                        } else R.string.agreement_desc_button_enabled_description
+                        val contextDescriptionRes =
+                            if (state.buttonState == ButtonState.Disabled) {
+                                R.string.agreement_desc_button_disabled_description
+                            } else R.string.agreement_desc_button_enabled_description
                         this.liveRegion = LiveRegionMode.Polite
                         this.stateDescription = stringResource(contextDescriptionRes)
                     },
@@ -106,22 +120,58 @@ internal fun AgreementContent(
                 buttonState = state.buttonState,
                 onClick = { intent(AgreementViewIntent.OnContinue) }
             )
+            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
         }
     }
 }
 
+@Composable
+private fun CameraPreviewHandler(
+    modifier: Modifier = Modifier,
+    previewView: PreviewView,
+    onRestartCamera: () -> Unit,
+    isGrantedCameraPermission: Boolean,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val scrimColor = MaterialTheme.colorScheme.surface
+        .copy(PlutoTheme.opacity.semiTransparent)
+
+    if (isGrantedCameraPermission) {
+        Box(
+            modifier = modifier.fillMaxSize()
+        ) {
+            AndroidView(
+                modifier = Modifier.matchParentSize(),
+                factory = {
+                    onRestartCamera()
+                    previewView
+                }
+            )
+            Column(
+                modifier = Modifier.background(scrimColor),
+                content = content
+            )
+        }
+
+    } else Column(content = content)
+}
+
+
 @Preview(device = "id:pixel_7", showBackground = true)
 @Composable
 private fun AgreementContentPreview() {
+    val state = AgreementViewState(
+        isGrantedPermission = false,
+        isAlwaysDenied = false,
+        buttonState = ButtonState.Enabled
+    )
     PlutoTheme(
         darkTheme = false
     ) {
         AgreementContent(
-            state = AgreementViewState(
-                isGrantedPermission = false,
-                isAlwaysDenied = false,
-                buttonState = ButtonState.Enabled
-            ),
+            previewView = PreviewView(LocalContext.current),
+            cameraXPreview = fakeCameraXPreview(),
+            state = state,
             intent = {}
         )
     }

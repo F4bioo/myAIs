@@ -1,11 +1,9 @@
 package com.fappslab.myais.features.home.agreement.presentation.compose
 
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.fappslab.myais.core.navigation.AgreementRoute
 import com.fappslab.myais.core.navigation.HomeNavigation
@@ -13,6 +11,9 @@ import com.fappslab.myais.core.navigation.HomeRoute
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewEffect
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewModel
 import com.fappslab.myais.features.home.di.HomeModuleLoad
+import com.fappslab.myais.libraries.arch.camerax.compose.CameraXPreviewProvider
+import com.fappslab.myais.libraries.arch.camerax.compose.LocalCameraXPreview
+import com.fappslab.myais.libraries.arch.camerax.compose.LocalPreviewView
 import com.fappslab.myais.libraries.arch.koin.koinlazy.extension.KoinLazyModuleInitializer
 import com.fappslab.myais.libraries.arch.navigation.extension.LocalNavController
 import com.fappslab.myais.libraries.arch.simplepermission.extension.openApplicationSettings
@@ -30,14 +31,18 @@ internal fun AgreementScreen() {
     val state by viewModel.state.collectAsState()
     AgreementEffectObserve(viewModel.effect)
 
-    PlutoTheme {
-        AgreementContent(
-            modifier = Modifier
-                .statusBarsPadding()
-                .navigationBarsPadding(),
-            state = state,
-            intent = viewModel::onViewIntent
-        )
+    PlutoTheme(
+        statusBarColor = Color.Transparent,
+        navigationBarColor = Color.Transparent
+    ) {
+        CameraXPreviewProvider {
+            AgreementContent(
+                state = state,
+                intent = viewModel::onViewIntent,
+                previewView = LocalPreviewView.current,
+                cameraXPreview = LocalCameraXPreview.current,
+            )
+        }
     }
 }
 

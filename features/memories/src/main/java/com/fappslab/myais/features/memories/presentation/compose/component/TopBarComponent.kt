@@ -159,7 +159,7 @@ private fun PhotoComponent(
 
 @Preview
 @Composable
-private fun PlutoTopBarComponentPreview() {
+private fun TopBarComponentPreview() {
     val owner = Owner(
         name = "User Name",
         photoUrl = "photoUrl",
