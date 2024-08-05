@@ -1,26 +1,13 @@
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 apply("$rootDir/plugins/android-build.gradle")
 
-val clientSecretPropertiesFile = rootProject.file("$rootDir/secrets/clientSecret.properties")
-val clientSecretProperties = Properties()
-clientSecretProperties.load(FileInputStream(clientSecretPropertiesFile))
-
-val apiKeyPropertiesFile = rootProject.file("$rootDir/secrets/apiKey.properties")
-val apiKeyProperties = Properties()
-if (apiKeyPropertiesFile.exists()) {
-    apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
-} else {
-    println("The apiKey.properties file not found. Creating a new one, please fill out with your own API key.")
-    // Note: Do not hard-code your API key here. This line is merely for the purpose of creating the apiKey.properties file.
-    apiKeyProperties["GEMINI_API_KEY"] = "\"YOUR_DEFAULT_API_KEY_HERE\""
-    apiKeyProperties.store(FileOutputStream(apiKeyPropertiesFile), null)
+secrets {
+    propertiesFileName = "$rootDir/secrets/apiKey.properties"
+    defaultPropertiesFileName = "$rootDir/default.properties"
 }
 
 android {
@@ -31,36 +18,6 @@ android {
             type = "String",
             name = "APP_VERSION",
             value = "\"${Config.VERSION_NAME}\""
-        )
-        buildConfigField(
-            type = "String",
-            name = "CLIENT_ID_APP",
-            value = clientSecretProperties["CLIENT_ID_APP"] as String
-        )
-        buildConfigField(
-            type = "String",
-            name = "CLIENT_ID_WEB",
-            value = clientSecretProperties["CLIENT_ID_WEB"] as String
-        )
-        buildConfigField(
-            type = "String",
-            name = "DRIVE_BASE_URL",
-            value = "\"https://www.googleapis.com/\""
-        )
-        buildConfigField(
-            type = "String",
-            name = "GEMINI_API_KEY",
-            value = apiKeyProperties["GEMINI_API_KEY"] as String
-        )
-        buildConfigField(
-            type = "String",
-            name = "PROMPT_BASE_URL",
-            value = "\"http://localhost/\""
-        )
-        buildConfigField(
-            type = "String",
-            name = "GEMINI_BASE_URL",
-            value = "\"https://generativelanguage.googleapis.com/\""
         )
     }
     buildFeatures {
@@ -84,22 +41,20 @@ dependencies {
     api(libs.timber)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.annotation)
 
-    // Google Sign-In and Drive API
-    // DriveScopes
-    api("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0") {
+    // Google Sign-In and Drive API - DriveScopes
+    api(libs.google.api.services.drive) {
         exclude(group = "org.apache.httpcomponents", module = "httpclient")
     }
     // Identity, AuthorizationRequest
-    api("com.google.android.gms:play-services-auth:21.2.0")
+    api(libs.play.services.auth)
     // CredentialManager
-    api("androidx.credentials:credentials-play-services-auth:1.2.2")
+    api(libs.credentials.play.services.auth)
     // GetGoogleIdOption, GoogleIdTokenCredential, GoogleIdTokenParsingException
-    api("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    api(libs.googleid)
     // Coroutines await
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
-
-    implementation("androidx.annotation:annotation:1.8.1")
+    api(libs.kotlinx.coroutines.play.services)
 
     // TestLibs
     testImplementation(testFixtures(project(Modules.testing)))
