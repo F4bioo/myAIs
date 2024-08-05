@@ -18,8 +18,12 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.net.InetSocketAddress
+import java.net.Socket
 
-private const val PING_COMMAND = "/system/bin/ping -c 4 -W 1 8.8.8.8"
+private const val GOOGLE_DNS_IP = "8.8.8.8"
+private const val DNS_PORT = 53
+private const val CONNECTION_TIMEOUT_MS = 1500
 private const val DEBOUNCE_TIME = 500L
 
 internal class NetworkMonitorImpl(
@@ -82,9 +86,11 @@ internal fun checkRealConnection(
     callbackFlowScope: ProducerScope<NetworkStateType>
 ): Job = CoroutineScope(dispatcher).launch {
     val hasInternet = runCatching {
-        val process = Runtime.getRuntime().exec(PING_COMMAND)
-        val exitValue = process.waitFor()
-        exitValue == 0
+        val socket = Socket()
+        val endpoint = InetSocketAddress(GOOGLE_DNS_IP, DNS_PORT)
+        socket.connect(endpoint, CONNECTION_TIMEOUT_MS)
+        socket.close()
+        true
     }.getOrDefault(defaultValue = false)
 
     callbackFlowScope.trySend(
