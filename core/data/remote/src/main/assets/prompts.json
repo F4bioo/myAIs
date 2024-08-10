@@ -1,0 +1,5 @@
+{
+  "prompts": {
+    "imageDescription": "Please provide a detailed but concise description of this image in %s, not exceeding 500 characters. Include key elements such as: Colors; Shapes; Textures; Objects; Animals (if any); People (if any), including their expressions and clothing; Background elements; Nature elements; Time of day; Weather conditions; Lighting conditions; Any significant details. Summarize any text in the image briefly. Avoid repetition and use varied descriptions where appropriate."
+  }
+}

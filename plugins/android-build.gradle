@@ -1,0 +1,94 @@
+apply plugin: "org.jetbrains.kotlin.plugin.serialization"
+apply plugin: "kotlin-parcelize"
+
+android {
+    compileSdk Config.COMPILE_SDK
+
+    defaultConfig {
+        minSdk Config.MIN_SDK
+        targetSdk Config.TARGET_SDK
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        staging {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    "$rootDir/app/proguard-rules.pro",
+                    "$rootDir/app/proguard-rules-staging.pro"
+        }
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    "$rootDir/app/proguard-rules.pro",
+                    "$rootDir/app/proguard-rules-release.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+        freeCompilerArgs += ["-opt-in=kotlin.RequiresOptIn"]
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation', 'ExtraTranslation'
+        xmlReport true
+    }
+    packagingOptions {
+        resources {
+            excludes += [
+                    "/META-INF/{AL2.0,LGPL2.1}",
+                    "/META-INF/DEPENDENCIES",
+                    "/META-INF/LICENSE-notice.md",
+                    "/META-INF/LICENSE.md",
+            ]
+        }
+    }
+}
+
+dependencies {
+    // Libs
+    debugImplementation(libs.ui.tooling)
+    implementation(libs.fragment.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.bundles.defaultLibs)
+    implementation(libs.bundles.navigationLibs)
+    implementation(libs.serialization.json)
+    implementation platform(libs.androidx.compose.bom)
+
+    // Tests
+    testImplementation(libs.bundles.defaultTestLibs)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.core.testing)
+
+    // AndroidTests
+    androidTestImplementation(libs.bundles.defaultAndroidTestLibs)
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation(libs.bundles.defaultTestLibs)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.koin.test.junit4)
+    androidTestImplementation(libs.kotlin.test.junit)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.core.testing)
+}

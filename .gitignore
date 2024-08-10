@@ -5,10 +5,19 @@ build/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Ignore Kotlin compiler temporary files
+.kotlin/
+
+# Ignore Room schema files
+schemas/
+
 # Log/OS Files
 *.log
 
 # Android Studio generated files and folders
+app/release/
+app/staging/
+app/debug/
 captures/
 .externalNativeBuild/
 .cxx/
