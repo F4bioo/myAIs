@@ -15,7 +15,7 @@ The `myAIs` app requires an API key from the Gemini API to function correctly. T
 ### Steps to Set Up the Gemini API Key
 
 1. **Ensure the `default.properties` File is Configured**:
-    - In the root directory of the project, ensure there is a `default.properties` file. This file provides default values, including a placeholder for the Gemini API key.
+   - In the root directory of the project, ensure there is a `default.properties` file. This file provides default values, including a placeholder for the Gemini API key.
 
    Example `default.properties`:
    ```properties
@@ -34,18 +34,10 @@ The `myAIs` app requires an API key from the Gemini API to function correctly. T
 By following these steps, you can ensure that the `myAIs` project builds successfully in all environments.
 
 ## Screens
-<img src="media/screens.png" alt="Screens" width="400" />
+<img src="media/screens.png" alt="Screens" width="997" />
 
 ## Video Demonstrations
 
-### Capture Feature
-<video width="400" controls>
-  <source src="media/capture.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-### Permission Request
-<video width="400" controls>
-  <source src="media/permission.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+|                                            Permission Request                                            |                                             Capture Feature                                              |
+|:--------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
+| <video src='https://github.com/user-attachments/assets/8f472104-c6a7-4cc2-bd1c-98cd2d564497' width=180/> | <video src='https://github.com/user-attachments/assets/81b85c06-817a-44bb-8eed-b85e2880d528' width=180/> |
