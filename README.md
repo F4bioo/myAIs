@@ -1,4 +1,6 @@
-# myAIs
+# myAIs #buildwithgemini
+
+\#buildwithgemini
 
 **myAIs** is an Android application primarily focused on accessibility. The app is designed to assist individuals with visual impairments by providing a simple and effective way to understand their surroundings. By leveraging artificial intelligence, myAIs describes images captured by the device's camera, offering users easy access to visual information. Additionally, the app features a user-friendly interface specifically designed to be easily navigable for those with visual limitations. The emphasis on accessibility is central to the app’s design and functionality, ensuring it serves as a genuinely useful and inclusive tool in the daily lives of its users.
 
