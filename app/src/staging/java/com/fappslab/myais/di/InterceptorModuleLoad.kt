@@ -1,5 +1,6 @@
 package com.fappslab.myais.di
 
+import com.fappslab.myais.core.data.remote.BuildConfig
 import com.fappslab.myais.libraries.arch.koin.koinload.KoinLoad
 import com.fappslab.myais.core.data.remote.di.DRIVE_INTERCEPTORS_QUALIFIER
 import com.fappslab.myais.core.data.remote.di.GEMINI_INTERCEPTORS_QUALIFIER
@@ -23,7 +24,7 @@ object InterceptorModuleLoad : KoinLoad() {
         }
         single(named(GEMINI_INTERCEPTORS_QUALIFIER)) {
             listOf<Interceptor>(
-                ApiKeyInterceptor(),
+                ApiKeyInterceptor(BuildConfig.GEMINI_API_KEY),
                 HeadersInterceptor(androidApplication())
             )
         }

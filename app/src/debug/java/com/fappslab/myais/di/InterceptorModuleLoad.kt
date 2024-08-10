@@ -11,6 +11,7 @@ import com.facebook.flipper.plugins.navigation.NavigationFlipperPlugin
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
+import com.fappslab.myais.core.data.remote.BuildConfig
 import com.fappslab.myais.core.data.remote.di.DRIVE_INTERCEPTORS_QUALIFIER
 import com.fappslab.myais.core.data.remote.di.GEMINI_INTERCEPTORS_QUALIFIER
 import com.fappslab.myais.core.data.remote.di.LOCAL_JSON_INTERCEPTORS_QUALIFIER
@@ -38,7 +39,7 @@ object InterceptorModuleLoad : KoinLoad() {
         }
         single(named(GEMINI_INTERCEPTORS_QUALIFIER)) {
             listOf<Interceptor>(
-                ApiKeyInterceptor(),
+                ApiKeyInterceptor(BuildConfig.GEMINI_API_KEY),
                 HeadersInterceptor(androidApplication()),
                 get<FlipperOkhttpInterceptor>()
             )
