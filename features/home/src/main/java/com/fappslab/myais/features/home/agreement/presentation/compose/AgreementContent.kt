@@ -20,29 +20,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.fappslab.myais.features.home.R
 import com.fappslab.myais.features.home.agreement.presentation.compose.component.BodyComponent
-import com.fappslab.myais.features.home.agreement.presentation.compose.component.ConditionsComponent
+import com.fappslab.myais.features.home.agreement.presentation.compose.component.FooterAgreementNavigationComponent
 import com.fappslab.myais.features.home.agreement.presentation.compose.component.HeaderComponent
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewIntent
 import com.fappslab.myais.features.home.agreement.presentation.viewmodel.AgreementViewState
 import com.fappslab.myais.libraries.arch.camerax.CameraXPreview
 import com.fappslab.myais.libraries.arch.camerax.compose.fakeCameraXPreview
 import com.fappslab.myais.libraries.arch.simplepermission.extension.rememberPermissionLauncher
-import com.fappslab.myais.libraries.design.accessibility.clearAndSetSemantics
-import com.fappslab.myais.libraries.design.components.button.ButtonType
-import com.fappslab.myais.libraries.design.components.button.PlutoButtonComponent
 import com.fappslab.myais.libraries.design.components.button.model.ButtonState
-import com.fappslab.myais.libraries.design.components.footer.PlutoFooterLayout
 import com.fappslab.myais.libraries.design.theme.PlutoTheme
 
 @Composable
@@ -97,31 +91,12 @@ internal fun AgreementContent(
                 )
             }
         }
-        PlutoFooterLayout {
-            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
-            ConditionsComponent(
-                modifier = Modifier.fillMaxWidth(),
-                onClicked = { intent(AgreementViewIntent.OnConditions(link = it)) }
-            )
-            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp16))
-            PlutoButtonComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clearAndSetSemantics {
-                        val contextDescriptionRes =
-                            if (state.buttonState == ButtonState.Disabled) {
-                                R.string.agreement_desc_button_disabled_description
-                            } else R.string.agreement_desc_button_enabled_description
-                        this.liveRegion = LiveRegionMode.Polite
-                        this.stateDescription = stringResource(contextDescriptionRes)
-                    },
-                text = stringResource(R.string.common_continue),
-                buttonType = ButtonType.Primary,
-                buttonState = state.buttonState,
-                onClick = { intent(AgreementViewIntent.OnContinue) }
-            )
-            Spacer(modifier = Modifier.size(PlutoTheme.dimen.dp8))
-        }
+        FooterAgreementNavigationComponent(
+            modifier = Modifier.background(Color.Transparent),
+            buttonState = state.buttonState,
+            onConditionsClicked = { intent(AgreementViewIntent.OnConditions(link = it)) },
+            onContinueClicked = { intent(AgreementViewIntent.OnContinue) }
+        )
     }
 }
 
