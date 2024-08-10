@@ -29,7 +29,7 @@ The `myAIs` app requires an API key from the Gemini API to function correctly. T
 ### Important Notes
 
 - **Do Not Modify Base URLs**: The base URLs for services used by the application are defined in `default.properties`. To maintain consistent functionality, avoid modifying these URLs.
-- **Security**: Ensure that any files containing API keys, like `apiKey.properties`, are excluded from version control to keep your keys secure.
+- **Security**: It's advisable to exclude files containing sensitive information, such as API keys, from version control to protect your credentials.
 
 By following these steps, you can ensure that the `myAIs` project builds successfully in all environments.
 
