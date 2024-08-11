@@ -1,4 +1,4 @@
-# myAIs #buildwithgemini
+# myAIs
 
 \#buildwithgemini
 
